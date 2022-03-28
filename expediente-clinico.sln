@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "expediente-clinico", "expediente-clinico\expediente-clinico.csproj", "{DC5E8794-AB4C-45A1-9D20-0F8EA41EDAAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC5E8794-AB4C-45A1-9D20-0F8EA41EDAAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC5E8794-AB4C-45A1-9D20-0F8EA41EDAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC5E8794-AB4C-45A1-9D20-0F8EA41EDAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC5E8794-AB4C-45A1-9D20-0F8EA41EDAAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C78F46AD-3F8E-4754-BA78-06E0CE07C13D}
+	EndGlobalSection
+EndGlobal
