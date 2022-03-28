@@ -8,9 +8,9 @@ namespace expediente_clinico.Models
     public class Hospital
     {
         public long Id { get; set; }
-        public string Nombre { get; set; }
-        public string Direccion { get; set; }
-        public string Telefono { get; set; }
-        public string Correo { get; set; }
+        public String Nombre { get; set; }
+        public String Direccion { get; set; }
+        public String Telefono { get; set; }
+        public String Correo { get; set; }
     }
 }
