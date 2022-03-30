@@ -30,7 +30,8 @@ namespace expediente_clinico.Repository
 
         public async Task<Medico> listarMedicoPorId(long id)
         {
-            throw new NotImplementedException();
+            string query = "";
+            return null;
         }
 
         public async Task<List<Medico>> listarMedicos()
