@@ -15,6 +15,9 @@
         s = "Mujer";
     }
 
+    //var fechaNueva = Model.FechaDeNacimiento.ToString("dd. MM. yyyy");
+    var fechaNueva = Model.FechaDeNacimiento.ToString("yyyy-MM-dd");
+
     var direccion = Model.Direccion;
 }
 <h1>Expediente</h1>
@@ -23,7 +26,7 @@
     //String par = Context.Session.GetString("Prueba1");
     //string correo = Context.Session.GetString("Correo");
     <br />
-    <form>
+    <form action="ActualizarExpediente" method="POST">
         <center>
             <img src=@Model.Imagen />
         </center>
@@ -31,44 +34,62 @@
         <div class="form-row">
             <div class="col-md-4 mb-3">
                 <label for="validationDefault01">ID EXPEDIENTE</label>
-                <input type="text" class="form-control" id="validationDefault01" value="@Model.IdExpediente" required>
+                <input type="text" class="form-control" name="idexpediente" id="validationDefault01" value="@Model.IdExpediente" disabled>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationDefault02">NOMBRE</label>
-                <input type="text" class="form-control" id="validationDefault02" value="@Model.Nombre" required>
+                <input type="text" class="form-control" name="nombre" id="validationDefault02" value="@Model.Nombre" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationDefaultUsername">APELLIDO</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="@Model.Apellido" required>
+                    <input type="text" class="form-control" name="apellido" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="@Model.Apellido" required>
                 </div>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="validationDefault03">DIRECCIÓN</label>
-                <input type="text" class="form-control" id="validationDefault03" value="@direccion" required>
+                <input type="text" class="form-control" name="direccion" id="validationDefault03" value="@direccion" required>
             </div>
             <div class="col-md-2 mb-3">
                 <label for="validationDefault04">TELEFONO</label>
-                <input type="text" class="form-control" id="validationDefault04" value="@Model.Telefono" required>
+                <input type="text" class="form-control" name="telefono" id="validationDefault04" value="@Model.Telefono" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationDefault05">FECHA DE NACIMIENTO</label>
-                <input type="datetime" class="form-control" id="validationDefault05" value=@Model.FechaDeNacimiento required>
+                <input type="date" class="form-control" name="fechadenacimiento" id="validationDefault05" value=@fechaNueva required>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="validationDefault06">CURP</label>
-                <input type="text" class="form-control" id="validationDefault06" value="@Model.Curp" required>
+                <input type="text" class="form-control" id="validationDefault06" value="@Model.Curp" disabled>
+                <input type="text" hidden="hidden" class="form-control" name="curp" value="@Model.Curp" />
             </div>
             <div class="col-md-2 mb-3">
                 <label for="validationDefault07">SEXO</label>
-                <input type="text" class="form-control" id="validationDefault07" value=@s required>
+                <div class="dropdown">
+                    <select name="sexo" class="form-control" required>
+                        @{
+                            if (Model.Sexo)
+                            {
+                                <option value=false>Mujer</option>
+                                <option value=true selected>Hombre</option>
+                            }
+                            else
+                            {
+                                <option value=false selected>Mujer</option>
+                                <option value=true>Hombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <!--<input type="text" class="form-control" name="sexo" id="validationDefault07" value=@s required>-->
             </div>
         </div>
         <button class="btn btn-primary" type="submit">Actualizar</button>
+        <button class="btn btn-danger" asp-controller="Perfil" asp-action="SolicitarExpediente">Cancelar</button>
     </form>
 }
 <br />

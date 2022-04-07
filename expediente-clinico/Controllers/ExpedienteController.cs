@@ -19,6 +19,20 @@ namespace expediente_clinico.Controllers
             
         }
 
+        // POST api/Expediente
+        [HttpPost]
+        public void AgregarExpediente(Expediente expediente) 
+        {
+            expedienteRepository.agregarExpediente(expediente);
+        }
+
+        // PUT api/Expediente/1
+        [HttpPut("{curp}")]
+        public void ActualizarExpediente(Expediente expediente, string curp) 
+        {
+            expedienteRepository.actualizarExpediente(expediente,curp);
+        }
+
         // GET api/Expediente/abc
         [HttpGet("{curp}")]
         public async Task<Expediente> GetExpedientePorCurp(string curp)
