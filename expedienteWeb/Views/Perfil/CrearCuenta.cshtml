@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+    <h1>Crear cuenta</h1>
+    <hr class="red-line" />
+    <div class="row">
+        <div class="col-md-4">
+            <form action="CrearUsuario" method="POST">
+                <div class="form-group">
+                    <label for="correo">CORREO</label>
+                    <input type="email" class="form-control" name="correo" id="correo" placeholder="Introducir CORREO">
+                </div>
+                <div class="form-group">
+                    <label for="contrasena1">CONTRASEÑA</label>
+                    <input type="password" class="form-control" name="contrasena1" id="contrasena1" placeholder="Introducir CONTRASEÑA">
+                </div>
+                <div class="form-group">
+                    <label for="contrasena2">CONFIRMA CONTRASEÑA</label>
+                    <input type="password" class="form-control" name="contrasena2" id="contrasena2" placeholder="Confirma CONTRASEÑA">
+                </div>
+                <div class="form-group">
+                    <label for="curp">CURP</label>
+                    <input type="text" class="form-control" name="curp" id="curp" aria-describedby="curpHelp" placeholder="Introducir CURP">
+                    <small id="curpHelp" class="form-text text-muted">Si no recuerdas tu curp la puedes consultar <a href="https://www.gob.mx/curp/" target="_blank">aquí</a></small>
+                </div>
+                <button type="submit" class="btn btn-gob">Registrarse</button>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div>
+        <a asp-controller="Inicio" asp-action="Index">Regresar al inicio</a>
+    </div>
+    <br />
+    <footer>
+        2022 - expedienteWeb - <a asp-area="" asp-controller="Inicio" asp-action="Privacy">Privacy</a>
+    </footer>
+    
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

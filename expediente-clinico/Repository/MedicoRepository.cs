@@ -1,6 +1,5 @@
 ﻿using expediente_clinico.Models;
 using expediente_clinico.RepositoryInterface;
-using expediente_clinico.RepositorySqlInterface;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;

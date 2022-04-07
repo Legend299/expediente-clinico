@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using expediente_clinico.Models;
+@{
+    ViewBag.Title = "Cuenta";
+}
+
+@{ 
+    var s = Model.Sexo;
+    if (s)
+    {
+        s = "Hombre";
+    }
+    else {
+        s = "Mujer";
+    }
+
+    var direccion = Model.Direccion;
+}
+<h1>Expediente</h1>
+<hr class="red-line" />
+@{
+//String par = Context.Session.GetString("Prueba1");
+//string correo = Context.Session.GetString("Correo");
+    <br />
+    <form>
+        <center>
+            <img src=@Model.Imagen />
+        </center>
+        <br />
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault01">ID EXPEDIENTE</label>
+                <input type="text" class="form-control" id="validationDefault01" value="@Model.IdExpediente" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault02">NOMBRE</label>
+                <input type="text" class="form-control" id="validationDefault02" value="@Model.Nombre" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefaultUsername">APELLIDO</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="@Model.Apellido" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="validationDefault03">DIRECCIÓN</label>
+                <input type="text" class="form-control" id="validationDefault03" value="@direccion" disabled>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="validationDefault04">TELEFONO</label>
+                <input type="text" class="form-control" id="validationDefault04" value="@Model.Telefono" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault05">FECHA DE NACIMIENTO</label>
+                <input type="datetime" class="form-control" id="validationDefault05" value=@Model.FechaDeNacimiento disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="validationDefault06">CURP</label>
+                <input type="text" class="form-control" id="validationDefault06" value="@Model.Curp" disabled>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="validationDefault07">SEXO</label>
+                <input type="text" class="form-control" id="validationDefault07" value=@s disabled>
+            </div>
+        </div>
+        <button class="btn btn-primary" asp-controller="Expediente" asp-action="Editar">Editar</button>
+    </form>
+    }
+<br />
+<div>
+    <a asp-controller="Inicio" asp-action="Index">Regresar al inicio</a>
+</div>
+<br />
+<footer>
+    2022 - expediente médico - <a asp-area="" asp-controller="Inicio" asp-action="Privacy">Privacy</a>
+</footer>

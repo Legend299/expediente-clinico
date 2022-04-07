@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using expediente_clinico.Models;
+@{
+    ViewBag.Title = "Cuenta";
+}
+
+<h1>Cuenta</h1>
+<hr class="red-line" />
+@{
+    //String par = Context.Session.GetString("Prueba1");
+    //string correo = Context.Session.GetString("Correo");
+    <h1>EXPEDIENTE: </h1>
+    <br />
+    <label>ID: </label>
+    <p>@Model.IdExpediente</p>
+    <label>Imagen: </label>
+    <p>@Model.Imagen</p>
+    <label>Nombre: </label>
+    <p>@Model.Nombre</p>
+    <label>Apellido: </label>
+    <p>@Model.Apellido</p>
+    <label>Telefono: </label>
+    <p>@Model.Telefono</p>
+    <label>FechaDeNacimiento: </label>
+    <p>@Model.FechaDeNacimiento</p>
+    <label>Dirección: </label>
+    <p>@Model.Direccion</p>
+    <label>Sexo: </label>
+    <p>@Model.Sexo</p>
+    <label>Curp: </label>
+    <p>@Model.Curp</p>
+}
+<br />
+<div>
+    <a asp-controller="Inicio" asp-action="Index">Regresar al inicio</a>
+</div>
+<br />
+<footer>
+    2022 - expedienteWeb - <a asp-area="" asp-controller="Inicio" asp-action="Privacy">Privacy</a>
+</footer>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using expediente_clinico.Models;
+using expediente_clinico.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,17 @@ namespace expediente_clinico.Controllers
     [ApiController]
     public class ExpedienteController : ControllerBase
     {
+        private static readonly ExpedienteRepository expedienteRepository = new ExpedienteRepository();
         [HttpGet]
         public void getListaExpediente() { 
             
+        }
+
+        // GET api/Expediente/abc
+        [HttpGet("{curp}")]
+        public async Task<Expediente> GetExpedientePorCurp(string curp)
+        {
+            return await expedienteRepository.obtenerExpedientePorCurp(curp);
         }
     }
 }
