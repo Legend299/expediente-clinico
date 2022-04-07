@@ -1,7 +1,4 @@
-﻿using expediente_clinico.Models;
-using expediente_clinico.Repository;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,37 +10,35 @@ namespace expediente_clinico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicoController : ControllerBase
+    public class ArchivoController : ControllerBase
     {
-        private static readonly MedicoRepository medicoRepository = new MedicoRepository();
-       
-        // GET: api/<ValuesController>
+        // GET: api/<ArchivoController>
         [HttpGet]
-        public async Task<ActionResult<List<Medico>>> GetListaMedicos()
+        public IEnumerable<string> Get()
         {
-            return await medicoRepository.listarMedicos();
+            return new string[] { "value1", "value2" };
         }
 
-        // GET api/<ValuesController>/5
+        // GET api/<ArchivoController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<ValuesController>
+        // POST api/<ArchivoController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<ValuesController>/5
+        // PUT api/<ArchivoController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/<ArchivoController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

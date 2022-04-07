@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace expediente_clinico
+namespace expediente_documentos
 {
     public class Startup
     {

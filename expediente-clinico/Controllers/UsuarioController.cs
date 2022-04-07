@@ -1,7 +1,8 @@
 ﻿using expediente_clinico.Models;
+using expediente_clinico.RabbitMQ;
 using expediente_clinico.Repository;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,37 +14,39 @@ namespace expediente_clinico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicoController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
-        private static readonly MedicoRepository medicoRepository = new MedicoRepository();
-       
-        // GET: api/<ValuesController>
+        private static readonly UsuarioRepository usuarioRepository = new UsuarioRepository();
+
+        // GET: api/<UsuarioController>
         [HttpGet]
-        public async Task<ActionResult<List<Medico>>> GetListaMedicos()
+        public async Task<ActionResult<List<Usuario>>> GetListaUsuarios()
         {
-            return await medicoRepository.listarMedicos();
+            return await usuarioRepository.listarUsuarios();
         }
 
-        // GET api/<ValuesController>/5
+        // GET api/<UsuarioController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<ValuesController>
+        // POST api/<UsuarioController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Usuario value)
         {
+            //Usuario usuario = JsonConvert.DeserializeObject<Usuario>(value);
+            usuarioRepository.agregarUsuario(value);
         }
 
-        // PUT api/<ValuesController>/5
+        // PUT api/<UsuarioController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/<UsuarioController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
