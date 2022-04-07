@@ -134,6 +134,15 @@ namespace expedienteWeb.Controllers
             return RedirectToAction("Index","Inicio");
         }
 
+        public void ActualizarExpediente() 
+        {
+            /*
+             
+            Conectarse api
+             
+             */
+        }
+
         public IActionResult CrearCuenta() 
         {
             return View();

@@ -29,13 +29,13 @@
                                 string correo = Context.Session.GetString("Correo");
                                 if (Context.Session.GetString("Expediente") != "0")
                                 {
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="SolicitarExpediente">Expediente Clínico Electrónico</a></li>
-                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="SolicitarExpediente">@correo</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="SolicitarExpediente">Expediente Clínico Electrónico</a></li>
+                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="SolicitarExpediente">@correo</a></li>
                                 }
                                 else
                                 {
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="SolicitarExpediente2">Expediente Clínico Electrónico</a></li>
-                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="SolicitarExpediente2">@correo</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="TramitarExpediente">Expediente Clínico Electrónico</a></li>
+                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="TramitarExpediente">@correo</a></li>
                                 }
 
 
