@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\webservice1\Models\Consulta.cs" Link="Models\Consulta.cs" />
+    <Compile Include="..\webservice1\Models\ConsultaTipo.cs" Link="Models\ConsultaTipo.cs" />
+    <Compile Include="..\webservice1\Models\Documento.cs" Link="Models\Documento.cs" />
+    <Compile Include="..\webservice1\Models\DTO\ConsultaDTO.cs" Link="Models\DTO\ConsultaDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\ConsultaTipoDTO.cs" Link="Models\DTO\ConsultaTipoDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\DocumentoDTO.cs" Link="Models\DTO\DocumentoDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\EstadoDTO.cs" Link="Models\DTO\EstadoDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\ExpedienteDTO.cs" Link="Models\DTO\ExpedienteDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\MunicipioDTO.cs" Link="Models\DTO\MunicipioDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\UsuarioDTO.cs" Link="Models\DTO\UsuarioDTO.cs" />
+    <Compile Include="..\webservice1\Models\Especialidade.cs" Link="Models\Especialidade.cs" />
+    <Compile Include="..\webservice1\Models\Estado.cs" Link="Models\Estado.cs" />
+    <Compile Include="..\webservice1\Models\Expediente.cs" Link="Models\Expediente.cs" />
+    <Compile Include="..\webservice1\Models\Hospitale.cs" Link="Models\Hospitale.cs" />
+    <Compile Include="..\webservice1\Models\Medico.cs" Link="Models\Medico.cs" />
+    <Compile Include="..\webservice1\Models\Municipio.cs" Link="Models\Municipio.cs" />
+    <Compile Include="..\webservice1\Models\MunicipiosEstado.cs" Link="Models\MunicipiosEstado.cs" />
+    <Compile Include="..\webservice1\Models\Role.cs" Link="Models\Role.cs" />
+    <Compile Include="..\webservice1\Models\Usuario.cs" Link="Models\Usuario.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DateOnlyTimeOnly.AspNet" Version="1.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\DTO\" />
+  </ItemGroup>
+
+</Project>
