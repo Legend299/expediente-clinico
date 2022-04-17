@@ -3,10 +3,12 @@ package com.expedienteclinico;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,17 +26,26 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText txtCorreo,txtPassword1,txtPassword2;
     private ProgressBar carga;
 
+    private LinearLayout SignUpLayout;
+    private AnimationDrawable animationDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        SignUpLayout = findViewById(R.id.signupLayout);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegistrarse = findViewById(R.id.btnRegistrarse);
 
         txtCorreo = findViewById(R.id.txtCorreo);
         txtPassword1 = findViewById(R.id.txtPassword1);
         txtPassword2 = findViewById(R.id.txtPassword2);
+
+        animationDrawable = (AnimationDrawable) SignUpLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
         carga = findViewById(R.id.idLoadingPB);
 

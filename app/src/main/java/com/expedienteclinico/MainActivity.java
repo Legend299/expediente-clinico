@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.expedienteclinico.Controlador.SessionUsuario;
 import com.expedienteclinico.databinding.ActivityMainBinding;
+import com.expedienteclinico.ui.consulta.ConsultaAgregarFragment;
 import com.expedienteclinico.ui.consulta.ConsultaFragment;
 import com.expedienteclinico.ui.expediente.ExpedienteFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -45,9 +47,9 @@ public class MainActivity extends AppCompatActivity{
                         .setAction("Action", null).show();
             }
         });
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-
 
 
         // Passing each menu ID as a set of Ids because each
@@ -82,25 +84,29 @@ public class MainActivity extends AppCompatActivity{
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
         //navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.nav_cerrarSesion:
-                        Log.e("DATA: ","CERRAR SESION?");
-                        Toast.makeText(MainActivity.this,"CERRAR SESION", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(i);
                         finish();
                         break;
                     case R.id.nav_expediente:
+                        getSupportActionBar().setTitle("Expediente");
                         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new ExpedienteFragment()).addToBackStack(null).commit();
                         drawer.closeDrawers();
                         break;
                     case R.id.nav_consultas:
+                        getSupportActionBar().setTitle("Consultas");
                         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new ConsultaFragment()).addToBackStack(null).commit();
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_perfil:
+                        getSupportActionBar().setTitle("Perfil");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new ConsultaAgregarFragment()).addToBackStack(null).commit();
                         drawer.closeDrawers();
                         break;
                 }

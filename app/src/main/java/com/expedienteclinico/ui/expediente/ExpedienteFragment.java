@@ -60,6 +60,8 @@ public class ExpedienteFragment extends Fragment {
         binding = FragmentExpedienteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+
         _conConvertirFecha = new ConvertirFecha();
         carga = root.findViewById(R.id.idLoadingPB);
         btnEditar = root.findViewById(R.id.btnEditar);

@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin,btnRegistrarse;
     private ProgressBar carga;
 
+    private LinearLayout LoginLayout;
+    private AnimationDrawable animationDrawable;
+
     private List<UsuarioDTO> lista;
 
     private SessionUsuario sessionUsuario = SessionUsuario.getInstance();
@@ -52,13 +57,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        LoginLayout = findViewById(R.id.loginLayout);
         txtCorreo = findViewById(R.id.txtCorreo);
         txtPassword = findViewById(R.id.txtPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegistrarse = findViewById(R.id.btnRegistrarse);
         carga = findViewById(R.id.idLoadingPB);
 
-
+        animationDrawable = (AnimationDrawable) LoginLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
 
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     servicioUsuario.solicitarListaUsuarios(new ServicioUsuario.VolleyResponseListener() {
                         @Override
                         public void onError(String message) {
+                            Toast.makeText(LoginActivity.this,"No se ha podido realizar conexión al servidor.", Toast.LENGTH_LONG).show();
                             carga.setVisibility(View.GONE);
                         }
 

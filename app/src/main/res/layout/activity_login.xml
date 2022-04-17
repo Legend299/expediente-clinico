@@ -7,7 +7,8 @@
     android:padding="30dp"
     android:orientation="vertical"
     android:backgroundTintMode="@color/white"
-    android:background="@drawable/background_login_register_white"
+    android:background="@drawable/bg_login_signup"
+    android:id="@+id/loginLayout"
     tools:context=".LoginActivity">
 
 
@@ -16,10 +17,10 @@
         android:id="@+id/lblTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOGIN"
+        android:text="INICIAR SESION"
         android:textSize="48dp"
-        android:textColor="@color/black"
-        android:layout_marginTop="260dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="150dp"
         />
 
     <View
@@ -43,8 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:text="usuario@gmail.com" />
@@ -55,8 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:hint="Password"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
         android:ems="10"
         android:inputType="textPassword"
         android:text="usuario" />
@@ -75,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="¿No tienes una cuenta?" />
 
 
