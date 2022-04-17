@@ -30,7 +30,7 @@
 
 
     <Button
-        android:id="@+id/btnEditar"
+        android:id="@+id/btnEditarConsulta"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="290dp"

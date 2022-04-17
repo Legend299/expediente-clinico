@@ -24,6 +24,7 @@ public class ConsultaListaAdapter extends ArrayAdapter<ConsultaDTO> {
         _listaConsultas = listaConsultas;
         _context = context;
         _convertirFecha = new ConvertirFecha();
+
     }
     //this method will return the list item
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.expedienteclinico.Controlador.Consulta.ServicioConsulta;
+import com.expedienteclinico.Controlador.RolesUsuario;
 import com.expedienteclinico.Controlador.SessionUsuario;
 import com.expedienteclinico.R;
 import com.expedienteclinico.databinding.FragmentConsultaBinding;
@@ -26,6 +28,7 @@ public class ConsultaFragment extends Fragment {
 
     private FragmentConsultaBinding binding;
     private ProgressBar carga;
+    private Button btnEditar,btnAgregarConsulta;
     private ListView listaConsulta;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,6 +41,13 @@ public class ConsultaFragment extends Fragment {
 
         carga = root.findViewById(R.id.idLoadingPB);
         listaConsulta = root.findViewById(R.id.listViewConsulta);
+        btnEditar = root.findViewById(R.id.btnEditarConsulta);
+        btnAgregarConsulta = root.findViewById(R.id.btnAgregarConsulta);
+
+        if(SessionUsuario.getInstance().getIdRol() <= RolesUsuario.MEDICO.get()){
+            //btnEditar.setVisibility(View.VISIBLE);
+            btnAgregarConsulta.setVisibility(View.VISIBLE);
+        }
 
         carga.setVisibility(View.VISIBLE);
         ServicioConsulta servicioConsulta = new ServicioConsulta(getContext());
@@ -53,7 +63,6 @@ public class ConsultaFragment extends Fragment {
                 carga.setVisibility(View.GONE);
                 //Toast.makeText(getContext(),response, Toast.LENGTH_LONG).show();
                 ConsultaListaAdapter adapter = new ConsultaListaAdapter(response, getContext());
-                //adding the adapter to listview
                 listaConsulta.setAdapter(adapter);
             }
         });
