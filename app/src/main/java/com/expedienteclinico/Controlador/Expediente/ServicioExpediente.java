@@ -95,7 +95,7 @@ public class ServicioExpediente {
 
                             consulta.setIdConsulta(jsonObjectConsulta.getInt("idConsulta"));
                             consulta.setFecha(_convertirFecha.recibirFecha(jsonObjectConsulta.getString("fecha")));
-                            consulta.setIdUsuario(jsonObjectConsulta.getInt("idUsuario"));
+                            consulta.setMedicoo(jsonObjectConsulta.getString("medico"));
                             consulta.setIdTipoConsulta(jsonObjectConsulta.getInt("idTipoConsulta"));
                             consulta.setIdExpediente(jsonObjectConsulta.getInt("idExpediente"));
                             consulta.setDiagnostico(jsonObjectConsulta.getString("diagnostico"));
@@ -117,7 +117,7 @@ public class ServicioExpediente {
                             documento.setNombre(jsonObjectDocumento.getString("nombre"));
                             documento.setExtension(jsonObjectDocumento.getString("extension"));
                             documento.setRuta(jsonObjectDocumento.getString("ruta"));
-                            documento.setIdUsuario(jsonObjectDocumento.getInt("idUsuario"));
+                            documento.setMedico(jsonObjectDocumento.getString("medico"));
                             documento.setPeso(jsonObjectDocumento.getInt("peso"));
                             documento.setIdExpediente(jsonObjectDocumento.getInt("idExpediente"));
 

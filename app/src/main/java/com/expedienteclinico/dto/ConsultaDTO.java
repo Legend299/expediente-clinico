@@ -6,7 +6,7 @@ public class ConsultaDTO {
 
     private int IdConsulta;
     private Date Fecha;
-    private int IdUsuario;
+    private String Medico;
     private int IdTipoConsulta;
     private int IdExpediente;
     private String Diagnostico;
@@ -14,10 +14,10 @@ public class ConsultaDTO {
     public ConsultaDTO() {
     }
 
-    public ConsultaDTO(int idConsulta, Date fecha, int idUsuario, int idTipoConsulta, int idExpediente, String diagnostico) {
+    public ConsultaDTO(int idConsulta, Date fecha, String medico, int idTipoConsulta, int idExpediente, String diagnostico) {
         IdConsulta = idConsulta;
         Fecha = fecha;
-        IdUsuario = idUsuario;
+        Medico = medico;
         IdTipoConsulta = idTipoConsulta;
         IdExpediente = idExpediente;
         Diagnostico = diagnostico;
@@ -39,12 +39,12 @@ public class ConsultaDTO {
         Fecha = fecha;
     }
 
-    public int getIdUsuario() {
-        return IdUsuario;
+    public String getMedico() {
+        return Medico;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        IdUsuario = idUsuario;
+    public void setMedicoo(String medico) {
+        Medico = medico;
     }
 
     public int getIdTipoConsulta() {

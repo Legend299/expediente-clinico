@@ -6,19 +6,19 @@ public class DocumentoDTO {
     private String Nombre;
     private String Extension;
     private String Ruta;
-    private int IdUsuario;
+    private String Medico;
     private int Peso;
     private int IdExpediente;
 
     public DocumentoDTO() {
     }
 
-    public DocumentoDTO(int idDocumento, String nombre, String extension, String ruta, int idUsuario, int peso, int idExpediente) {
+    public DocumentoDTO(int idDocumento, String nombre, String extension, String ruta, String medico, int peso, int idExpediente) {
         IdDocumento = idDocumento;
         Nombre = nombre;
         Extension = extension;
         Ruta = ruta;
-        IdUsuario = idUsuario;
+        Medico = medico;
         Peso = peso;
         IdExpediente = idExpediente;
     }
@@ -55,12 +55,12 @@ public class DocumentoDTO {
         Ruta = ruta;
     }
 
-    public int getIdUsuario() {
-        return IdUsuario;
+    public String getMedico() {
+        return Medico;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        IdUsuario = idUsuario;
+    public void setMedico(String medico) {
+        Medico = medico;
     }
 
     public int getPeso() {
