@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Usuario">
+        <menu>
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/ic_inicio"
+            android:title="@string/menu_Inicio" />
+
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_perfil"
+            android:title="Perfil" />
+
+        <item
+            android:id="@+id/nav_expediente"
+            android:icon="@drawable/ic_expediente"
+            android:title="Expediente" />
+
+        <item
+            android:id="@+id/nav_consultas"
+            android:icon="@drawable/ic_consulta"
+            android:title="Consultas" />
+
+        <item
+            android:id="@+id/nav_documentos"
+            android:icon="@drawable/ic_documento"
+            android:title="Documentos" />
+
+        </menu>
+    </item>
+
+    <item android:title="Médico">
+        <menu>
+            <item
+                android:id="@+id/nav_agregar_paciente"
+                android:icon="@drawable/ic_agregar_paciente"
+                android:title="Agregar Paciente" />
+            <item
+                android:id="@+id/nav_ver_pacientes"
+                android:icon="@drawable/ic_lista_pacientes"
+                android:title="Mis Pacientes" />
+            <item
+                android:id="@+id/nav_perfil_medico"
+                android:icon="@drawable/ic_perfil_medico"
+                android:title="Perfil de Médico" />
+        </menu>
+    </item>
+
+    <group android:id="@+id/Gpo2">
+        <item
+            android:id="@+id/nav_mensaje"
+            android:icon="@drawable/ic_cerrar_sesion"
+            android:title="Cerrar Sesión" />
+
+    </group>
+</menu>
