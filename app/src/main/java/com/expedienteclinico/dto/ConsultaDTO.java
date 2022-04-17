@@ -43,7 +43,7 @@ public class ConsultaDTO {
         return Medico;
     }
 
-    public void setMedicoo(String medico) {
+    public void setMedico(String medico) {
         Medico = medico;
     }
 
