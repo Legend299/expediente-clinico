@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_consultas"
-        android:name="com.expedienteclinico.ui.slideshow.SlideshowFragment"
-        android:label="Expediente"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.expedienteclinico.ui.consulta.ConsultaFragment"
+        android:label="Consultas"
+        tools:layout="@layout/fragment_consulta" />
 </navigation>

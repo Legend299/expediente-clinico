@@ -1,16 +1,16 @@
-package com.expedienteclinico.ui.slideshow;
+package com.expedienteclinico.ui.consulta;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class ConsultaViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public ConsultaViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("Consultas");
     }
 
     public LiveData<String> getText() {
