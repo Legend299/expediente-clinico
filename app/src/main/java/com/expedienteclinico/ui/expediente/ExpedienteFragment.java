@@ -31,6 +31,7 @@ import com.expedienteclinico.databinding.FragmentExpedienteBinding;
 import com.expedienteclinico.dto.ExpedienteDTO;
 import com.expedienteclinico.dto.UsuarioDTO;
 import com.expedienteclinico.utilidades.ConvertirFecha;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +59,7 @@ public class ExpedienteFragment extends Fragment {
 
         binding = FragmentExpedienteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         _conConvertirFecha = new ConvertirFecha();
         carga = root.findViewById(R.id.idLoadingPB);
         btnEditar = root.findViewById(R.id.btnEditar);

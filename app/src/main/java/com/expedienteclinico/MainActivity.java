@@ -1,10 +1,15 @@
 package com.expedienteclinico;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -14,10 +19,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.expedienteclinico.Controlador.SessionUsuario;
 import com.expedienteclinico.databinding.ActivityMainBinding;
+import com.expedienteclinico.ui.consulta.ConsultaFragment;
+import com.expedienteclinico.ui.expediente.ExpedienteFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -34,18 +41,23 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "ALGUNA FUNCION EN UN FUTURO", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_inicio, R.id.nav_perfil, R.id.nav_expediente, R.id.nav_consultas, R.id.nav_expediente_editar)
+                R.id.nav_inicio, R.id.nav_perfil, R.id.nav_expediente, R.id.nav_consultas, R.id.nav_expediente_editar, R.id.nav_cerrarSesion)
                 .setOpenableLayout(drawer)
                 .build();
+
+
 
         //ESto
         //LinearLayout linearLayout = (LinearLayout) findViewById(R.id.nav_header_main);
@@ -71,7 +83,30 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
 
-
+        //navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.nav_cerrarSesion:
+                        Log.e("DATA: ","CERRAR SESION?");
+                        Toast.makeText(MainActivity.this,"CERRAR SESION", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                        break;
+                    case R.id.nav_expediente:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new ExpedienteFragment()).addToBackStack(null).commit();
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_consultas:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new ConsultaFragment()).addToBackStack(null).commit();
+                        drawer.closeDrawers();
+                        break;
+                }
+                return true;
+            }
+        });
 
     }
 
