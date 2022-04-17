@@ -54,8 +54,6 @@ namespace webservice1.Models
 
                 entity.HasIndex(e => e.IdExpediente, "FK_expedientes_consultas");
 
-                //entity.HasIndex(e => e.IdUsuario, "FK_usuarios_consultas");
-
                 entity.Property(e => e.IdConsulta).HasColumnType("int(11)");
 
                 entity.Property(e => e.Diagnostico).HasMaxLength(255);
@@ -78,11 +76,6 @@ namespace webservice1.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_consultaTipos_consultas");
 
-                /*entity.HasOne(d => d.IdUsuarioNavigation)
-                    .WithMany(p => p.Consulta)
-                    .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_usuarios_consultas");*/
             });
 
             modelBuilder.Entity<ConsultaTipo>(entity =>

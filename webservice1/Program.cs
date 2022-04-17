@@ -24,6 +24,7 @@ builder.Services
 //
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
+builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
 
 builder.Services.AddControllers();
 
