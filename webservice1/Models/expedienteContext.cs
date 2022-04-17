@@ -108,15 +108,13 @@ namespace webservice1.Models
 
                 entity.HasIndex(e => e.IdExpediente, "FK_expedientes_documentos");
 
-                entity.HasIndex(e => e.IdUsuario, "FK_usuarios_documentos");
-
                 entity.Property(e => e.IdDocumento).HasColumnType("int(11)");
 
                 entity.Property(e => e.Extension).HasMaxLength(50);
 
                 entity.Property(e => e.IdExpediente).HasColumnType("int(11)");
 
-                entity.Property(e => e.IdUsuario).HasColumnType("int(11)");
+                entity.Property(e => e.Medico).HasMaxLength(50);
 
                 entity.Property(e => e.Nombre).HasMaxLength(200);
 
@@ -129,12 +127,6 @@ namespace webservice1.Models
                     .HasForeignKey(d => d.IdExpediente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_expedientes_documentos");
-
-                entity.HasOne(d => d.IdUsuarioNavigation)
-                    .WithMany(p => p.Documentos)
-                    .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_usuarios_documentos");
             });
 
             modelBuilder.Entity<Especialidade>(entity =>

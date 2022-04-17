@@ -53,7 +53,7 @@ namespace webservice1.Repository
                         Nombre = d.Nombre,
                         Extension = d.Extension,
                         Ruta = d.Ruta,
-                        IdUsuario = d.IdUsuario,
+                        Medico = d.Medico,
                         Peso = d.Peso,
                         IdExpediente = d.IdExpediente
                     }).ToList()

@@ -6,7 +6,7 @@
         public string? Nombre { get; set; }
         public string? Extension { get; set; }
         public string? Ruta { get; set; }
-        public int IdUsuario { get; set; }
+        public string Medico { get; set; }
         public int Peso { get; set; }
         public int IdExpediente { get; set; }
     }
