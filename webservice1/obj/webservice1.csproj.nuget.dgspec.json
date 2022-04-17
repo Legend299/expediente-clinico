@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\webservice1\\webservice1.csproj": {}
+    "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\webservice1\\webservice1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\webservice1\\webservice1.csproj": {
+    "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\webservice1\\webservice1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\webservice1\\webservice1.csproj",
+        "projectUniqueName": "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\webservice1\\webservice1.csproj",
         "projectName": "webservice1",
-        "projectPath": "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\webservice1\\webservice1.csproj",
+        "projectPath": "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\webservice1\\webservice1.csproj",
         "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\webservice1\\obj\\",
+        "outputPath": "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\webservice1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

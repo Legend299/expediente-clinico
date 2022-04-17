@@ -80,11 +80,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\ClienteWeb\\ClienteWeb.csproj",
+      "projectUniqueName": "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\ClienteWeb\\ClienteWeb.csproj",
       "projectName": "ClienteWeb",
-      "projectPath": "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\ClienteWeb\\ClienteWeb.csproj",
+      "projectPath": "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\ClienteWeb\\ClienteWeb.csproj",
       "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\acer\\Documents\\GitHub\\ExpedienteClinicoElectronico\\ClienteWeb\\obj\\",
+      "outputPath": "C:\\Users\\acer\\Source\\Repos\\Legend299\\expediente-clinico\\ClienteWeb\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -42,7 +42,7 @@ namespace webservice1.Repository
                     {
                         IdConsulta = c.IdConsulta,
                         Fecha = c.Fecha,
-                        IdUsuario = c.IdUsuario,
+                        Medico = c.Medico,
                         IdTipoConsulta = c.IdTipoConsulta,
                         Diagnostico = c.Diagnostico,
                         IdExpediente = c.IdExpediente

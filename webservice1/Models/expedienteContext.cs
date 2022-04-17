@@ -54,7 +54,7 @@ namespace webservice1.Models
 
                 entity.HasIndex(e => e.IdExpediente, "FK_expedientes_consultas");
 
-                entity.HasIndex(e => e.IdUsuario, "FK_usuarios_consultas");
+                //entity.HasIndex(e => e.IdUsuario, "FK_usuarios_consultas");
 
                 entity.Property(e => e.IdConsulta).HasColumnType("int(11)");
 
@@ -64,7 +64,7 @@ namespace webservice1.Models
 
                 entity.Property(e => e.IdTipoConsulta).HasColumnType("int(11)");
 
-                entity.Property(e => e.IdUsuario).HasColumnType("int(11)");
+                entity.Property(e => e.Medico).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdExpedienteNavigation)
                     .WithMany(p => p.Consulta)
@@ -78,11 +78,11 @@ namespace webservice1.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_consultaTipos_consultas");
 
-                entity.HasOne(d => d.IdUsuarioNavigation)
+                /*entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.Consulta)
                     .HasForeignKey(d => d.IdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_usuarios_consultas");
+                    .HasConstraintName("FK_usuarios_consultas");*/
             });
 
             modelBuilder.Entity<ConsultaTipo>(entity =>
