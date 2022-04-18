@@ -99,6 +99,8 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         spEstado = (Spinner) root.findViewById(R.id.spShowEstado);
         spEstado.setAdapter(estadoAdapter);
 
+        spEstado.setSelection(data.getEstado().getIdEstado()-1);
+
         spEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
