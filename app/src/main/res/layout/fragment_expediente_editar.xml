@@ -151,7 +151,6 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/spShowEstado"
         android:background="#2DB64568" />
@@ -181,7 +180,6 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/spShowMunicipio"
         android:background="#2DB64568" />
@@ -212,7 +210,6 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/spShowSexo"
         android:background="#2DB64568" />

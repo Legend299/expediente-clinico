@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private int contarVeces = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
                         getSupportActionBar().setTitle("Perfil");
                         break;
                     case R.id.nav_documentos:
+                        getSupportActionBar().setTitle("Documentos");
                         break;
                 }
                 return true;
@@ -128,5 +130,14 @@ public class MainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed(){
+        contarVeces++;
+        if(contarVeces >= 10) {
+            Toast.makeText(MainActivity.this, "Algo", Toast.LENGTH_LONG).show();
+            contarVeces = 0;
+        }
     }
 }
