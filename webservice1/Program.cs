@@ -10,7 +10,16 @@ builder.WebHost.UseKestrel(options =>
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+//Db connection / Split Query
 builder.Services.AddDbContext<expedienteContext>(options => 
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+});
+
+//Db2
+builder.Services.AddDbContext<webservice1.Data.expedienteContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
         o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using webservice1.Models.DTO;
 
-namespace webservice1.Models
+namespace webservice1.Data
 {
     public partial class expedienteContext : DbContext
     {
@@ -23,6 +22,7 @@ namespace webservice1.Models
         public virtual DbSet<Especialidade> Especialidades { get; set; } = null!;
         public virtual DbSet<Estado> Estados { get; set; } = null!;
         public virtual DbSet<Expediente> Expedientes { get; set; } = null!;
+        public virtual DbSet<ExpedientesPermiso> ExpedientesPermisos { get; set; } = null!;
         public virtual DbSet<Hospitale> Hospitales { get; set; } = null!;
         public virtual DbSet<Medico> Medicos { get; set; } = null!;
         public virtual DbSet<Municipio> Municipios { get; set; } = null!;
@@ -30,14 +30,14 @@ namespace webservice1.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseMySql("server=localhost;database=expediente;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySql("server=localhost;database=expediente;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,7 +76,6 @@ namespace webservice1.Models
                     .HasForeignKey(d => d.IdTipoConsulta)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_consultaTipos_consultas");
-
             });
 
             modelBuilder.Entity<ConsultaTipo>(entity =>
@@ -187,6 +186,36 @@ namespace webservice1.Models
                     .HasForeignKey(d => d.IdMunicipio)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_municipios_expediente");
+            });
+
+            modelBuilder.Entity<ExpedientesPermiso>(entity =>
+            {
+                entity.HasKey(e => e.IdPermiso)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("expedientes_permisos");
+
+                entity.HasIndex(e => e.IdExpediente, "FK_expedientes_permisos");
+
+                entity.HasIndex(e => e.IdUsuario, "FK_usuarios_permisos");
+
+                entity.Property(e => e.IdPermiso).HasColumnType("int(11)");
+
+                entity.Property(e => e.IdExpediente).HasColumnType("int(11)");
+
+                entity.Property(e => e.IdUsuario).HasColumnType("int(11)");
+
+                entity.HasOne(d => d.IdExpedienteNavigation)
+                    .WithMany(p => p.ExpedientesPermisos)
+                    .HasForeignKey(d => d.IdExpediente)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_expedientes_permisos");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.ExpedientesPermisos)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_usuarios_permisos");
             });
 
             modelBuilder.Entity<Hospitale>(entity =>

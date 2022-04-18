@@ -6,7 +6,10 @@ namespace webservice1.Repository.RepositoryInterface
     {
         public Task<ConsultaDTO?> ListarConsultaUsuario(int idConsulta);
         public Task<List<ConsultaDTO>?> ListarConsultasUsuario(int idExpediente);
-        public Task<ConsultaDTO> AgregarExpediente(ConsultaDTO consulta);
-        public Task<ConsultaDTO> ModificarExpediente(ConsultaDTO consulta);
+        public webservice1.Data.Consulta AgregarConsulta(webservice1.Data.Consulta consulta);
+        //public Consulta AgregarConsulta(Consulta consulta);
+        public Task<ConsultaDTO> ModificarConsulta(ConsultaDTO consulta);
+
+        public Task<List<Consulta>?> ListarConsultas();
     }
 }

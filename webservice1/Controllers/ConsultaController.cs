@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using webservice1.Models.DTO;
 
 namespace webservice1.Controllers
 {
@@ -14,12 +15,22 @@ namespace webservice1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Consulta>>> GetConsultaUsuario(int id)
+        public async Task<ActionResult<List<webservice1.Data.Consulta>>> GetConsultaUsuario(int id)
         {
             var listaConsulta = await _repository.ListarConsultasUsuario(id);
             if (listaConsulta == null)
                 return BadRequest("Usuario sin consultas");
             return Ok(listaConsulta);
+        }
+
+        [HttpGet("prueba")]
+        public async Task<ActionResult<List<Consulta>>> GetConsulta() {
+            return Ok(_repository.ListarConsultas());
+        }
+
+        [HttpPost]
+        public ActionResult<webservice1.Data.Consulta> PostConsulta(webservice1.Data.Consulta consulta) {
+            return Ok(_repository.AgregarConsulta(consulta));
         }
 
     }

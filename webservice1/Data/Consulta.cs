@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace webservice1.Models
+namespace webservice1.Data
 {
     public partial class Consulta
     {

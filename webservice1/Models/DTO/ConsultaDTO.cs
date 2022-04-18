@@ -8,6 +8,5 @@
         public int IdTipoConsulta { get; set; }
         public int IdExpediente { get; set; }
         public string? Diagnostico{ get; set; }
-        
     }
 }
