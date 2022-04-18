@@ -87,5 +87,16 @@ namespace webservice1.Repository
             var listaEstados = await _context.Estados.ToListAsync();
             return listaEstados;
         }
+
+        public async Task<List<MunicipioDTO>> ListarMunicipios(int idEstado) {
+            var listaMunicipios = await _context.MunicipiosEstados.Where(ide =>
+            ide.IdEstado == idEstado).Select(m => new MunicipioDTO
+            {
+                IdMunicipio = m.IdMunicipio,
+                Nombre = _context.Municipios.Where(idm => idm.IdMunicipio == m.IdMunicipio).Select(nombre => nombre.Nombre).FirstOrDefault()
+            }).ToListAsync();
+           
+            return listaMunicipios;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using webservice1.Models.DTO;
 
 namespace webservice1.Controllers
 {
@@ -31,6 +32,11 @@ namespace webservice1.Controllers
         [HttpGet("estados")]
         public async Task<ActionResult<List<Estado>>> GetListaEstados() {
             return Ok(await _repository.ListarEstados());
+        }
+
+        [HttpGet("municipios/{idEstado}")]
+        public async Task<ActionResult<List<MunicipioDTO>>> GetListaMunicipios(int idEstado) {
+            return Ok(await _repository.ListarMunicipios(idEstado));
         }
 
         [HttpPost]
