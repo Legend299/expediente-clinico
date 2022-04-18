@@ -28,6 +28,11 @@ namespace webservice1.Controllers
             return Ok(usuario);
         }
 
+        [HttpGet("estados")]
+        public async Task<ActionResult<List<Estado>>> GetListaEstados() {
+            return Ok(await _repository.ListarEstados());
+        }
+
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {

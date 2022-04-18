@@ -8,5 +8,6 @@ namespace webservice1.Repository.RepositoryInterface
         public Task<Usuario?> ListarUsuario(int id);
         public Task<UsuarioDTO?> AgregarUsuario(Usuario usuario);
         public bool ModificarUsuario(Usuario usuario);
+        public Task<List<Estado>> ListarEstados();
     }
 }

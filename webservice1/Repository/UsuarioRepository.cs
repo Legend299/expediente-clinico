@@ -82,5 +82,10 @@ namespace webservice1.Repository
             }
             
         }
+
+        public async Task<List<Estado>> ListarEstados() {
+            var listaEstados = await _context.Estados.ToListAsync();
+            return listaEstados;
+        }
     }
 }
