@@ -25,9 +25,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.expedienteclinico.Controlador.Expediente.ServicioExpediente;
 import com.expedienteclinico.Controlador.SessionUsuario;
+import com.expedienteclinico.Controlador.Usuario.ServicioEstado;
 import com.expedienteclinico.LoginActivity;
 import com.expedienteclinico.R;
 import com.expedienteclinico.databinding.FragmentExpedienteBinding;
+import com.expedienteclinico.dto.EstadoDTO;
 import com.expedienteclinico.dto.ExpedienteDTO;
 import com.expedienteclinico.dto.UsuarioDTO;
 import com.expedienteclinico.utilidades.ConvertirFecha;
@@ -38,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,8 @@ public class ExpedienteFragment extends Fragment {
     private ProgressBar carga;
     private Button btnEditar;
     private ConvertirFecha _conConvertirFecha;
+
+    private List<EstadoDTO> listaEstados;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +73,7 @@ public class ExpedienteFragment extends Fragment {
         //getExpediente();
 
         carga.setVisibility(View.VISIBLE);
+
         ServicioExpediente servicioExpediente = new ServicioExpediente(getContext());
         servicioExpediente.solicitarExpedientePorId(String.valueOf(SessionUsuario.getInstance().getIdExpediente()), new ServicioExpediente.VolleyResponseListener() {
             @Override
@@ -121,6 +127,19 @@ public class ExpedienteFragment extends Fragment {
             }
         });
 
+        ServicioEstado servicioEstado = new ServicioEstado(getContext());
+        servicioEstado.solicitarListaEstados(new ServicioEstado.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+
+            }
+
+            @Override
+            public void onResponse(List<EstadoDTO> estado) {
+                listaEstados = new ArrayList<>();
+                listaEstados = estado;
+            }
+        });
 
         btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +147,7 @@ public class ExpedienteFragment extends Fragment {
 
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("expedienteUsuarioObj",expedienteUsuario);
+                bundle.putSerializable("listaEstadosObj", (Serializable) listaEstados);
 
                 Fragment fragment = new ExpedienteEditarFragment();
                 fragment.setArguments(bundle);

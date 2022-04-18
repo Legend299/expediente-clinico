@@ -138,8 +138,8 @@
         android:text="ESTADO "
         android:textColor="@color/Azul" />
 
-    <TextView
-        android:id="@+id/lblShowEstado"
+    <Spinner
+        android:id="@+id/spShowEstado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/lblEstado"
@@ -151,8 +151,9 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/lblShowEstado"
+        android:layout_below="@id/spShowEstado"
         android:background="#2DB64568" />
 
     <!--MUNICIPIO-->
@@ -161,7 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/lblShowEstado"
+        android:layout_below="@id/spShowEstado"
         android:layout_marginTop="15dp"
         android:padding="15dp"
         android:text="MUNICIPIO "

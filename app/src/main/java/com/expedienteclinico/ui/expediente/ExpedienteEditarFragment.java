@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.expedienteclinico.Controlador.Expediente.ServicioExpediente;
+import com.expedienteclinico.Controlador.Usuario.ServicioEstado;
 import com.expedienteclinico.R;
 import com.expedienteclinico.adapter.EstadoAdapter;
 import com.expedienteclinico.databinding.FragmentExpedienteEditarBinding;
@@ -52,7 +53,10 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
     private ConvertirFecha _convertirFecha;
 
     //SPINNER
-    private Spinner spGenero;
+    private Spinner spGenero,spEstado;
+
+    //Lista
+    private List<EstadoDTO> listaEstados;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -68,26 +72,6 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         btnCancelar = root.findViewById(R.id.btnCancelar);
         btnEditar = root.findViewById(R.id.btnEditar);
 
-        //SPINNER
-
-        /*EstadoDTO estado = new EstadoDTO();
-
-        estado = new EstadoDTO();
-        estado.setIdEstado(1);
-        estado.setNombre("ESTADO 1");
-
-        EstadoDTO estado1 = new EstadoDTO();
-        estado1 = new EstadoDTO();
-        estado1.setIdEstado(2);
-        estado1.setNombre("ESTADO 2");
-
-        List<EstadoDTO> listaEstado = new ArrayList<>();
-        listaEstado.add(estado);
-        listaEstado.add(estado1);*/
-
-
-
-
         //editText
         txtIdExpediente = root.findViewById(R.id.txtShowIdExpediente);
         txtNombre = root.findViewById(R.id.txtShowNombre);
@@ -99,14 +83,8 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         //
 
         ExpedienteDTO data = (ExpedienteDTO)getArguments().getSerializable("expedienteUsuarioObj");
+        listaEstados = (List<EstadoDTO>)getArguments().getSerializable("listaEstadosObj");
         //Toast.makeText(getContext(),"DATA: "+data.getNombre(), Toast.LENGTH_LONG).show();
-
-        //SPINNER * * * * * ** * ** * ** * ** **
-
-
-
-        //Spinner spEstado = root.findViewById(R.id.spShowSexo);
-        //spEstado.setOnItemSelectedListener(this);
 
 
         //Asignar GET
@@ -115,20 +93,37 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         txtApellido.setText(data.getApellido());
         txtCurp.setText(data.getCurp());
 
+
+        //ESTADO INICIO
+        ArrayAdapter estadoAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listaEstados);
+        spEstado = (Spinner) root.findViewById(R.id.spShowEstado);
+        spEstado.setAdapter(estadoAdapter);
+
+        spEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                EstadoDTO estado = (EstadoDTO) adapterView.getSelectedItem();
+                Toast.makeText(getContext(),"NOMBRE: "+estado.getNombre()+"\n"+"ID: "+estado.getIdEstado(), Toast.LENGTH_LONG).show();
+                data.setEstado(estado);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //ESTADO FIN
+
         //GENERO INICIO
         ArrayAdapter generoAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listarGeneros());
-
         spGenero = (Spinner) root.findViewById(R.id.spShowSexo);
-
-
         spGenero.setAdapter(generoAdapter);
-
         if(data.isSexo()){
             spGenero.setSelection(0);
         } else {
             spGenero.setSelection(1);
         }
-
         spGenero.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -266,7 +261,6 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         binding = null;
     }
 
-
     private String makeDateString(int day, int month, int year){
         return day + "/" + getMonthFormat(month) + "/" + year;
     }
@@ -320,18 +314,4 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         return listaGeneros;
     }
 
-    /*@Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //Spinner spinner = (Spinner) adapterView;
-
-        if(adapterView.getId() == R.id.spShowSexo){
-            Toast.makeText(getContext(),"SPINNER SP1: ", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }*/
 }
