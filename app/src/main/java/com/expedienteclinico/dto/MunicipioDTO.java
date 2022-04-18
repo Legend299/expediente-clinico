@@ -30,4 +30,9 @@ public class MunicipioDTO implements Serializable {
     public void setNombre(String nombre) {
         Nombre = nombre;
     }
+
+    @Override
+    public String toString(){
+        return getNombre();
+    }
 }

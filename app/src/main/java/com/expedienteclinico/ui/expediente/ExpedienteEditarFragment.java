@@ -26,21 +26,24 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.expedienteclinico.Controlador.Expediente.ServicioExpediente;
 import com.expedienteclinico.Controlador.Usuario.ServicioEstado;
+import com.expedienteclinico.Controlador.Usuario.ServicioMunicipio;
 import com.expedienteclinico.R;
 import com.expedienteclinico.adapter.EstadoAdapter;
 import com.expedienteclinico.databinding.FragmentExpedienteEditarBinding;
 import com.expedienteclinico.dto.EstadoDTO;
 import com.expedienteclinico.dto.ExpedienteDTO;
 import com.expedienteclinico.dto.GeneroDTO;
+import com.expedienteclinico.dto.MunicipioDTO;
 import com.expedienteclinico.utilidades.ConvertirFecha;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.OnItemSelectedListener*/{
+public class ExpedienteEditarFragment extends Fragment {
 
     private FragmentExpedienteEditarBinding binding;
     private Button btnCancelar,btnEditar,dateButton;
@@ -53,10 +56,14 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
     private ConvertirFecha _convertirFecha;
 
     //SPINNER
-    private Spinner spGenero,spEstado;
+    private Spinner spGenero,spEstado,spMunicipio;
 
     //Lista
     private List<EstadoDTO> listaEstados;
+    private List<MunicipioDTO> listaMunicipios;
+
+    private int posicionMunicipio = 0;
+    private boolean primerChequeoMunicipio = true;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -84,7 +91,7 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
 
         ExpedienteDTO data = (ExpedienteDTO)getArguments().getSerializable("expedienteUsuarioObj");
         listaEstados = (List<EstadoDTO>)getArguments().getSerializable("listaEstadosObj");
-        //Toast.makeText(getContext(),"DATA: "+data.getNombre(), Toast.LENGTH_LONG).show();
+        listaMunicipios = (List<MunicipioDTO>)getArguments().getSerializable("listaMunicipiosObj");
 
 
         //Asignar GET
@@ -92,7 +99,6 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         txtNombre.setText(data.getNombre());
         txtApellido.setText(data.getApellido());
         txtCurp.setText(data.getCurp());
-
 
         //ESTADO INICIO
         ArrayAdapter estadoAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listaEstados);
@@ -105,8 +111,32 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 EstadoDTO estado = (EstadoDTO) adapterView.getSelectedItem();
-                Toast.makeText(getContext(),"NOMBRE: "+estado.getNombre()+"\n"+"ID: "+estado.getIdEstado(), Toast.LENGTH_LONG).show();
                 data.setEstado(estado);
+
+                //SOLICITAR MUNICIPIOS
+                ServicioMunicipio servicioMunicipio = new ServicioMunicipio(getContext());
+                servicioMunicipio.solicitarListaMunicipios(data.getEstado().getIdEstado(), new ServicioMunicipio.VolleyResponseListener() {
+                    @Override
+                    public void onError(String message) {
+                        carga.setVisibility(View.GONE);
+                        Toast.makeText(getContext(),"NO SE HA PODIDO CARGAR LOS MUNICIPIOS", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onResponse(List<MunicipioDTO> municipio) {
+                        //Toast.makeText(getContext(),"NUEVO MUNICIPIO", Toast.LENGTH_LONG).show();
+                        carga.setVisibility(View.GONE);
+                        listaMunicipios = new ArrayList<>();
+                        listaMunicipios = municipio;
+
+                            ArrayAdapter municipioAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listaMunicipios);
+                            spMunicipio = (Spinner) root.findViewById(R.id.spShowMunicipio);
+                            spMunicipio.setAdapter(municipioAdapter);
+
+                        VerificarPosicionEstado(data);
+                    }
+                });
+
             }
 
             @Override
@@ -116,6 +146,31 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         });
 
         //ESTADO FIN
+
+
+        //MUNICIPIO INICIO
+
+        ArrayAdapter municipioAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listaMunicipios);
+        spMunicipio = (Spinner) root.findViewById(R.id.spShowMunicipio);
+        spMunicipio.setAdapter(municipioAdapter);
+
+        VerificarPosicionEstado(data);
+
+        spMunicipio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                MunicipioDTO municipio = (MunicipioDTO) adapterView.getSelectedItem();
+                data.setMunicipio(municipio); //Agregar municipio para editar
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //MUNICIPIO FIN
+
 
         //GENERO INICIO
         ArrayAdapter generoAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listarGeneros());
@@ -314,6 +369,21 @@ public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.
         listaGeneros.add(genero2);
 
         return listaGeneros;
+    }
+
+    private void VerificarPosicionEstado(ExpedienteDTO data){
+        if(primerChequeoMunicipio) {
+            for (MunicipioDTO mu : listaMunicipios) {
+                if (mu.getIdMunicipio() == data.getMunicipio().getIdMunicipio()) {
+                    spMunicipio.setSelection(posicionMunicipio);
+                    posicionMunicipio = 0;
+                    break;
+                }
+                posicionMunicipio++;
+            }
+        } else {
+            spMunicipio.setSelection(0);
+        }
     }
 
 }

@@ -168,12 +168,12 @@
         android:text="MUNICIPIO "
         android:textColor="@color/Azul" />
 
-    <TextView
-        android:id="@+id/lblShowMunicipio"
+    <Spinner
+        android:id="@+id/spShowMunicipio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/lblMunicipio"
+        android:layout_alignParentRight="true"
         android:padding="15dp"
         android:text="Municipio Expediente"
         android:textColor="@color/black" />
@@ -181,8 +181,9 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/lblShowMunicipio"
+        android:layout_below="@id/spShowMunicipio"
         android:background="#2DB64568" />
 
     <!--SEXO-->
@@ -191,7 +192,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/lblShowMunicipio"
+        android:layout_below="@id/spShowMunicipio"
         android:layout_marginTop="15dp"
         android:padding="15dp"
         android:text="SEXO "
@@ -211,6 +212,7 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/spShowSexo"
         android:background="#2DB64568" />

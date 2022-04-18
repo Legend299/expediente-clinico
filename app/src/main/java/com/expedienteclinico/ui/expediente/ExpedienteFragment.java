@@ -26,11 +26,13 @@ import com.android.volley.toolbox.Volley;
 import com.expedienteclinico.Controlador.Expediente.ServicioExpediente;
 import com.expedienteclinico.Controlador.SessionUsuario;
 import com.expedienteclinico.Controlador.Usuario.ServicioEstado;
+import com.expedienteclinico.Controlador.Usuario.ServicioMunicipio;
 import com.expedienteclinico.LoginActivity;
 import com.expedienteclinico.R;
 import com.expedienteclinico.databinding.FragmentExpedienteBinding;
 import com.expedienteclinico.dto.EstadoDTO;
 import com.expedienteclinico.dto.ExpedienteDTO;
+import com.expedienteclinico.dto.MunicipioDTO;
 import com.expedienteclinico.dto.UsuarioDTO;
 import com.expedienteclinico.utilidades.ConvertirFecha;
 import com.google.android.material.navigation.NavigationView;
@@ -56,6 +58,7 @@ public class ExpedienteFragment extends Fragment {
     private ConvertirFecha _conConvertirFecha;
 
     private List<EstadoDTO> listaEstados;
+    private List<MunicipioDTO> listaMunicipios;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -124,6 +127,23 @@ public class ExpedienteFragment extends Fragment {
 
                 expedienteUsuario = expediente;
 
+                //SOLICITAR MUNICIPIOS
+                ServicioMunicipio servicioMunicipio = new ServicioMunicipio(getContext());
+                servicioMunicipio.solicitarListaMunicipios(expedienteUsuario.getEstado().getIdEstado(), new ServicioMunicipio.VolleyResponseListener() {
+                    @Override
+                    public void onError(String message) {
+                        carga.setVisibility(View.GONE);
+                        Toast.makeText(getContext(),"NO SE HA PODIDO CARGAR LOS MUNICIPIOS", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onResponse(List<MunicipioDTO> municipio) {
+                        carga.setVisibility(View.GONE);
+                        listaMunicipios = new ArrayList<>();
+                        listaMunicipios = municipio;
+                    }
+                });
+
             }
         });
 
@@ -148,6 +168,7 @@ public class ExpedienteFragment extends Fragment {
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("expedienteUsuarioObj",expedienteUsuario);
                 bundle.putSerializable("listaEstadosObj", (Serializable) listaEstados);
+                bundle.putSerializable("listaMunicipiosObj", (Serializable) listaMunicipios);
 
                 Fragment fragment = new ExpedienteEditarFragment();
                 fragment.setArguments(bundle);
