@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,29 +25,34 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.expedienteclinico.Controlador.Expediente.ServicioExpediente;
-import com.expedienteclinico.Controlador.SessionUsuario;
 import com.expedienteclinico.R;
+import com.expedienteclinico.adapter.EstadoAdapter;
 import com.expedienteclinico.databinding.FragmentExpedienteEditarBinding;
+import com.expedienteclinico.dto.EstadoDTO;
 import com.expedienteclinico.dto.ExpedienteDTO;
+import com.expedienteclinico.dto.GeneroDTO;
 import com.expedienteclinico.utilidades.ConvertirFecha;
 
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ExpedienteEditarFragment extends Fragment {
+public class ExpedienteEditarFragment extends Fragment /*implements AdapterView.OnItemSelectedListener*/{
 
     private FragmentExpedienteEditarBinding binding;
     private Button btnCancelar,btnEditar,dateButton;
     private DatePickerDialog datePickerDialog;
     private EditText txtNombre, txtApellido, txtCurp, txtTelefono;
+
+    private TextView txtIdExpediente;
+
     private ProgressBar carga;
     private ConvertirFecha _convertirFecha;
+
+    //SPINNER
+    private Spinner spGenero;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,23 +68,81 @@ public class ExpedienteEditarFragment extends Fragment {
         btnCancelar = root.findViewById(R.id.btnCancelar);
         btnEditar = root.findViewById(R.id.btnEditar);
 
+        //SPINNER
+
+        /*EstadoDTO estado = new EstadoDTO();
+
+        estado = new EstadoDTO();
+        estado.setIdEstado(1);
+        estado.setNombre("ESTADO 1");
+
+        EstadoDTO estado1 = new EstadoDTO();
+        estado1 = new EstadoDTO();
+        estado1.setIdEstado(2);
+        estado1.setNombre("ESTADO 2");
+
+        List<EstadoDTO> listaEstado = new ArrayList<>();
+        listaEstado.add(estado);
+        listaEstado.add(estado1);*/
+
+
+
+
         //editText
+        txtIdExpediente = root.findViewById(R.id.txtShowIdExpediente);
         txtNombre = root.findViewById(R.id.txtShowNombre);
         txtApellido = root.findViewById(R.id.txtShowApellido);
         txtCurp = root.findViewById(R.id.txtShowCurp);
 
         txtTelefono = root.findViewById(R.id.txtShowTelefono);
 
-
         //
 
         ExpedienteDTO data = (ExpedienteDTO)getArguments().getSerializable("expedienteUsuarioObj");
         //Toast.makeText(getContext(),"DATA: "+data.getNombre(), Toast.LENGTH_LONG).show();
 
+        //SPINNER * * * * * ** * ** * ** * ** **
+
+
+
+        //Spinner spEstado = root.findViewById(R.id.spShowSexo);
+        //spEstado.setOnItemSelectedListener(this);
+
+
         //Asignar GET
+        txtIdExpediente.setText(String.valueOf(data.getIdExpediente()));
         txtNombre.setText(data.getNombre());
         txtApellido.setText(data.getApellido());
         txtCurp.setText(data.getCurp());
+
+        //GENERO INICIO
+        ArrayAdapter generoAdapter = new ArrayAdapter(getContext(), R.layout.spinner_layout, listarGeneros());
+
+        spGenero = (Spinner) root.findViewById(R.id.spShowSexo);
+
+
+        spGenero.setAdapter(generoAdapter);
+
+        if(data.isSexo()){
+            spGenero.setSelection(0);
+        } else {
+            spGenero.setSelection(1);
+        }
+
+        spGenero.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                GeneroDTO genero = (GeneroDTO) adapterView.getSelectedItem();
+                //Toast.makeText(getContext(),"NOMBRE: "+genero.getNombre()+"\n"+"BOOLEAN: "+genero.getGenero(), Toast.LENGTH_LONG).show();
+                data.setSexo(genero.getGenero());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        //GENERO FIN
 
         txtTelefono.setText(data.getTelefono());
         //
@@ -238,4 +304,34 @@ public class ExpedienteEditarFragment extends Fragment {
 
     }
 
+    private List<GeneroDTO> listarGeneros(){
+        GeneroDTO genero1 = new GeneroDTO();
+        genero1.setGenero(true);
+        genero1.setNombre("Hombre");
+
+        GeneroDTO genero2 = new GeneroDTO();
+        genero2.setGenero(false);
+        genero2.setNombre("Mujer");
+
+        List<GeneroDTO> listaGeneros = new ArrayList<>();
+        listaGeneros.add(genero1);
+        listaGeneros.add(genero2);
+
+        return listaGeneros;
+    }
+
+    /*@Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //Spinner spinner = (Spinner) adapterView;
+
+        if(adapterView.getId() == R.id.spShowSexo){
+            Toast.makeText(getContext(),"SPINNER SP1: ", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }*/
 }

@@ -37,9 +37,6 @@ public class ConsultaAgregarFragment extends Fragment {
         View root = binding.getRoot();
 
         carga = root.findViewById(R.id.idLoadingPB);
-        web = root.findViewById(R.id.webV);
-
-        web.loadUrl("https://www.google.com/");
 
         //carga.setVisibility(View.VISIBLE);
 

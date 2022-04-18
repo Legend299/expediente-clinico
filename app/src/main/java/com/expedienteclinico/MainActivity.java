@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity{
                         break;
                     case R.id.nav_perfil:
                         getSupportActionBar().setTitle("Perfil");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new ConsultaAgregarFragment()).addToBackStack(null).commit();
-                        drawer.closeDrawers();
+                        break;
+                    case R.id.nav_documentos:
                         break;
                 }
                 return true;

@@ -23,7 +23,7 @@
         android:textColor="@color/Azul" />
 
     <TextView
-        android:id="@+id/lblShowIdExpediente"
+        android:id="@+id/txtShowIdExpediente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/lblIdExpediente"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/lblShowIdExpediente"
+        android:layout_below="@id/txtShowIdExpediente"
         android:background="#2DB64568" />
 
     <!--NOMBRE-->
@@ -44,7 +44,7 @@
         android:id="@+id/lblNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lblShowIdExpediente"
+        android:layout_below="@id/txtShowIdExpediente"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="15dp"
         android:padding="15dp"
@@ -142,8 +142,8 @@
         android:id="@+id/lblShowEstado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/lblEstado"
+        android:layout_alignParentRight="true"
         android:padding="15dp"
         android:text="Estado Expediente"
         android:textColor="@color/black" />
@@ -196,12 +196,13 @@
         android:text="SEXO "
         android:textColor="@color/Azul" />
 
-    <TextView
-        android:id="@+id/lblShowSexo"
+    <Spinner
+        android:id="@+id/spShowSexo"
+        style="?android:spinnerStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/lblSexo"
+        android:layout_alignParentRight="true"
         android:padding="15dp"
         android:text="Sexo Expediente"
         android:textColor="@color/black" />
@@ -210,7 +211,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/lblShowSexo"
+        android:layout_below="@id/spShowSexo"
         android:background="#2DB64568" />
 
     <!--TELEFONO-->
@@ -219,7 +220,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/lblShowSexo"
+        android:layout_below="@id/spShowSexo"
         android:layout_marginTop="15dp"
         android:padding="15dp"
         android:text="TELEFONO "
@@ -257,16 +258,15 @@
 
     <Button
         android:id="@+id/lblShowFechaDeNacimiento"
+        style="?android:spinnerStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/lblFechaDeNacimiento"
         android:layout_alignParentRight="true"
-        style="?android:spinnerStyle"
+        android:onClick="openDatePicker"
         android:padding="15dp"
         android:text="01 ABRIL 2020"
-        android:textColor="@color/black"
-        android:onClick="openDatePicker"
-        />
+        android:textColor="@color/black" />
 
 
 
