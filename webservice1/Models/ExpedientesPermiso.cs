@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace webservice1.Data
+namespace webservice1.Models
 {
     public partial class ExpedientesPermiso
     {

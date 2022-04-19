@@ -7,8 +7,7 @@ namespace webservice1.Models
     {
         public Usuario()
         {
-            Consulta = new HashSet<Consulta>();
-            Documentos = new HashSet<Documento>();
+            ExpedientesPermisos = new HashSet<ExpedientesPermiso>();
             Medicos = new HashSet<Medico>();
         }
 
@@ -21,8 +20,7 @@ namespace webservice1.Models
 
         public virtual Expediente? IdExpedienteNavigation { get; set; }
         public virtual Role? IdRolNavigation { get; set; } = null!;
-        public virtual ICollection<Consulta> Consulta { get; set; }
-        public virtual ICollection<Documento> Documentos { get; set; }
-        public virtual ICollection<Medico> Medicos { get; set; }
+        public virtual ICollection<ExpedientesPermiso>? ExpedientesPermisos { get; set; }
+        public virtual ICollection<Medico>? Medicos { get; set; }
     }
 }

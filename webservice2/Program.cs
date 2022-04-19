@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http.Json;
-
 var builder = WebApplication.CreateBuilder(args);
 
 //
@@ -9,24 +7,6 @@ builder.WebHost.UseKestrel(options =>
 });
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-//Db connection / Split Query
-builder.Services.AddDbContext<expedienteContext>(options => 
-{
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
-        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
-});
-
-//DateOnly converter
-builder.Services
-    .AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
-    .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
-
-//
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
-builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
 
 builder.Services.AddControllers();
 

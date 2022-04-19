@@ -21,13 +21,13 @@ namespace ClienteWeb.Controllers
             var json = "";
             using (var httpClient = new HttpClient())
             {
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/2").IsCompleted) 
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/2");
+                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/1").IsCompleted) 
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/1");
                 else
-                json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada+"/Expediente/2");
+                json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada+"/Expediente/1");
                 
             }
-            List<ExpedienteDTO> expediente  = JsonConvert.DeserializeObject<List<ExpedienteDTO>>(json);
+            ExpedienteDTO expediente  = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
             return View(expediente);
         }
 

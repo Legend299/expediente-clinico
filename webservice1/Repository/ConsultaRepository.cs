@@ -5,19 +5,17 @@ namespace webservice1.Repository
     public class ConsultaRepository : IConsultaRepository
     {
         private readonly expedienteContext _context;
-        private readonly webservice1.Data.expedienteContext _dbcontext;
-        public ConsultaRepository(expedienteContext context, webservice1.Data.expedienteContext dbcontext)
+        public ConsultaRepository(expedienteContext context)
         {
             _context = context;
-            _dbcontext = dbcontext;
         }
 
-        public webservice1.Data.Consulta AgregarConsulta(webservice1.Data.Consulta consulta)
+        public Consulta AgregarConsulta(Consulta consulta)
         {
             try
             {
-                _dbcontext.Consultas.Add(consulta);
-                _dbcontext.SaveChanges();
+                _context.Consultas.Add(consulta);
+                _context.SaveChanges();
                 return consulta;
             }
             catch (Exception ex)
@@ -31,7 +29,7 @@ namespace webservice1.Repository
         {
             //var listaConsulta = await _context.Consultas.Where(ide => ide.IdExpediente == idExpediente).ToListAsync();
 
-            var lstConsulta = await _dbcontext.Consultas.Where(ide => ide.IdExpediente == idExpediente).Select(c => new ConsultaDTO
+            var lstConsulta = await _context.Consultas.Where(ide => ide.IdExpediente == idExpediente).Select(c => new ConsultaDTO
             {
                 IdConsulta = c.IdConsulta,
                 Fecha = c.Fecha,

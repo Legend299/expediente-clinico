@@ -15,7 +15,7 @@ namespace webservice1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<webservice1.Data.Consulta>>> GetConsultaUsuario(int id)
+        public async Task<ActionResult<List<Consulta>>> GetConsultaUsuario(int id)
         {
             var listaConsulta = await _repository.ListarConsultasUsuario(id);
             if (listaConsulta == null)
@@ -29,7 +29,7 @@ namespace webservice1.Controllers
         }
 
         [HttpPost]
-        public ActionResult<webservice1.Data.Consulta> PostConsulta(webservice1.Data.Consulta consulta) {
+        public ActionResult<Consulta> PostConsulta(Consulta consulta) {
             return Ok(_repository.AgregarConsulta(consulta));
         }
 

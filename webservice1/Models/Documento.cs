@@ -9,10 +9,10 @@ namespace webservice1.Models
         public string Nombre { get; set; } = null!;
         public string Extension { get; set; } = null!;
         public string Ruta { get; set; } = null!;
-        public string Medico { get; set; }
+        public string Medico { get; set; } = null!;
         public int Peso { get; set; }
         public int IdExpediente { get; set; }
 
-        public virtual Expediente IdExpedienteNavigation { get; set; } = null!;
+        public virtual Expediente? IdExpedienteNavigation { get; set; } = null!;
     }
 }

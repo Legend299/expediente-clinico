@@ -20,6 +20,7 @@
     <Compile Include="..\webservice1\Models\Especialidade.cs" Link="Models\Especialidade.cs" />
     <Compile Include="..\webservice1\Models\Estado.cs" Link="Models\Estado.cs" />
     <Compile Include="..\webservice1\Models\Expediente.cs" Link="Models\Expediente.cs" />
+    <Compile Include="..\webservice1\Models\ExpedientesPermiso.cs" Link="Models\ExpedientesPermiso.cs" />
     <Compile Include="..\webservice1\Models\Hospitale.cs" Link="Models\Hospitale.cs" />
     <Compile Include="..\webservice1\Models\Medico.cs" Link="Models\Medico.cs" />
     <Compile Include="..\webservice1\Models\Municipio.cs" Link="Models\Municipio.cs" />

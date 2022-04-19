@@ -1,4 +1,4 @@
-﻿@model List<webservice1.Models.DTO.ExpedienteDTO>
+﻿@model webservice1.Models.DTO.ExpedienteDTO
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -7,40 +7,25 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-        @foreach(var data in Model)
-        {
-            <p>DATOS: </p>
-            <p>ID EXPEDIENTE: @data.IdExpediente</p>
-            <p>NOMBRE: @data.Nombre</p>
-            <p>APELLIDO: @data.Apellido</p>
-            <p>IMAGEN: @data.Imagen</p>
-            <p>CURP: @data.Curp</p>
+         <p>DATOS: </p>
+         <p>ID EXPEDIENTE: @Model.IdExpediente</p>
+         <p>NOMBRE: @Model.Nombre</p>
+         <p>APELLIDO: @Model.Apellido</p>
+         <p>IMAGEN: @Model.Imagen</p>
+         <p>CURP: @Model.Curp</p>
         
-            var estado = "";
-            var municipio = "";
-        
-        @foreach(var c in data.Estado)
-        {
-            estado = c.Nombre;
-        }
-
-        @foreach(var m in data.Municipio)
-        {
-            municipio = m.Nombre;
-        }
-
-        <p>ESTADO: @estado</p>
-        <p>MUNICIPIO: @municipio</p>
-        <p>SEXO: @data.Sexo</p>
-        <p>TELEFONO: @data.Telefono</p>
-        <p>FECHA DE NACIMIENTO: @data.FechaDeNacimiento</p>
+        <p>ESTADO: @Model.Estado.Nombre</p>
+        <p>MUNICIPIO: @Model.Municipio.Nombre</p>
+        <p>SEXO: @Model.Sexo</p>
+        <p>TELEFONO: @Model.Telefono</p>
+        <p>FECHA DE NACIMIENTO: @Model.FechaDeNacimiento</p>
         <br />
         <p>CONSULTAS: </p>
-        @foreach(var consulta in data.Consulta)
+        @foreach(var consulta in Model.Consulta)
         {
             <p>ID CONSULTA: @consulta.IdConsulta</p>
             <p>FECHA: @consulta.Fecha</p>
-            <p>ID USUARIO: @consulta.IdUsuario</p>
+            <p>MEDICO: @consulta.Medico</p>
             <p>ID TIPO CONSULTA: @consulta.IdTipoConsulta</p>
             <p>ID EXPEDIENTE: @consulta.IdExpediente</p>
             <p>DIAGNOSTICO: @consulta.Diagnostico</p>
@@ -48,16 +33,16 @@
         }
         <br />
         <p>DOCUMENTOS: </p>
-        @foreach(var documento in data.Documento)
+        @foreach(var documento in Model.Documento)
         {
             <p>ID DOCUMENTO: @documento.IdDocumento</p>
             <p>NOMBRE: @documento.Nombre</p>
             <p>EXTENSION: @documento.Extension</p>
             <p>RUTA: @documento.Ruta</p>
-            <p>ID USUARIO: @documento.IdUsuario</p>
+            <p>MEDICO: @documento.Medico</p>
             <p>PESO: @documento.Peso</p>
             <p>ID EXPEDIENTE: @documento.IdExpediente</p>
             <br />
         }
-    }
+    
 </div>
