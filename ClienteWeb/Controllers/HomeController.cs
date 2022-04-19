@@ -18,6 +18,7 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
+            HttpContext.Session.SetString("Correo", "test@test.test");
             var json = "";
             using (var httpClient = new HttpClient())
             {

@@ -1,46 +1,95 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ClienteWeb</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!--
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ClienteWeb.styles.css" asp-append-version="true" />
+    -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
+        <!--NAV BAR-->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ClienteWeb</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="header-content">
+            <div class="imagen">
+                <h1>EXPEDIENTE</h1>
             </div>
-        </nav>
+            <div class="menu">
+                <nav class="menu-nav">
+                    <ul>
+                        <li><i class="bi bi-house-door" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Inicio" asp-action="Index">Inicio</a></li>
+
+                        @{
+                            if (Context.Session.GetString("Correo") != null)
+                            {
+                                string correo = Context.Session.GetString("Correo");
+                                if (Context.Session.GetString("Expediente") != "0")
+                                {
+                                    /* 
+                                     * Usuario logeado
+                                     * Cuenta con expediente
+                                     */
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Consultas</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Documentos</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="SolicitarExpediente">Expediente</a></li>
+                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="SolicitarExpediente">@correo</a></li>
+                                }
+                                else
+                                {
+                                    /* 
+                                     * Usuario logeado
+                                     * No cuenta con expediente
+                                     */
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Consultas</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Documentos</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="TramitarExpediente">Expediente</a></li>
+                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="TramitarExpediente">@correo</a></li>
+                                }
+                                /* 
+                                 * Usuario logeado
+                                 */
+                                <li><i class="bi bi-door-open" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="CerrarSesion">Cerrar Sesión</a></li>
+                            }
+                            else
+                            {
+                                /* 
+                                 * Requiere Login
+                                 */
+                                <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Expediente</a></li>
+                                <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Consultas</a></li>
+                                <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Documentos</a></li>
+                                <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Perfil</a></li>
+                            }
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div class="container-all">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
+    <!--
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2022 - ClienteWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
