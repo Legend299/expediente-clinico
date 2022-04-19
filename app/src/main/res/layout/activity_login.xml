@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:orientation="vertical"
+    android:backgroundTintMode="@color/white"
+    android:background="@drawable/bg_login_signup"
+    android:id="@+id/loginLayout"
+    tools:context=".LoginActivity">
+
+
+
+    <TextView
+        android:id="@+id/lblTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="INICIAR SESION"
+        android:textSize="48dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="150dp"
+        />
+
+    <View
+        android:layout_width="80dp"
+        android:layout_height="2dp"
+        android:background="@color/Rojo_Oscuro"
+        android:layout_marginLeft="1dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <!--progress bar for loading -->
+    <ProgressBar
+        android:id="@+id/idLoadingPB"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/txtCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="usuario@gmail.com" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="Password"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:text="usuario" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:textColor="@color/white"
+        android:text="Acceder" />
+
+    <TextView
+        android:id="@+id/lblTitulo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white"
+        android:text="¿No tienes una cuenta?" />
+
+
+    <Button
+        android:id="@+id/btnRegistrarse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Registrarse" />
+
+
+
+</LinearLayout>

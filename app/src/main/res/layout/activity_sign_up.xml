@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:orientation="vertical"
+    android:backgroundTintMode="@color/white"
+    android:background="@drawable/bg_login_signup"
+    android:id="@+id/signupLayout"
+    tools:context=".SignUpActivity">
+
+
+    <TextView
+        android:id="@+id/lblTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="CREAR CUENTA"
+        android:textColor="@color/white"
+        android:textSize="48dp" />
+
+    <View
+        android:layout_width="80dp"
+        android:layout_height="2dp"
+        android:background="@color/Rojo_Oscuro"
+        android:layout_marginLeft="1dp"
+        android:layout_marginBottom="20dp"
+        />
+
+
+    <!--progress bar for loading -->
+    <ProgressBar
+        android:id="@+id/idLoadingPB"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/txtCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="Correo"
+        android:textColorHint="#DCDBDB"
+        />
+
+    <EditText
+        android:id="@+id/txtPassword1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="Contraseña"
+        android:textColorHint="#DCDBDB"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:ems="10"
+        android:inputType="textPassword"
+        />
+
+    <EditText
+        android:id="@+id/txtPassword2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="Verifica Contraseña"
+        android:textColorHint="#DCDBDB"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:ems="10"
+        android:inputType="textPassword"
+        />
+
+    <Button
+        android:id="@+id/btnRegistrarse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/Rojo_Oscuro"
+        android:textColor="@color/white"
+        android:text="Registrarse" />
+
+    <TextView
+        android:id="@+id/lblTitulo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white"
+        android:text="¿Ya tienes una cuenta?" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Iniciar Sesion" />
+
+</LinearLayout>

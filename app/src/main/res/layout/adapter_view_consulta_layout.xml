@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/txtFechaConsulta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="24/Abril/2015"
+        android:textColor="@color/black"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+    <TextView
+        android:id="@+id/txtDiagnostico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Revisión de progreso......"
+        android:textColor="@color/Rojo_Oscuro" />
+
+
+    <TextView
+        android:id="@+id/txtMedico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Señor,doctor,profesor patricio"
+        android:layout_marginStart="180dp"
+        android:textColor="#ACA590" />
+
+
+    <Button
+        android:id="@+id/btnEditarConsulta"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="290dp"
+        android:visibility="gone"
+        android:text="Editar" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txtDiagnostico"
+        android:background="#2DB64568" />
+
+</LinearLayout>

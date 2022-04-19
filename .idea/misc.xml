@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2535" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/bg_login_signup.xml" value="0.1685" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/color1.xml" value="0.1685" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/color2.xml" value="0.1685" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/color3.xml" value="0.1685" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/ic_inicio.xml" value="0.2355" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2535" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/drawable/side_nav_bar.xml" value="0.2535" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/activity_main.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/activity_sign_up.xml" value="0.2453125" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/adapter_view_consulta_layout.xml" value="0.33" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/app_bar_main.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/content_main.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_consulta.xml" value="0.33" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_consulta_agregar.xml" value="0.24479166666666666" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_editar_expediente.xml" value="0.3016304347826087" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_expediente.xml" value="0.33" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_expediente_editar.xml" value="0.27239583333333334" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_gallery.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_home.xml" value="0.1390625" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_inicio.xml" value="0.25" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_perfil.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/fragment_slideshow.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/nav_header_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/layout/spinner_layout.xml" value="0.15520833333333334" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/menu/activity_main_drawer.xml" value="0.75" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/menu/main.xml" value="0.5" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/ExpedienteClinico/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.149" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

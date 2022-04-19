@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    android:id="@+id/showExpediente"
+    tools:context=".ui.expediente.ExpedienteFragment"
+    android:orientation="horizontal">
+
+    <!--ID EXPEDIENTE-->
+    <TextView
+        android:id="@+id/lblIdExpediente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:padding="15dp"
+        android:text="ID EXPEDIENTE"
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowIdExpediente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/lblIdExpediente"
+        android:layout_alignParentRight="true"
+        android:padding="15dp"
+        android:text="0"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowIdExpediente"
+        android:background="#2DB64568" />
+
+    <!--NOMBRE-->
+    <TextView
+        android:id="@+id/lblNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowIdExpediente"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="NOMBRE "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblNombre"
+        android:padding="15dp"
+        android:text="Nombre Expediente"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowNombre"
+        android:background="#2DB64568" />
+
+    <!--APELLIDO-->
+    <TextView
+        android:id="@+id/lblApellido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowNombre"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="APELLIDO "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowApellido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/lblApellido"
+        android:layout_alignParentRight="true"
+        android:padding="15dp"
+        android:text="Apellido Expediente"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowApellido"
+        android:background="#2DB64568" />
+
+    <!--CURP-->
+    <TextView
+        android:id="@+id/lblCurp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowApellido"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="CURP "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowCurp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblCurp"
+        android:padding="15dp"
+        android:text="Curp Expediente"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowCurp"
+        android:background="#2DB64568" />
+
+    <!--ESTADO-->
+    <TextView
+        android:id="@+id/lblEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowCurp"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="ESTADO "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblEstado"
+        android:padding="15dp"
+        android:text="Estado Expediente"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowEstado"
+        android:background="#2DB64568" />
+
+    <!--MUNICIPIO-->
+    <TextView
+        android:id="@+id/lblMunicipio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowEstado"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="MUNICIPIO "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowMunicipio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblMunicipio"
+        android:padding="15dp"
+        android:text="Municipio Expediente"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowMunicipio"
+        android:background="#2DB64568" />
+
+    <!--SEXO-->
+    <TextView
+        android:id="@+id/lblSexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowMunicipio"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="SEXO "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowSexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblSexo"
+        android:padding="15dp"
+        android:text="Sexo Expediente"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowSexo"
+        android:background="#2DB64568" />
+
+    <!--TELEFONO-->
+    <TextView
+        android:id="@+id/lblTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowSexo"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="TELEFONO "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblTelefono"
+        android:padding="15dp"
+        android:text="00-00-00-00-00"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowTelefono"
+        android:background="#2DB64568" />
+
+    <!--FECHA DE NACIMIENTO-->
+    <TextView
+        android:id="@+id/lblFechaDeNacimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/lblShowTelefono"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="FECHA DE NACIMIENTO "
+        android:textColor="@color/Azul" />
+
+    <TextView
+        android:id="@+id/lblShowFechaDeNacimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/lblFechaDeNacimiento"
+        android:padding="15dp"
+        android:text="00-00-0000"
+        android:textColor="@color/black" />
+
+    <View
+        android:id="@+id/separadorUlt"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/lblShowFechaDeNacimiento"
+        android:background="#2DB64568" />
+
+    <Button
+        android:id="@+id/btnEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separadorUlt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:enabled="false"
+        android:text="Editar" />
+
+    <ProgressBar
+        android:id="@+id/idLoadingPB"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</RelativeLayout>
