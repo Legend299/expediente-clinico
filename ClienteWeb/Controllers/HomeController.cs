@@ -18,7 +18,8 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            HttpContext.Session.SetString("Correo", "test@test.test");
+            //HttpContext.Session.SetString("Correo", "test@test.test");
+            
             var json = "";
             using (var httpClient = new HttpClient())
             {
@@ -28,6 +29,7 @@ namespace ClienteWeb.Controllers
                 json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada+"/Expediente/1");
                 
             }
+
             ExpedienteDTO expediente  = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
             return View(expediente);
         }

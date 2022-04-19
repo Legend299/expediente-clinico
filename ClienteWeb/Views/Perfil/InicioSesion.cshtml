@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Inicio de sesión";
+}
+
+<h1>Iniciar sesión</h1>
+<hr class="red-line" />
+<div class="row">
+    <div class="col-md-4">
+        <form action="Acceder" method="POST">
+            <div class="form-group">
+                <label for="correo">CORREO</label>
+                <input type="email" class="form-control" name="correo" id="correo" placeholder="Introducir CORREO">
+            </div>
+
+            <div class="form-group">
+                <label for="contrasena1">CONTRASEÑA</label>
+                <input type="password" class="form-control" name="contrasena1" id="contrasena1" placeholder="Introducir CONTRASEÑA">
+            </div>
+           
+            <button type="submit" class="btn btn-gob">Acceder</button>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-controller="Inicio" asp-action="Index">Regresar al inicio</a>
+</div>

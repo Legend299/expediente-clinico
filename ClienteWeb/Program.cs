@@ -2,7 +2,7 @@ using ClienteWeb;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Ipv4 Default, PORT:889
+// Ipv4 Default, PORT:8889
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(8899);
@@ -33,6 +33,17 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
+// Page error
+app.Use(async (context, next) =>
+{
+    await next();
+    if (context.Response.StatusCode == 404) {
+        context.Request.Path = "/Inicio/Index";
+        await next();
+    }
+});
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -44,6 +55,6 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Inicio}/{action=Index}/{id?}");
 
 app.Run();
