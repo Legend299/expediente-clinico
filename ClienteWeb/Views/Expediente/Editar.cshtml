@@ -90,7 +90,11 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="validationDefault03">MUNICIPIO</label>
-                <input type="text" class="form-control" id="validationDefault08" value="@Model.Municipio.Nombre" disabled>
+                <div class="dropdown">
+                    <select name="municipio" id="municipio" class="form-control" required>
+                    </select>
+                    <input hidden="hidden" id="IdMunicipioOld" value="@Model.Municipio.IdMunicipio">
+                </div>
             </div>
             <div class="col-md-2 mb-3">
                 <label for="validationDefault04">TELEFONO</label>
@@ -130,33 +134,73 @@
         <button class="btn btn-danger" asp-controller="Expediente" asp-action="VisualizarExpediente">Cancelar</button>
         <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
         <script>
-            //$(document).ready(function () {
-            //    $("#estado").change(function (){
-            //        alert($(this).val());
-            //    });
-            //});
-            $(document).ready(function () {
-                $.ajax({  
-                url: 'http://192.168.1.69:8891/api/usuario/estados',  
-                dataType: "json",  
-                method: 'GET',  
-                success: function (data) {  
-                    var employeeTable = $('#estado');  
-                    employeeTable.empty();  
-  
-                    $(data).each(function (index, emp) {
-                        if(emp.idEstado == $("#IdEstadoOld").val()){
-                            employeeTable.append('<option value='+emp.idEstado+' selected>'+emp.nombre+'</option>');  
-                        } else {
-                            employeeTable.append('<option value='+emp.idEstado+'>'+emp.nombre+'</option>');  
-                        }
-                    });  
-                },  
-                error: function (err) {  
-                    console.log(err);  
-                }  
-            });  
+//$(document).ready(function () {
+//    $("#estado").change(function (){
+//        alert($(this).val());
+//    });
+//});
+$(document).ready(function () {
+
+    var primerCiclo = true;
+    var IdEstado = $("#IdEstadoOld").val();
+
+    $.ajax({
+        url: 'http://192.168.1.69:8891/api/usuario/estados',
+        dataType: "json",
+        method: 'GET',
+        success: function (data) {
+            var listEstado = $('#estado');
+            listEstado.empty();
+
+            $(data).each(function (index, emp) {
+                if (emp.idEstado == $("#IdEstadoOld").val()) {
+                    listEstado.append('<option value=' + emp.idEstado + ' selected>' + emp.nombre + '</option>');
+                } else {
+                    listEstado.append('<option value=' + emp.idEstado + '>' + emp.nombre + '</option>');
+                }
+            });
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+
+    listarMunicipiosApi();
+
+    
+    $("#estado").change(function () {
+        IdEstado = $(this).val();
+        listarMunicipiosApi();
+    });
+
+
+
+    function listarMunicipiosApi() {
+        $.ajax({
+            url: 'http://192.168.1.69:8891/api/usuario/municipios/' + IdEstado,
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
+                var listMunicipio = $('#municipio');
+                listMunicipio.empty();
+
+                $(data).each(function (index, emp) {
+                    if (emp.idMunicipio == $("#IdMunicipioOld").val() && primerCiclo == true) {
+                        listMunicipio.append('<option value=' + emp.idMunicipio + ' selected>' + emp.nombre + '</option>');
+                        primerCiclo = false;
+                    }
+                    listMunicipio.append('<option value=' + emp.idMunicipio + '>' + emp.nombre + '</option>');
+
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+
         });
+    }
+
+});
         </script>
     </form>
 }

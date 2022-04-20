@@ -30,9 +30,11 @@ builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
 
 builder.Services.AddControllers();
 
-//Cors
+// Cors
 var domainPrivada = builder.Configuration.GetValue<string>("DomainUrl:WebLocal");
 var domainPublica = builder.Configuration.GetValue<string>("DomainUrl:WebPublica");
+
+// Cors temp fix
 
 builder.Services.AddCors(options =>
 {
