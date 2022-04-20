@@ -3,34 +3,59 @@
     ViewData["Title"] = "Inicio";
 }
 
-
 <br />
-<h1>USUARIO</h1>
+<h1>INICIO</h1>
 <hr class="red-line" />
 <div class="row">
     <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
+                @{
+                if (Context.Session.GetString("Correo") == null)
+                {
                 <h5 class="card-title">¿Ya tienes una cuenta?</h5>
                 <p class="card-text">Inicia sesión para poder acceder a tus datos, así como poder administrar tus citas y ver documentos médicos.</p>
                 <br />
                 <a class="btn btn-gob" asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Inicia Sesión</a>
+                } else {
+                    if(Context.Session.GetInt32("Expediente") == 0)
+                    {
+                        <h5 class="card-title">¿No tienes un expediente?</h5>
+                        <p class="card-text">Si quieres crear un expediente necesitas ingresar tu información personal.</p>
+                        <a asp-area="" asp-controller="Expediente" asp-action="TramitarExpediente" class="btn btn-gob">Tramitar</a>
+                    } else {
+                        <h5 class="card-title">¿Ya tienes tu expediente? Solicitalo</h5>
+                        <p class="card-text">Para solicitar tu expediente solo necesitas iniciar sesión.</p>
+                        <a class="btn btn-gob" asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">Solicitar</a>
+                    }
+                }
+                }
             </div>
         </div>
     </div>
     <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Crea una cuenta</h5>
-                <p class="card-text">Registra una cuenta usando una curp y datos personales para tener acceso a un tramite de un expediente clínico digital que puede ser utilizado en la gran mayoria de personal de salud.</p>
-                <a class="btn btn-gob" asp-area="" asp-controller="Perfil" asp-action="RegistrarCuenta">Registrarse</a>
+
+                @{
+                    if(Context.Session.GetString("Correo") == null)
+                    {
+                        <h5 class="card-title">Crear Cuenta</h5>
+                        <p class="card-text">Registra una cuenta usando una curp y datos personales para tener acceso a un tramite de un expediente clínico digital que puede ser utilizado en la gran mayoria de personal de salud.</p>
+                        <a class="btn btn-gob" asp-area="" asp-controller="Perfil" asp-action="RegistrarCuenta">Registrarse</a>
+                    } else {
+                        <h5 class="card-title">Perfil</h5>
+                        <p class="card-text">Cambia la configuración de tu cuenta.</p>
+                        <a class="btn btn-gob" asp-area="" asp-controller="Perfil" asp-action="RegistrarCuenta">Configuración</a>
+                    }
+                }
             </div>
         </div>
     </div>
 </div>
 
 
-<br />
+@*<br />
 <h1>TRAMITES</h1>
 <hr class="red-line" />              
 <div class="row">
@@ -54,4 +79,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@

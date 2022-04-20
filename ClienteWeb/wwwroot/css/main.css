@@ -14,7 +14,6 @@ header {
     left: 0;
     width: 100%;
     height: 75px;
-    /*background-color: #0b231e;*/
     background-color: #9D2449;
     color: #ffffff;
     box-shadow: 0 4px 25px -22px black;
@@ -67,6 +66,18 @@ header {
                     }
 
 
+.bg-green {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-left: auto;
+    margin-left: auto;
+    width: 100%;
+    /*height: 65px;*/
+    height: 90vh;
+    color: white;
+    background-color: #0b231e;
+}
+
 .bg-rojoNegro {
     padding-right: 15px;
     padding-left: 15px;
@@ -76,7 +87,6 @@ header {
     /*height: 65px;*/
     height: 90vh;
     color: white;
-    /*background-color: #0b231e;*/
     background-color: #9D2449;
 }
 
@@ -98,7 +108,19 @@ hr.red-line {
     background-color: white;
 }
 
-.btn-gob:hover {
-    background-color: #9D2449;
-    color: white;
+    .btn-gob:hover {
+        background-color: #9D2449;
+        color: white;
+    }
+
+.container-footer {
+    width: 100%;
+    padding: 40px 0;
+    background: #f7f7f7;
+    margin-top: 40px;
 }
+
+    .container-footer footer {
+        max-width: 1200px;
+        margin: auto;
+    }

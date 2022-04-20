@@ -1,0 +1,162 @@
+﻿@model webservice1.Models.DTO.ExpedienteDTO
+@{
+    ViewData["Title"] = "Editar Expediente";
+}
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+         <p>DATOS: </p>
+         <p>ID EXPEDIENTE: @Model.IdExpediente</p>
+         <p>NOMBRE: @Model.Nombre</p>
+         <p>APELLIDO: @Model.Apellido</p>
+         <p>IMAGEN: @Model.Imagen</p>
+         <p>CURP: @Model.Curp</p>
+        
+        <p>ESTADO: @Model.Estado.Nombre</p>
+        <p>MUNICIPIO: @Model.Municipio.Nombre</p>
+        <p>SEXO: @Model.Sexo</p>
+        <p>TELEFONO: @Model.Telefono</p>
+        <p>FECHA DE NACIMIENTO: @Model.FechaDeNacimiento</p>
+</div>*@
+
+@{
+    string genero = "";
+    if (Model.Sexo)
+    {
+        genero = "Hombre";
+    }
+    else
+    {
+        genero = "Mujer";
+    }
+
+    var fechaNueva = Model.FechaDeNacimiento.ToString("yyyy-MM-dd");
+
+}
+
+@{
+    if (Context.Session.GetString("Rol").Equals("2") || Context.Session.GetString("Rol").Equals("1"))
+    {
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="#">Médico</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" asp-action="ConsultarPaciente" asp-controller="Medico">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
+                    <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>
+                    <a class="nav-item nav-link disabled" href="#">Datos del médico</a>
+                </div>
+            </div>
+        </nav>
+    }
+}
+<br />
+<h1>Editar Expediente</h1>
+<hr class="red-line" />
+@{
+    <br />
+    <form>
+        <center>
+            <img src=@Model.Imagen alt="no hay" />
+        </center>
+        <br />
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault01">ID EXPEDIENTE</label>
+                <input type="text" class="form-control" id="validationDefault01" value="@Model.IdExpediente" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault02">NOMBRE</label>
+                <input type="text" class="form-control" id="validationDefault02" value="@Model.Nombre" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefaultUsername">APELLIDO</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="@Model.Apellido" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label for="validationDefault03">ESTADO</label>
+                 <div class="dropdown">
+                    <select name="estado" id="estado" class="form-control" required>
+                    </select>
+                    <input hidden="hidden" id="IdEstadoOld" value="@Model.Estado.IdEstado">
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationDefault03">MUNICIPIO</label>
+                <input type="text" class="form-control" id="validationDefault08" value="@Model.Municipio.Nombre" disabled>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="validationDefault04">TELEFONO</label>
+                <input type="text" class="form-control" id="validationDefault04" value="@Model.Telefono" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault05">FECHA DE NACIMIENTO</label>
+                <input type="date" class="form-control" name="fechadenacimiento" id="validationDefault05" value=@fechaNueva required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="validationDefault06">CURP</label>
+                <input type="text" class="form-control" id="validationDefault06" value="@Model.Curp" required>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="validationDefault07">SEXO</label>
+                  <div class="dropdown">
+                    <select name="sexo" class="form-control" required>
+                        @{
+                            if (Model.Sexo)
+                            {
+                                <option value=false>Mujer</option>
+                                <option value=true selected>Hombre</option>
+                            }
+                            else
+                            {
+                                <option value=false selected>Mujer</option>
+                                <option value=true>Hombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" asp-controller="Expediente" asp-action="EditarExpediente">Guardar</button>
+        <button class="btn btn-danger" asp-controller="Expediente" asp-action="VisualizarExpediente">Cancelar</button>
+        <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+        <script>
+            //$(document).ready(function () {
+            //    $("#estado").change(function (){
+            //        alert($(this).val());
+            //    });
+            //});
+            $(document).ready(function () {
+                $.ajax({  
+                url: 'http://192.168.1.69:8891/api/usuario/estados',  
+                dataType: "json",  
+                method: 'GET',  
+                success: function (data) {  
+                    var employeeTable = $('#estado');  
+                    employeeTable.empty();  
+  
+                    $(data).each(function (index, emp) {
+                        if(emp.idEstado == $("#IdEstadoOld").val()){
+                            employeeTable.append('<option value='+emp.idEstado+' selected>'+emp.nombre+'</option>');  
+                        } else {
+                            employeeTable.append('<option value='+emp.idEstado+'>'+emp.nombre+'</option>');  
+                        }
+                    });  
+                },  
+                error: function (err) {  
+                    console.log(err);  
+                }  
+            });  
+        });
+        </script>
+    </form>
+}

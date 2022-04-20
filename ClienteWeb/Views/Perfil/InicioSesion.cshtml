@@ -3,26 +3,39 @@
     ViewData["Title"] = "Inicio de sesión";
 }
 
-<h1>Iniciar sesión</h1>
-<hr class="red-line" />
-<div class="row">
-    <div class="col-md-4">
-        <form action="Acceder" method="POST">
-            <div class="form-group">
-                <label for="correo">CORREO</label>
-                <input type="email" class="form-control" name="correo" id="correo" placeholder="Introducir CORREO">
-            </div>
+<div style="width: 30rem; margin: auto; top= 50%;">
+    <h1>Iniciar sesión</h1>
+    <hr class="red-line" />
 
-            <div class="form-group">
-                <label for="contrasena1">CONTRASEÑA</label>
-                <input type="password" class="form-control" name="contrasena1" id="contrasena1" placeholder="Introducir CONTRASEÑA">
+    <p class="text-danger text-center">@TempData["Message"]</p> <!-- mensaje de controlador a javascript -->
+
+    <form action="Acceder" method="POST">
+        <!--Input de correo-->
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="bi bi-person"></i> </span>
+                </div>
+                <input name="correo" class="form-control" placeholder="Introducir CORREO" type="email" value="@TempData["Correo"]">
             </div>
-           
+        </div>
+        <br />
+        <!--Input de contraseña-->
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="bi bi-lock"></i> </span>
+                </div>
+                <input name="contrasena1" class="form-control" placeholder="**********" type="password">
+            </div>
+        </div>
+
+        <!--Botón acceder-->
+        <div class="form-group">
+            <br />
             <button type="submit" class="btn btn-gob">Acceder</button>
-        </form>
-    </div>
-</div>
-<br />
-<div>
-    <a asp-controller="Inicio" asp-action="Index">Regresar al inicio</a>
+        </div>
+        <br />
+        <p class="text-center">¿No tienes una cuenta? crea una <a href="#">aquí</a></p>
+    </form>
 </div>

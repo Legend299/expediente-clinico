@@ -38,8 +38,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "MyCors", builder =>
     {
-        builder.WithOrigins(domainPrivada, domainPublica)
-        .AllowCredentials()
+        //builder.WithOrigins(domainPrivada, domainPublica)
+        builder.AllowAnyOrigin()
+        //.AllowCredentials()
         .AllowAnyMethod()
         .AllowAnyHeader();
     });
