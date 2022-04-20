@@ -1,4 +1,4 @@
-# expediente clínico
+# Expediente clínico
 
 ## Problema
 
@@ -17,6 +17,55 @@ información de textos (p.ej. información de consultas médicas), y documentos 
 
 Al momento de realizar una cita médica, la información del expediente debe estar disponible previamente a su consulta, por lo que deberá ser posible otorgar a distancia el acceso al expediente clínico mediante la huella dactilar. Solo se otorgará el acceso al médico con quien se pactó la cita.
 
+
+## Herramientas
+
+### Cliente Web
+   - .NET 6
+     - C# 10
+     - Razor
+     - Entity Framework 6 para MySql
+   - HTML5, CSS, JavaScript
+     - Bootstrap 4.3.1
+     - JQuery 3.5.1
+     - Ajax
+
+Dependencias para instalar desde la consola Nugget:
+```
+Install-Package DateOnlyTimeOnly.AspNet -Version 1.0.2
+Install-Package Newtonsoft.Json -Version 13.0.1
+Install-Package Microsoft.EntityFrameworkCore -Version 6.0.4
+Install-Package Microsoft.EntityFrameworkCore.Design -Version 6.0.4
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 6.0.4
+Install-Package Pomelo.EntityFrameworkCore.MySql -Version 6.0.1
+Install-Package RabbitMQ.Client -Version 6.2.4
+```
+Para instalar depedencias:
+
+![image](https://user-images.githubusercontent.com/64448236/164333777-ebfe2168-9cfb-4b99-9c1e-15baca9be9a0.png)
+
+![image](https://user-images.githubusercontent.com/64448236/164334273-e11863bd-e7f4-406c-bf5a-f56de2277c58.png)
+
+
+### Cliente Movil
+   - Java
+   - Diseño XML
+
+Dependencias:
+```
+ implementation 'com.android.volley:volley:1.2.0'
+```
+
+### Base de Datos
+   - XAMPP 3.3.0
+     - Apache
+     - MySql 10.4.22-MariaDB
+
+Dependencias:
+```
+mysql-connector-net-8.0.18
+mysql-for-visualstudio-1.2.9
+```
 
 ## Diagrama de despliegue
 
