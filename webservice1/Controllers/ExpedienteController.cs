@@ -35,8 +35,8 @@ namespace webservice1.Controllers
         [HttpPost]
         public async Task<ActionResult<Expediente>> PostExpediente(Expediente expediente) 
         {
-            _repository.AgregarExpediente(expediente);
-            return Ok("Expediente Agregado");
+            Expediente ex = _repository.AgregarExpediente(expediente);
+            return Ok(ex);
         }
 
         [HttpPut]

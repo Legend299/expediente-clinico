@@ -6,7 +6,7 @@ namespace webservice1.Repository.RepositoryInterface
     {
         public Task<ExpedienteDTO?> ListarExpedienteUsuario(int id);
         public Task<List<Expediente>?> ListarExpediente(int id);
-        public bool AgregarExpediente(Expediente expediente);
+        public Expediente AgregarExpediente(Expediente expediente);
         public Expediente ModificarExpediente(Expediente expediente);
     }
 }

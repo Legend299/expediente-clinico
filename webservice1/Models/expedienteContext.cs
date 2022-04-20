@@ -160,7 +160,7 @@ namespace webservice1.Models
 
                 entity.Property(e => e.IdMunicipio).HasColumnType("int(11)");
 
-                entity.Property(e => e.Imagen).HasMaxLength(50);
+                entity.Property(e => e.Imagen).HasMaxLength(250);
 
                 entity.Property(e => e.Nombre).HasMaxLength(50);
 

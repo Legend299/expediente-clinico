@@ -74,17 +74,21 @@ namespace webservice1.Repository
             return expediente;
         }
 
-        public bool AgregarExpediente(Expediente expediente)
+        public Expediente AgregarExpediente(Expediente expediente)
         {
             try 
             {
                 _context.Expedientes.Add(expediente);
                 _context.SaveChanges();
-                return true;
+
+                var IdUltima = _context.Expedientes.Max(x => x.IdExpediente);
+                var ex = _context.Expedientes.FirstOrDefault(x => x.IdExpediente == IdUltima);
+
+                return ex;
             } catch (Exception ex) 
             {
                 Console.WriteLine("No se ha podido agregar el expediente: "+ex.Message);
-                return false;
+                return null;
             }
         }
 

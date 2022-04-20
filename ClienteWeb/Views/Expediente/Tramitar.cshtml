@@ -1,21 +1,5 @@
-﻿@model webservice1.Models.DTO.ExpedienteDTO
-@{
-    ViewData["Title"] = "Editar Expediente";
-}
-
-@{
-    string genero = "";
-    if (Model.Sexo)
-    {
-        genero = "Hombre";
-    }
-    else
-    {
-        genero = "Mujer";
-    }
-
-    var fechaNueva = Model.FechaDeNacimiento.ToString("yyyy-MM-dd");
-
+﻿@{
+    ViewData["Title"] = "Tramitar Expediente";
 }
 
 @{
@@ -37,28 +21,25 @@
     }
 }
 <br />
-<h1>Editar Expediente</h1>
+<h1>Tramitar Expediente</h1>
 <hr class="red-line" />
 @{
     <br />
-    <form action="ModificarExpediente" method="POST">
-        <center>
-            <img src="@Model.Imagen" alt="Imagen Perfil" />
-        </center>
+    <form action="AgregarExpediente" method="POST">
         <br />
         <div class="form-row">
             <div class="col-md-4 mb-3">
                 <label for="validationDefault01">ID EXPEDIENTE</label>
-                <input type="text" class="form-control" name="idexpediente" id="validationDefault01" value="@Model.IdExpediente" disabled>
+                <input type="text" class="form-control" name="idexpediente" id="validationDefault01" value="-" disabled>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationDefault02">NOMBRE</label>
-                <input type="text" class="form-control" name="nombre" id="validationDefault02" value="@Model.Nombre" required>
+                <input type="text" class="form-control" name="nombre" id="validationDefault02" value="" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationDefaultUsername">APELLIDO</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="apellido" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="@Model.Apellido" required>
+                    <input type="text" class="form-control" name="apellido" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="" required>
                 </div>
             </div>
         </div>
@@ -66,55 +47,41 @@
             <div class="col-md-3 mb-3">
                 <label for="validationDefault03">ESTADO</label>
                  <div class="dropdown">
-                    <select name="estado" id="estado" class="form-control" required>
-                    </select>
-                    <input hidden="hidden" id="IdEstadoOld" value="@Model.Estado.IdEstado">
+                    <select name="estado" id="estado" class="form-control" required></select>
                 </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="validationDefault03">MUNICIPIO</label>
                 <div class="dropdown">
-                    <select name="municipio" id="municipio" class="form-control" required>
-                    </select>
-                    <input hidden="hidden" id="IdMunicipioOld" value="@Model.Municipio.IdMunicipio">
+                    <select name="municipio" id="municipio" class="form-control" required></select>
                 </div>
             </div>
             <div class="col-md-2 mb-3">
                 <label for="validationDefault04">TELEFONO</label>
-                <input type="text" class="form-control" name="telefono" id="validationDefault04" value="@Model.Telefono" required>
+                <input type="text" class="form-control" name="telefono" id="validationDefault04" value="" required>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="validationDefault05">FECHA DE NACIMIENTO</label>
-                <input type="date" class="form-control" name="fechadenacimiento" id="validationDefault05" value=@fechaNueva required>
+                <input type="date" class="form-control" name="fechadenacimiento" id="validationDefault05" value="" required>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="validationDefault06">CURP</label>
-                <input type="text" class="form-control" name="curp" id="validationDefault06" value="@Model.Curp" required>
+                <input type="text" class="form-control" name="curp" id="validationDefault06" value="" required>
             </div>
             <div class="col-md-2 mb-3">
                 <label for="validationDefault07">SEXO</label>
                   <div class="dropdown">
                     <select name="sexo" class="form-control" required>
-                        @{
-                            if (Model.Sexo)
-                            {
-                                <option value=false>Mujer</option>
-                                <option value=true selected>Hombre</option>
-                            }
-                            else
-                            {
-                                <option value=false selected>Mujer</option>
-                                <option value=true>Hombre</option>
-                            }
-                        }
+                          <option value=false selected>Mujer</option>
+                          <option value=true>Hombre</option>
                     </select>
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Guardar</button>
-        <button class="btn btn-danger" asp-controller="Expediente" asp-action="VisualizarExpediente">Cancelar</button>
+        <button class="btn btn-primary" type="submit">Tramitar</button>
+        <button class="btn btn-danger" asp-controller="Inicio" asp-action="Index">Cancelar</button>
         <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
         <script>
 //$(document).ready(function () {
@@ -124,8 +91,7 @@
 //});
 $(document).ready(function () {
 
-    var primerCiclo = true;
-    var IdEstado = $("#IdEstadoOld").val();
+    var IdEstado = 1;
 
     $.ajax({
         url: 'http://192.168.1.69:8891/api/usuario/estados',
@@ -136,7 +102,7 @@ $(document).ready(function () {
             listEstado.empty();
 
             $(data).each(function (index, emp) {
-                if (emp.idEstado == $("#IdEstadoOld").val()) {
+                if (emp.idEstado == 1) {
                     listEstado.append('<option value=' + emp.idEstado + ' selected>' + emp.nombre + '</option>');
                 } else {
                     listEstado.append('<option value=' + emp.idEstado + '>' + emp.nombre + '</option>');
@@ -168,9 +134,8 @@ $(document).ready(function () {
                 listMunicipio.empty();
 
                 $(data).each(function (index, emp) {
-                    if (emp.idMunicipio == $("#IdMunicipioOld").val() && primerCiclo == true) {
+                    if (emp.idMunicipio == 1) {
                         listMunicipio.append('<option value=' + emp.idMunicipio + ' selected>' + emp.nombre + '</option>');
-                        primerCiclo = false;
                     }
                     listMunicipio.append('<option value=' + emp.idMunicipio + '>' + emp.nombre + '</option>');
 

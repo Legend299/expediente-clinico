@@ -60,6 +60,7 @@ namespace ClienteWeb.Controllers
                     HttpContext.Session.SetString("Id", Convert.ToString(user.IdUsuario));
                     HttpContext.Session.SetString("Correo", user.Correo);
                     HttpContext.Session.SetInt32("Expediente", (int)user.IdExpediente);
+                    HttpContext.Session.SetString("Password", user.Password);
                     HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
                     Console.WriteLine("ID EXPE: "+user.IdExpediente);
 
