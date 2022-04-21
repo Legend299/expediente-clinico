@@ -48,7 +48,7 @@ namespace webservice1.Models
 
                 entity.Property(e => e.IdConsulta).HasColumnType("int(11)");
 
-                entity.Property(e => e.Diagnostico).HasMaxLength(255);
+                entity.Property(e => e.Diagnostico).HasMaxLength(30000);
 
                 entity.Property(e => e.IdExpediente).HasColumnType("int(11)");
 

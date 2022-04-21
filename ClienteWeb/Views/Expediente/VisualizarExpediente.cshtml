@@ -2,23 +2,6 @@
 @{
     ViewData["Title"] = "Expediente";
 }
-@*<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
-         <p>DATOS: </p>
-         <p>ID EXPEDIENTE: @Model.IdExpediente</p>
-         <p>NOMBRE: @Model.Nombre</p>
-         <p>APELLIDO: @Model.Apellido</p>
-         <p>IMAGEN: @Model.Imagen</p>
-         <p>CURP: @Model.Curp</p>
-        
-        <p>ESTADO: @Model.Estado.Nombre</p>
-        <p>MUNICIPIO: @Model.Municipio.Nombre</p>
-        <p>SEXO: @Model.Sexo</p>
-        <p>TELEFONO: @Model.Telefono</p>
-        <p>FECHA DE NACIMIENTO: @Model.FechaDeNacimiento</p>
-</div>*@
 
 @{
     string genero = "";
@@ -32,24 +15,6 @@
     }
 }
 
-@{
-    if (Context.Session.GetString("Rol").Equals("2") || Context.Session.GetString("Rol").Equals("1"))
-    {
-        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-            <a class="navbar-brand" href="#">Médico</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" asp-action="ConsultarPaciente" asp-controller="Medico">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
-                    <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>
-                    <a class="nav-item nav-link disabled" href="#">Datos del médico</a>
-                </div>
-            </div>
-        </nav>
-    }
-}
 <br />
 <h1>Expediente</h1>
 <hr class="red-line" />

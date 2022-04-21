@@ -1,0 +1,75 @@
+﻿@model List<webservice1.Models.Consulta>
+@{
+    ViewData["Title"] = "Consulta";
+}
+
+<h1>CONSULTAS</h1>
+<hr class="red-line" />
+@{
+    if (Context.Session.GetString("Rol").Equals("2"))
+    {
+        <button class="btn btn-gob" asp-controller="Expediente" asp-action="Editar">Agregar Consulta</button>
+        <br />
+    }
+}
+@*<div class="container">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">FECHA</th>
+            <th scope="col">TIPO DE CONSULTA</th>
+            <th scope="col">DIAGNOSTICO</th>
+            <th scope="col">MEDICO</th>
+            <th scope="col">ACCION</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var consulta in Model)
+        {
+            <tr>
+                <td>@consulta.IdConsulta</td>
+                <td>@consulta.Fecha</td>
+                <td>Cita</td>
+                <td>@consulta.Diagnostico</td>
+                <td>@consulta.Medico</td>
+                <td>
+                    <button type="button" class="btn btn-warning" value="@consulta.IdConsulta"><i class="bi bi-pencil-square"></i> Modificar</button>
+                    <button type="button" class="btn btn-danger" value="@consulta.IdConsulta"><i class="bi bi-trash"></i> Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+<div class="tablaProductos">
+    <!--    table table-bordered table-striped-->
+    <table id="dataProducto" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>FECHA</th>
+                <th>TIPO DE CONSULTA</th>
+                <th>DIAGNOSTICO</th>
+                <th>MEDICO</th>
+                <th>ACCION</th>
+            </tr>
+        </thead>
+        <tbody id="datosTabla">
+            @foreach (var consulta in Model)
+            {
+                <tr>
+                    <td>@consulta.IdConsulta</td>
+                    <td>@consulta.Fecha</td>
+                    <td>Cita</td>
+                    <td>@consulta.Diagnostico</td>
+                    <td>@consulta.Medico</td>
+                    <td>
+                        <button type="button" class="btn btn-warning" value="@consulta.IdConsulta"><i class="bi bi-pencil-square"></i> Modificar</button>
+                        <button type="button" class="btn btn-danger" value="@consulta.IdConsulta"><i class="bi bi-trash"></i> Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

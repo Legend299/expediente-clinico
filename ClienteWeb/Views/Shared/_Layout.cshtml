@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="~/ClienteWeb.styles.css" asp-append-version="true" />
     -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/bootstrap.css" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.css"/>
+
     <link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
@@ -37,8 +41,8 @@
                                      * Usuario logeado
                                      * Cuenta con expediente
                                      */
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Consultas</a></li>
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="Login">Documentos</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Consulta" asp-action="Ver">Consultas</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">Documentos</a></li>
                                     <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">Expediente</a></li>
                                     <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">@correo</a></li>
                                 }
@@ -74,27 +78,65 @@
             </div>
         </div>
     </header>
-    
+
     <div class="container-all">
         <div class="container">
-            <main role="main" class="pb-3">
+            @{
+                if(Context.Session.GetString("Rol") != null && Context.Session.GetString("Rol") == "1")
+                {
+                     <nav class="navbar navbar-light" style="background-color: #faaaaa;">
+                        <p class="navbar-brand">Administrador</p>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <a class="nav-item nav-link active" asp-action="Usuarios" asp-controller="Medico">Usuarios <!--<span class="sr-only">(current)</span>--></a>
+                                <a class="nav-item nav-link disabled" href="#">Opcion 2</a>
+                                <a class="nav-item nav-link disabled" href="#">Opcion 3</a>
+                            </div>
+                        </div>
+                    </nav>
+                    <br />
+                }
+                else if (Context.Session.GetString("Rol") != null && Context.Session.GetString("Rol") == "2")
+                {
+                    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+                        <p class="navbar-brand">Médico</p>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <a class="nav-item nav-link active" asp-action="Usuarios" asp-controller="Medico">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
+                                <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>
+                                <a class="nav-item nav-link disabled" href="#">Datos del médico</a>
+                            </div>
+                        </div>
+                    </nav>
+                    <br />
+                }
+                
+            }
                 @RenderBody()
-            </main>
         </div>
-    </div>
 
 
-    <div class="container-footer">
-        <footer>
-            <h4> 2022 - Expediente Médico</h4>
-        </footer>
+@*        <div class="container-footer">
+            <footer>
+                <h4> 2022 - Expediente Médico</h4>
+                <hr />
+                <h4> Documentación de la API: <a href="" target="_blank">http://192.168.1.69:8891/swagger/index.html</a></h4>
+            </footer>
+        </div>*@
+
     </div>
+
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

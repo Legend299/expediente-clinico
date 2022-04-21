@@ -1,0 +1,56 @@
+﻿@model List<webservice1.Models.Usuario>
+@{
+    ViewData["Title"] = "Usuarios";
+}
+<div class="tablaProductos">
+    <!--    table table-bordered table-striped-->
+    <table id="dataProducto" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>CORREO</th>
+                <th>ROL</th>
+                <th>ID EXPEDIENTE</th>
+                <th>ACCION</th>
+            </tr>
+        </thead>
+        <tbody id="datosTabla">
+            @foreach (var usuario in Model)
+            {
+                @*if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
+                { *@
+                <tr>
+                    <td>@usuario.IdUsuario</td>
+                    <td>@usuario.Correo</td>
+                        @{
+                            switch(@usuario.IdRol) 
+                            {
+                                case 1:
+                                <td>Admin</td>
+                                    break;
+                                case 2:
+                                <td>Médico</td>
+                                    break;
+                                case 3:
+                                <td>Usuario</td>
+                                    break;
+                            }
+                        }
+                    <td>@usuario.IdExpediente</td>
+                    <td>
+                        <button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>
+                    </td>
+                </tr>
+                @*}*@
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+    $('#dataProducto').DataTable();
+} );
+</script>

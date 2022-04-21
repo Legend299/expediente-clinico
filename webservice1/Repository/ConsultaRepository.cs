@@ -29,7 +29,7 @@ namespace webservice1.Repository
         {
             //var listaConsulta = await _context.Consultas.Where(ide => ide.IdExpediente == idExpediente).ToListAsync();
 
-            var lstConsulta = await _context.Consultas.Where(ide => ide.IdExpediente == idExpediente).Select(c => new ConsultaDTO
+            var lstConsulta = await _context.Consultas.OrderByDescending(or => or.Fecha).Where(ide => ide.IdExpediente == idExpediente).Select(c => new ConsultaDTO
             {
                 IdConsulta = c.IdConsulta,
                 Fecha = c.Fecha,

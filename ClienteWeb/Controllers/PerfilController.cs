@@ -83,7 +83,7 @@ namespace ClienteWeb.Controllers
         public IActionResult CerrarSesion() 
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Inicio");
+            return RedirectToAction("InicioSesion");
         }
     }
 }
