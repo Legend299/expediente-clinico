@@ -27,6 +27,7 @@ Al momento de realizar una cita médica, la información del expediente debe est
      - Entity Framework 6 para MySql
    - HTML5, CSS, JavaScript
      - Bootstrap 4.3.1
+     - Datatable 1.11.5
      - JQuery 3.5.1
      - Ajax
 
