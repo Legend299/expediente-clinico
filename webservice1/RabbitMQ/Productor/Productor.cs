@@ -5,28 +5,46 @@ namespace webservice1.RabbitMQ.Productor
 {
     public class Productor : IProductor
     {
-        public async void MandarMensaje(IFormFile Mensaje)
+        public async Task<bool> MandarMensaje(IFormFile Mensaje)
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
-            var connection = factory.CreateConnection();
-            
-            using var channel = connection.CreateModel();
-            channel.QueueDeclare(queue: "TRANSFERENCIA_ARCHIVO", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            //int peso = 0;
+            try
+            {
+                //Debug
+                var factory = new ConnectionFactory { HostName = "localhost" };
 
-            // Archivo a Bytes
-            //await using var memoryStream = new MemoryStream();
-            //await Mensaje.CopyToAsync(memoryStream);
+                using (var connection = factory.CreateConnection())
 
-            //var body = memoryStream.ToArray();
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(queue: "TRANSFERENCIA_ARCHIVO", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-            // System.ObjectDisposedException: 'Cannot access a closed file.'
-            var body = await GetBytes(Mensaje);
+                    // Archivo a Bytes
+                    //await using var memoryStream = new MemoryStream();
+                    //await Mensaje.CopyToAsync(memoryStream);
 
-            channel.BasicPublish(exchange: "", routingKey: "TRANSFERENCIA_ARCHIVO", basicProperties: null, body: body);
-            Console.WriteLine("MENSAJE ENVIADO:");
+                    //var body = memoryStream.ToArray();
+
+                    // System.ObjectDisposedException: 'Cannot access a closed file.'
+                    var body = await GetBytes(Mensaje);
+                    //peso += body.Length;
+                    channel.BasicPublish(exchange: "", routingKey: "TRANSFERENCIA_ARCHIVO", basicProperties: null, body: body);
+                    //if(peso >= Mensaje.Length) {
+                        Console.WriteLine("MENSAJE ENVIADO:");
+                        return true;
+                    //}
+                    //return false;
+                }
+            }
+            catch (Exception e) 
+            {
+                Console.WriteLine("ERROR --> "+e.Message);
+                Console.WriteLine("TRACE: "+e.StackTrace);
+                return false;
+            }
         }
 
-        public async Task<byte[]> GetBytes(IFormFile archivo) 
+        public async Task<byte[]> GetBytes(IFormFile archivo)
         {
             await using var memoryStream = new MemoryStream();
             await archivo.CopyToAsync(memoryStream);

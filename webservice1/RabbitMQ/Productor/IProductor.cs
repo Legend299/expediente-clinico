@@ -2,6 +2,6 @@
 {
     public interface IProductor
     {
-        public void MandarMensaje(IFormFile Mensaje);
+        public Task<bool> MandarMensaje(IFormFile Mensaje);
     }
 }

@@ -9,6 +9,7 @@ namespace webservice2.RabbitMQ.Consumidor
         {
             try
             {
+                //Debug
                 var factory = new ConnectionFactory { HostName = "localhost" };
 
                 using (var connection = factory.CreateConnection())

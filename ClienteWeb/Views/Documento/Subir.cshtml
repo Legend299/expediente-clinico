@@ -1,0 +1,15 @@
+﻿@model List<webservice1.Models.Documento>
+@{
+    ViewData["Title"] = "Subir Documento";
+}
+<h1>DOCUMENTOS</h1>
+<hr class="red-line" />
+<br />
+<form action="SubirDocumento" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+        <p class="text-danger text-center">@TempData["ErrorMensaje"]</p> <!-- mensaje de controlador a javascript -->
+        <label for="formFile" class="form-label">Selecciona un archivo</label>
+        <input class="form-control" type="file" name="archivo" id="archivo" accept="image/png, image/jpeg, image/jpg, .pdf, .doc, .docx, .pptx, .txt, .xlsx" required>
+    </div>
+    <button class="btn btn-gob" type="submit">SUBIR ARCHIVO</button>
+</form>
