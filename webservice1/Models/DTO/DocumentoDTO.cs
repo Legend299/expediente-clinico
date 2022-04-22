@@ -9,5 +9,6 @@
         public string Medico { get; set; }
         public int Peso { get; set; }
         public int IdExpediente { get; set; }
+        public IFormFile archivo { get; set; }
     }
 }

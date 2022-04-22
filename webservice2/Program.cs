@@ -1,3 +1,5 @@
+using webservice2.RabbitMQ.Consumidor;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //
@@ -5,6 +7,9 @@ builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(Convert.ToInt16(builder.Configuration.GetValue<string>("Puerto:Default")));
 });
+
+// Rabbitmq
+builder.Services.AddScoped<IConsumidor, Consumidor>();
 
 // Add services to the container.
 
@@ -14,12 +19,15 @@ builder.Services.AddControllers();
 var domainPrivada = builder.Configuration.GetValue<string>("DomainUrl:WebLocal");
 var domainPublica = builder.Configuration.GetValue<string>("DomainUrl:WebPublica");
 
+// Cors temp fix
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "MyCors", builder =>
     {
-        builder.WithOrigins(domainPrivada, domainPublica)
-        .AllowCredentials()
+        //builder.WithOrigins(domainPrivada, domainPublica)
+        builder.AllowAnyOrigin()
+        //.AllowCredentials()
         .AllowAnyMethod()
         .AllowAnyHeader();
     });

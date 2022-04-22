@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Http.Json;
+using webservice1.RabbitMQ;
+using webservice1.RabbitMQ.Productor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,10 @@ builder.Services
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
 builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
+builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
+
+// Rabbitmq
+builder.Services.AddScoped<IProductor, Productor>();
 
 builder.Services.AddControllers();
 
