@@ -92,7 +92,7 @@ namespace ClienteWeb.Controllers
                 {
                     multipartFormContent.Add(new StringContent(archivo.FileName), name: "Nombre");
                     multipartFormContent.Add(new StringContent(System.IO.Path.GetExtension(archivo.FileName)), name: "Extension");
-                    multipartFormContent.Add(new StringContent("Medico Ejemplo"), name: "Medico");
+                    multipartFormContent.Add(new StringContent(HttpContext.Session.GetString("Nombre")), name: "Medico");
                     multipartFormContent.Add(new StringContent(Convert.ToString(archivo.Length)), name: "Peso");
                     multipartFormContent.Add(new StringContent(Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))), name: "IdExpediente");
 
@@ -102,11 +102,12 @@ namespace ClienteWeb.Controllers
                     multipartFormContent.Add(filestreamContent, name: "Archivo", fileName: archivo.FileName);
 
                     var response = await cliente.PostAsync(_conexionApi.Value.conexionPrivada + "/Documento", multipartFormContent);
-                    var test = await response.Content.ReadAsStringAsync();
+                    //var test = await response.Content.ReadAsStringAsync();
                     // Código
-                    Console.WriteLine(test);
+                    //Console.WriteLine(test);
                 }
-                return RedirectToAction("Ver");
+            TempData["Mensaje"] = "Se ha subido: "+archivo.FileName;
+            return RedirectToAction("Ver");
             }
             catch (Exception e) 
             {

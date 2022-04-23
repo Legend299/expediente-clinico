@@ -23,6 +23,19 @@ namespace ClienteWeb.Controllers
             return View(listaUsuarios);
         }
 
+        public IActionResult Perfil() 
+        {
+            if (HttpContext.Session.GetString("Rol").Equals("3")) 
+                return RedirectToAction("Agregar");
+            
+            return View();
+        }
+
+        public IActionResult Agregar() 
+        {
+            return View(); 
+        }
+
         /*
          * Acciones
          */

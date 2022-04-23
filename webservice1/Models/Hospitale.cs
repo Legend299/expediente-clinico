@@ -18,8 +18,8 @@ namespace webservice1.Models
         public string Correo { get; set; } = null!;
         public string Telefono { get; set; } = null!;
 
-        public virtual Estado IdEstadoNavigation { get; set; } = null!;
-        public virtual Municipio IdMunicipioNavigation { get; set; } = null!;
-        public virtual ICollection<Medico> Medicos { get; set; }
+        public virtual Estado? IdEstadoNavigation { get; set; } = null!;
+        public virtual Municipio? IdMunicipioNavigation { get; set; } = null!;
+        public virtual ICollection<Medico>? Medicos { get; set; }
     }
 }

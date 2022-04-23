@@ -73,9 +73,10 @@ namespace webservice1.Controllers
             ///
             bool resultado = _repository.Subir(documento);
 
-            if (resultado)
-                return Ok();
-            return BadRequest();
+            //if (resultado)
+            //    return Ok();
+            //return BadRequest();
+            return Ok();
 
         }
 

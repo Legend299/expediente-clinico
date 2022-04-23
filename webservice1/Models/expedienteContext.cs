@@ -48,7 +48,7 @@ namespace webservice1.Models
 
                 entity.Property(e => e.IdConsulta).HasColumnType("int(11)");
 
-                entity.Property(e => e.Diagnostico).HasMaxLength(30000);
+                entity.Property(e => e.Diagnostico).HasColumnType("mediumtext");
 
                 entity.Property(e => e.IdExpediente).HasColumnType("int(11)");
 
@@ -273,19 +273,16 @@ namespace webservice1.Models
                 entity.HasOne(d => d.IdEspecialidadNavigation)
                     .WithMany(p => p.Medicos)
                     .HasForeignKey(d => d.IdEspecialidad)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_especialidades_medicos");
 
                 entity.HasOne(d => d.IdHospitalNavigation)
                     .WithMany(p => p.Medicos)
                     .HasForeignKey(d => d.IdHospital)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_hospitales_medicos");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.Medicos)
                     .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_usuarios_medicos");
             });
 

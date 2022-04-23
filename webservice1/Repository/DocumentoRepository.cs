@@ -21,13 +21,13 @@ namespace webservice1.Repository
                 Directory.CreateDirectory(archivos);
             }
 
-            string rutaArchivo = Path.Combine(archivos, documento.archivo.FileName);
+            string rutaArchivo = Path.Combine(archivos, documento.Archivo.FileName);
 
             try
             {
                 using (FileStream newFile = System.IO.File.Create(rutaArchivo))
                 {
-                    documento.archivo.CopyTo(newFile);
+                    documento.Archivo.CopyTo(newFile);
                     newFile.Flush();
                 }
 

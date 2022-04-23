@@ -14,6 +14,6 @@ namespace webservice1.Models
         public string Nombre { get; set; } = null!;
         public string? Descripcion { get; set; }
 
-        public virtual ICollection<Medico> Medicos { get; set; }
+        public virtual ICollection<Medico>? Medicos { get; set; }
     }
 }

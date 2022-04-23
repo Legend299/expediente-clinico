@@ -8,9 +8,18 @@
     if(Context.Session.GetString("Rol").Equals("2") || Context.Session.GetString("Rol").Equals("1")){
 <form action="SubirDocumento" method="POST" enctype="multipart/form-data">
     <div class="mb-3">
-        <p class="text-danger text-center">@TempData["ErrorMensaje"]</p> <!-- mensaje de controlador a javascript -->
+                @if (TempData["Mensaje"] != null)
+                {
+                    <div class="alert alert-success" role="alert">@TempData["Mensaje"]</div>
+                }
+
+                else if (TempData["ErrorMensaje"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">@TempData["ErrorMensaje"]</div>
+                }
+                <!-- <p class="text-warning text-center"></p> mensaje de controlador a javascript -->
         <label for="formFile" class="form-label">Selecciona un archivo</label>
-        <input class="form-control" type="file" name="archivo" id="archivo" accept="image/png, image/jpeg, image/jpg, .pdf, .doc, .docx, .pptx, .txt, .xlsx" required>
+        <input class="form-control" type="file" name="archivo" id="archivo" accept="image/png, image/jpeg, image/jpg, .pdf, .gif, .doc, .docx, .pptx, .txt, .xlsx" required>
     </div>
     <button class="btn btn-gob" type="submit">SUBIR ARCHIVO</button>
 </form>
@@ -42,7 +51,7 @@
                     <td>@(documento.Peso/1024) KB</td>
                     <td>@documento.Medico</td>
                     <td>
-                    <button type="button" class="btn btn-gob" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-pencil-square"></i> Descargar</button>
+                    <button type="button" class="btnDescargar btn btn-gob" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-pencil-square"></i> Descargar</button>
                     </td>
                 </tr>
             }
@@ -52,9 +61,8 @@
 <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
-    $(".btnll").click(function (){
+    $(".btnDescargar").click(function (){
         var Id = $(this).val();
-        console.log(Id);
         window.open('http://192.168.1.69:8891/api/Documento/Archivo/'+Id,'_blank');
     });
 });

@@ -17,8 +17,8 @@
         <tbody id="datosTabla">
             @foreach (var usuario in Model)
             {
-                @*if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
-                { *@
+                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
+                { 
                 <tr>
                     <td>@usuario.IdUsuario</td>
                     <td>@usuario.Correo</td>
@@ -41,7 +41,7 @@
                         <button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>
                     </td>
                 </tr>
-                @*}*@
+                }
             }
         </tbody>
     </table>

@@ -30,11 +30,13 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
 builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
 builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
+builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
 
 // Rabbitmq
 builder.Services.AddScoped<IProductor, Productor>();
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
 // Cors
 var domainPrivada = builder.Configuration.GetValue<string>("DomainUrl:WebLocal");

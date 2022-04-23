@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using webservice1.Models;
+using webservice1.Models.DTO;
 
 namespace ClienteWeb.Controllers
 {
@@ -27,7 +29,7 @@ namespace ClienteWeb.Controllers
         }
 
         // Validar registrar cuenta
-        public IActionResult RegistrarCuenta()
+        public IActionResult Registrar()
         {
             return View(); 
         }
@@ -64,6 +66,12 @@ namespace ClienteWeb.Controllers
                     HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
                     Console.WriteLine("ID EXPE: "+user.IdExpediente);
 
+                    if (user.IdExpediente > 0) 
+                    {
+                        ExpedienteDTO expediente = await SolicitarExpediente((int)user.IdExpediente);
+                        HttpContext.Session.SetString("Nombre", expediente.Nombre);
+                    }
+
                     return RedirectToAction("Index", "Inicio");
                 }
             }
@@ -74,9 +82,44 @@ namespace ClienteWeb.Controllers
             return RedirectToAction("InicioSesion");
         }
 
-        public IActionResult Registrar() 
+        public async Task<IActionResult> RegistrarCuenta() 
         {
-            return View();
+            if (Request.Form["contrasena1"] != Request.Form["contrasena2"])
+            {
+                TempData["Mensaje"] = "Las contraseñas no coinciden";
+
+                string correo = Request.Form["correo"];
+                TempData["Correo"] = correo;
+                return RedirectToAction("Registrar");
+            }
+
+            Usuario usuario = new Usuario();
+            usuario.Correo = Request.Form["correo"];
+            usuario.Password = Request.Form["contrasena1"];
+            usuario.IdRol = 3;
+            usuario.Activo = true;
+
+            var httpClient = new HttpClient();
+            var json = JsonConvert.SerializeObject(usuario);
+
+            //httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/api/Usuario");
+
+            if (httpClient.GetStringAsync("http://legend.zapto.org:8891/api/Usuario").IsCompleted)
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/");
+            }
+            else
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri("http://192.168.1.69:8891/");
+            }
+            HttpContent httpContent = new StringContent(json);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync("api/Usuario", httpContent);
+            Console.WriteLine("CODIGO: " + response);
+
+            return RedirectToAction("InicioSesion");
         }
 
         // Validar cerrar sesión
@@ -84,6 +127,24 @@ namespace ClienteWeb.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("InicioSesion");
+        }
+
+        public async Task<ExpedienteDTO> SolicitarExpediente(int idExpediente)
+        {
+
+            var json = "";
+            using (var httpClient = new HttpClient())
+            {
+                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(idExpediente)).IsCompleted)
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(idExpediente));
+                else
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(idExpediente));
+
+            }
+
+            ExpedienteDTO expedienteUsuario = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
+
+            return expedienteUsuario;
         }
     }
 }

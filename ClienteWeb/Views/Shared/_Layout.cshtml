@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="~/ClienteWeb.styles.css" asp-append-version="true" />
     -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     
     
     <link rel="stylesheet" href="~/lib/bootstrap/dist/bootstrap.css" />
@@ -44,8 +44,8 @@
                                      * Usuario logeado
                                      * Cuenta con expediente
                                      */
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Consulta" asp-action="Ver">Consultas</a></li>
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Documento" asp-action="Ver">Documentos</a></li>
+                                    <li><i class="bi bi-journal-medical" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Consulta" asp-action="Ver">Consultas</a></li>
+                                    <li><i class="bi bi-folder2" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Documento" asp-action="Ver">Documentos</a></li>
                                     <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">Expediente</a></li>
                                     <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">@correo</a></li>
                                 }
@@ -55,8 +55,8 @@
                                      * Usuario logeado
                                      * No cuenta con expediente
                                      */
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Tramitar">Consultas</a></li>
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Tramitar">Documentos</a></li>
+                                    <li><i class="bi bi-journal-medical" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Tramitar">Consultas</a></li>
+                                    <li><i class="bi bi-folder2" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Tramitar">Documentos</a></li>
                                     <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Tramitar">Expediente</a></li>
                                     <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Tramitar">@correo</a></li>
                                 }
@@ -70,8 +70,8 @@
                                 /* 
                                  * Requiere Login
                                  */
-                                <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Consultas</a></li>
-                                <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Documentos</a></li>
+                                <li><i class="bi bi-journal-medical" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Consultas</a></li>
+                                <li><i class="bi bi-folder2" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Documentos</a></li>
                                 <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Expediente</a></li>
                                 <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Perfil" asp-action="InicioSesion">Perfil</a></li>
                             }
@@ -102,7 +102,7 @@
                     </nav>
                     <br />
                 }
-                else if (Context.Session.GetString("Rol") != null && Context.Session.GetString("Rol") == "2")
+                else if (Context.Session.GetString("Rol") != null && Context.Session.GetString("Rol") == "2" || Context.Session.GetString("Rol") != null && Context.Session.GetString("Rol") == "4")
                 {
                     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
                         <p class="navbar-brand">Médico</p>
@@ -111,9 +111,17 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div class="navbar-nav">
+                            @{    
+                                if(Context.Session.GetString("Rol") == "2"){
                                 <a class="nav-item nav-link active" asp-action="Usuarios" asp-controller="Medico">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
                                 <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>
-                                <a class="nav-item nav-link disabled" href="#">Datos del médico</a>
+                                <a class="nav-item nav-link active" asp-action="Perfil" asp-controller="Medico">Datos del médico</a>
+                                } else if(Context.Session.GetString("Rol") == "4") {
+                                <a class="nav-item nav-link disabled"  href="#">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
+                                <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>
+                                <a class="nav-item nav-link active" asp-action="Perfil" asp-controller="Medico">Datos del médico</a>
+                                }
+                             }
                             </div>
                         </div>
                     </nav>
