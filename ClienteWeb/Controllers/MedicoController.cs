@@ -187,12 +187,15 @@ namespace ClienteWeb.Controllers
 
             if (HttpContext.Session.GetString("Rol").Equals("3")) 
                 return RedirectToAction("Agregar");
-            
+
             return View();
         }
 
         public async Task<IActionResult> Agregar() 
         {
+            if (HttpContext.Session.GetString("Rol") == null || HttpContext.Session.GetString("Rol").Equals("2") || HttpContext.Session.GetString("Rol").Equals("1"))
+                return RedirectToAction("Index", "Inicio");
+
             List<Especialidade> listaEspecialidades = await ListarEspecialidades();
             return View(listaEspecialidades); 
         }
@@ -366,28 +369,31 @@ namespace ClienteWeb.Controllers
             {
                 if (e.Cedula.Equals(cedula))
                 {
+                    verificar = true;
                     e.IdEspecialidad = Convert.ToInt32(especialidad);
                     e.IdUsuario = Convert.ToInt32(HttpContext.Session.GetString("Id"));
-                    ModificarMedico(e);
-                    verificar = true;
+                    HttpResponseMessage response = await ModificarMedico(e);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ModificarUsuario();
+                    }
                     break;
                 }
             }
 
-            //if (verificar) 
-            //{
-            //    
-            //    //    HttpContext.Session.SetString("Rol", Convert.ToString(3));
+            if (verificar == false) 
+            {
+                //    
+                //    //    HttpContext.Session.SetString("Rol", Convert.ToString(3));
+                TempData["Message"] = "Verifica que tu cédula profesional está escrita correctamente";
+                return RedirectToAction("Agregar");
+            }
 
-            //    //return RedirectToAction("Agregar");
-            //}
-
-            TempData["Message"] = "Verifica que tu cédula profesional está escrita correctamente";
-
-            return RedirectToAction("Agregar");
+            HttpContext.Session.SetString("Rol", Convert.ToString(2));
+            return RedirectToAction("Index", "Inicio");
         }
 
-        public async void ModificarMedico(Medico medico) 
+        public async Task<HttpResponseMessage> ModificarMedico(Medico medico) 
         {
             
             var httpClient = new HttpClient();
@@ -407,23 +413,25 @@ namespace ClienteWeb.Controllers
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Medico/", httpContent);
 
-            if (response.IsSuccessStatusCode) 
-                ModificarUsuario((int)medico.IdUsuario);
+            return response;
+
+            //if (response.IsSuccessStatusCode) 
+            //    ModificarUsuario((int)medico.IdUsuario);
 
         }
 
-        public async Task<IActionResult> ModificarUsuario(int id) 
+        public async Task ModificarUsuario() 
         {
-            var json = "";
-            using (var _httpClient = new HttpClient())
-            {
-                if (_httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/").IsCompleted)
-                    json = await _httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/"+id);
-                else
-                    json = await _httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario/"+id);
-            }
 
-            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            Usuario usuario = new Usuario
+            {
+                IdUsuario = Convert.ToInt32(HttpContext.Session.GetString("Id")),
+                Correo = HttpContext.Session.GetString("Correo"),
+                Password = HttpContext.Session.GetString("Password"),
+                IdRol = 2,
+                IdExpediente = HttpContext.Session.GetInt32("Expediente"),
+                Activo = true
+            };
 
             //
 
@@ -446,12 +454,6 @@ namespace ClienteWeb.Controllers
             HttpContent httpContent = new StringContent(_json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/", httpContent);
-
-            if (response.IsSuccessStatusCode)
-                HttpContext.Session.SetString("Rol", "2");
-
-            return RedirectToAction("Index", "Inicio");
-
         }
     }
 }
