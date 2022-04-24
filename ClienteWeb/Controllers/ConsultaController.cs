@@ -8,6 +8,7 @@ namespace ClienteWeb.Controllers
     public class ConsultaController : Controller
     {
         private readonly IOptions<ConexionApi> _conexionApi;
+        private int _idExpediente = 0;
 
         public ConsultaController(IOptions<ConexionApi> conexionApi)
         {
@@ -19,7 +20,13 @@ namespace ClienteWeb.Controllers
          */
         public async Task<IActionResult> Ver()
         {
-            List<Consulta> listConsulta = await SolicitarListaConsulta((int)HttpContext.Session.GetInt32("Expediente"));
+
+            //Validar ver consulta
+            if (HttpContext.Session.GetInt32("Expediente") == null || HttpContext.Session.GetInt32("Expediente") == 0) {
+                return RedirectToAction("Index", "Inicio");
+            }
+            _idExpediente = (int)HttpContext.Session.GetInt32("Expediente");
+            List<Consulta> listConsulta = await SolicitarListaConsulta();
             return View(listConsulta);
         }
 
@@ -28,24 +35,27 @@ namespace ClienteWeb.Controllers
          */
 
         // Validar expediente
-        public async Task<List<Consulta>> SolicitarListaConsulta(int idExpediente)
+        public async Task<List<Consulta>> SolicitarListaConsulta()
         {
+            //Validar ver consulta
+            if (_idExpediente == 0)
+                Ver();
 
-            var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(idExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(idExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(idExpediente));
+            int idExpediente = _idExpediente;
 
-            }
+                var json = "";
+                using (var httpClient = new HttpClient())
+                {
+                    if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(idExpediente)).IsCompleted)
+                        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(idExpediente));
+                    else
+                        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(idExpediente));
 
-            List<Consulta> listaConsulta = JsonConvert.DeserializeObject<List<Consulta>>(json);
+                }
 
-            return listaConsulta;
+                List<Consulta> listaConsulta = JsonConvert.DeserializeObject<List<Consulta>>(json);
+
+                return listaConsulta;
         }
-
-
     }
 }

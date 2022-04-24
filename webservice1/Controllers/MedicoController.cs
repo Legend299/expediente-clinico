@@ -22,6 +22,36 @@ namespace webservice1.Controllers
             return Ok(medico);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<Medico>>> GetListaMedico() 
+        {
+            var medico = await _repository.ListarCedula();
+            if (medico == null)
+                return BadRequest();
+
+            return Ok(medico);
+        }
+
+        [HttpGet("Especialidades")]
+        public async Task<ActionResult<List<Especialidade>>> GetListaEspecialidades() 
+        {
+            var especialidades = await _repository.ListaEspecialidades();
+            if (especialidades == null)
+                return BadRequest();
+
+            return Ok(especialidades);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Medico>> PutMedico(Medico medico) 
+        {
+            var _medico = await _repository.ModificarMedico(medico);
+            if (_medico == null)
+                return BadRequest();
+
+            return Ok(_medico);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Medico>> PostMedico(Medico medico)
         {

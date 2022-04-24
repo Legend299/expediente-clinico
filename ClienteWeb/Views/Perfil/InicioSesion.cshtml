@@ -7,8 +7,10 @@
     <h1>Iniciar sesión</h1>
     <hr class="red-line" />
 
-    <p class="text-danger text-center">@TempData["Message"]</p> <!-- mensaje de controlador a javascript -->
-
+     @if (TempData["Message"] != null)
+     {
+     <div class="alert alert-danger" role="alert">@TempData["Message"]</div>
+     }
     <form action="Acceder" method="POST">
         <!--Input de correo-->
         <div class="form-group">

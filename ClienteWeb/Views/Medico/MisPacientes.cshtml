@@ -1,0 +1,49 @@
+﻿@model List<webservice1.Models.ExpedientesPermiso>
+@{
+    ViewData["Title"] = "Mis pacientes";
+}
+<h1>Mis pacientes</h1>
+<hr class="red-line" />
+
+@*<button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>*@
+<div class="tablaProductos">
+    <!--    table table-bordered table-striped-->
+    <table id="dataProducto" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID PERMISO</th>
+                <th>ID EXPEDIENTE</th>
+                <th>ACCION</th>
+            </tr>
+        </thead>
+        <tbody id="datosTabla">
+            @foreach (var paciente in Model)
+            {
+@*                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
+                { *@
+                <tr>
+                    <td>@paciente.IdPermiso</td>
+                    <td>@paciente.IdExpediente</td>
+                    <td>
+@*                  @Html.ActionLink("Consultas", "SolicitarConsultas", new { IdExpediente = paciente.IdExpediente }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("Documentos", "SolicitarDocumentos", new { IdExpediente = paciente.IdExpediente }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Expediente", "SolicitarExpediente", new { IdExpediente = paciente.IdExpediente }, new { @class = "btn btn-gob" })*@
+
+@*                  @Html.ActionLink("Consultas", "Consultas", new { IdExpediente = paciente.IdExpediente }, new { @class = "bi bi-journal-medical btn btn-gob"})
+                    @Html.ActionLink("Documentos", "Documentos", new { IdExpediente = paciente.IdExpediente }, new { @class = "bi bi-folder2 btn btn-gob"})*@
+                    @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = paciente.IdExpediente}, new { @class = "bi bi-clipboard2-pulse btn btn-gob"})
+                    </td>
+                </tr>
+                @*}*@
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+    $('#dataProducto').DataTable();
+} );
+</script>

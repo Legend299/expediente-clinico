@@ -38,7 +38,7 @@
                             if (Context.Session.GetString("Correo") != null)
                             {
                                 string correo = Context.Session.GetString("Correo");
-                                if (Context.Session.GetString("Expediente") != "0")
+                                if (Context.Session.GetInt32("Expediente") != 0)
                                 {
                                     /* 
                                      * Usuario logeado
@@ -46,8 +46,8 @@
                                      */
                                     <li><i class="bi bi-journal-medical" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Consulta" asp-action="Ver">Consultas</a></li>
                                     <li><i class="bi bi-folder2" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Documento" asp-action="Ver">Documentos</a></li>
-                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">Expediente</a></li>
-                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="VisualizarExpediente">@correo</a></li>
+                                    <li><i class="bi bi-clipboard2-pulse" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Ver">Expediente</a></li>
+                                    <li><i class="bi bi-person" style="padding-right: 5px;"></i><a asp-area="" asp-controller="Expediente" asp-action="Ver">@correo</a></li>
                                 }
                                 else
                                 {
@@ -114,8 +114,8 @@
                             @{    
                                 if(Context.Session.GetString("Rol") == "2"){
                                 <a class="nav-item nav-link active" asp-action="Usuarios" asp-controller="Medico">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
-                                <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>
-                                <a class="nav-item nav-link active" asp-action="Perfil" asp-controller="Medico">Datos del médico</a>
+                                <a class="nav-item nav-link active" asp-action="MisPacientes" asp-controller="Medico">Mi lista de pacientes</a>
+                                <a class="nav-item nav-link disabled" href="#">Datos del médico</a>
                                 } else if(Context.Session.GetString("Rol") == "4") {
                                 <a class="nav-item nav-link disabled"  href="#">Consultar paciente <!--<span class="sr-only">(current)</span>--></a>
                                 <a class="nav-item nav-link disabled" href="#">Mi lista de pacientes</a>

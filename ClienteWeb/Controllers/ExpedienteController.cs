@@ -11,6 +11,9 @@ namespace ClienteWeb.Controllers
     {
         private readonly IOptions<ConexionApi> _conexionApi;
 
+        private int _idExpediente = 0;
+        private int _idUsuario = 0;
+
         public ExpedienteController(IOptions<ConexionApi> conexionApi)
         {
             _conexionApi = conexionApi;
@@ -19,20 +22,32 @@ namespace ClienteWeb.Controllers
         /*
          * Páginas
          */
-        public async Task<IActionResult> VisualizarExpediente()
+        public async Task<IActionResult> Ver()
         {
-            ExpedienteDTO expediente = await SolicitarExpediente((int)HttpContext.Session.GetInt32("Expediente"));
+            if (HttpContext.Session.GetString("Id") == null)
+                return RedirectToAction("Index", "Inicio");
+
+            _idExpediente = (int)HttpContext.Session.GetInt32("Expediente");
+            ExpedienteDTO expediente = await SolicitarExpediente();
+
             return View(expediente);
         }
 
         public async Task<IActionResult> Editar() 
         {
-            ExpedienteDTO expediente = await SolicitarExpediente((int)HttpContext.Session.GetInt32("Expediente"));
+            if (HttpContext.Session.GetString("Id") == null)
+                return RedirectToAction("Index", "Inicio");
+
+            _idExpediente = (int)HttpContext.Session.GetInt32("Expediente");
+            ExpedienteDTO expediente = await SolicitarExpediente();
             return View(expediente);
         }
 
         public IActionResult Tramitar() 
         {
+            if (HttpContext.Session.GetString("Id") == null || (int)HttpContext.Session.GetInt32("Expediente") != 0)
+                return RedirectToAction("Index", "Inicio");
+
             return View();
         }
 
@@ -43,20 +58,24 @@ namespace ClienteWeb.Controllers
          */
 
         // Validar expediente
-        public async Task<ExpedienteDTO> SolicitarExpediente(int idExpediente) 
+        public async Task<ExpedienteDTO> SolicitarExpediente() 
         {
+
+            if (_idExpediente == 0)
+                Tramitar();
 
             var json = "";
             using (var httpClient = new HttpClient())
             {
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/"+Convert.ToString(idExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(idExpediente));
+                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/"+Convert.ToString(_idExpediente)).IsCompleted)
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente));
                 else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(idExpediente));
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(_idExpediente));
 
             }
 
             ExpedienteDTO expedienteUsuario = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
+            HttpContext.Session.SetString("Nombre", expedienteUsuario.Nombre);
 
             return expedienteUsuario;
         }
@@ -109,14 +128,18 @@ namespace ClienteWeb.Controllers
             HttpResponseMessage response = await httpClient.PutAsync("api/Expediente/", httpContent);
             Console.WriteLine("CODIGO: " + response);
             //httpClient.Dispose();
-
+            HttpContext.Session.SetString("Nombre", expediente.Nombre);
             //await Task.Delay(3000);
 
-            return RedirectToAction("VisualizarExpediente");
+            return RedirectToAction("Ver");
         }
 
         public async Task<IActionResult> AgregarExpediente()
         {
+
+            if (Request.Form["nombre"] == "")
+                Ver();
+
             Expediente expediente = new Expediente();
 
 
@@ -155,25 +178,29 @@ namespace ClienteWeb.Controllers
             Expediente expedienteUsuario = JsonConvert.DeserializeObject<Expediente>(await response.Content.ReadAsStringAsync());
 
             //await Task.Delay(1000);
-            AgregarExpedienteUsuario(expedienteUsuario.IdExpediente);
+            _idExpediente = expedienteUsuario.IdExpediente;
+            AgregarExpedienteUsuario();
             HttpContext.Session.SetInt32("Expediente", expedienteUsuario.IdExpediente);
-
+            HttpContext.Session.SetString("Nombre", expedienteUsuario.Nombre);
             //httpClient.Dispose();
 
             //await Task.Delay(3000);
 
-            return RedirectToAction("VisualizarExpediente");
+            return RedirectToAction("Ver");
         }
 
-        public async void AgregarExpedienteUsuario(int IdExpediente)
+        public async void AgregarExpedienteUsuario()
         {
+            if (_idExpediente == 0)
+                Tramitar();
+
             Usuario usuario = new Usuario();
 
             usuario.IdUsuario = Convert.ToInt32(HttpContext.Session.GetString("Id"));
             usuario.Correo = HttpContext.Session.GetString("Correo");
             usuario.Password = HttpContext.Session.GetString("Password");
             usuario.IdRol = Convert.ToInt32(HttpContext.Session.GetString("Rol"));
-            usuario.IdExpediente = IdExpediente;
+            usuario.IdExpediente = _idExpediente;
             usuario.Activo = true;
 
 
@@ -193,7 +220,6 @@ namespace ClienteWeb.Controllers
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/", httpContent);
-            Console.WriteLine("CODIGO USUARIO: " + response);
 
         }
 

@@ -52,5 +52,56 @@ namespace webservice1.Controllers
             _repository.ModificarUsuario(usuario);
             return Ok("Usuario Modificado");
         }
+
+        [HttpGet("Permiso/{id}")]
+        public async Task<ActionResult<ExpedientesPermiso>> GetPermisoExpediente(int id) 
+        {
+            var _permiso = await _repository.ObtenerPermisoMedicoExpediente(id);
+            if (_permiso == null)
+                return BadRequest();
+
+            return Ok(_permiso);
+        }
+
+        [HttpGet("Permiso/medico/{id}")]
+        public async Task<ActionResult<ExpedientesPermiso>> GetPermisoMedico(int id)
+        {
+            var _permiso = await _repository.ObtenerPermisoMedico(id);
+            if (_permiso == null)
+                return BadRequest();
+
+            return Ok(_permiso);
+        }
+
+        [HttpGet("Permiso/medico/pacientes/{id}")]
+        public async Task<ActionResult<List<ExpedientesPermiso>>> GetListaPacientes(int id) 
+        {
+            var _listaPermiso = await _repository.ObtenerListaPacientes(id);
+            if (_listaPermiso == null)
+                return BadRequest();
+
+            return Ok(_listaPermiso);
+        }
+
+        [HttpPut("Permiso")]
+        public async Task<ActionResult<ExpedientesPermiso>> PutPermiso(ExpedientesPermiso permiso) 
+        {
+            var _permiso = await _repository.ModificarPermisoMedico(permiso);
+            if (_permiso == null)
+                return BadRequest();
+
+            return Ok(_permiso);
+        }
+
+        [HttpPost("Permiso")]
+        public async Task<ActionResult<ExpedientesPermiso>> PostPermiso(ExpedientesPermiso permiso) 
+        {
+            var _permiso = await _repository.CrearPermisoMedico(permiso);
+            if (_permiso == null)
+                return BadRequest();
+
+            return Ok(_permiso);
+        }
+
     }
 }

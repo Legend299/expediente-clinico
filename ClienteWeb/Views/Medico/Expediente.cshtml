@@ -1,0 +1,88 @@
+﻿@model webservice1.Models.DTO.ExpedienteDTO
+@{
+    ViewData["Title"] = "Expediente Paciente";
+}
+
+@{
+    string genero = "";
+    if (Model.Sexo)
+    {
+        genero = "Hombre";
+    }
+    else
+    {
+        genero = "Mujer";
+    }
+}
+
+
+<nav class="navbar navbar-light" style="background-color: #aca590;">
+    <p class="navbar-brand">Expediente paciente</p>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup1" aria-controls="navbarNavAltMarkup1" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup1">
+        <div class="navbar-nav">
+            @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = Model.IdExpediente}, new { @class = "nav-item nav-link active"})
+            @Html.ActionLink("Documentos", "Documentos", new { IdExpediente = Model.IdExpediente }, new { @class = "nav-item nav-link active"})
+            @Html.ActionLink("Consultas", "Consultas", new { IdExpediente = Model.IdExpediente }, new { @class = "nav-item nav-link active"})
+            <a class="nav-item nav-link disabled" href="#">Consultas</a>
+        </div>
+    </div>
+</nav>
+<br />
+
+<br />
+<h1>Expediente del Paciente</h1>
+<hr class="red-line" />
+@{
+    <br />
+        <center>
+            <img src="@Model.Imagen" alt="Imagen Perfil" />
+        </center>
+        <br />
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault01">ID EXPEDIENTE</label>
+                <input type="text" class="form-control" id="validationDefault01" value="@Model.IdExpediente" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault02">NOMBRE</label>
+                <input type="text" class="form-control" id="validationDefault02" value="@Model.Nombre" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefaultUsername">APELLIDO</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" value="@Model.Apellido" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label for="validationDefault03">ESTADO</label>
+                <input type="text" class="form-control" id="validationDefault03" value="@Model.Estado.Nombre" disabled>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationDefault03">MUNICIPIO</label>
+                <input type="text" class="form-control" id="validationDefault08" value="@Model.Municipio.Nombre" disabled>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="validationDefault04">TELEFONO</label>
+                <input type="text" class="form-control" id="validationDefault04" value="@Model.Telefono" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationDefault05">FECHA DE NACIMIENTO</label>
+                <input type="datetime" class="form-control" id="validationDefault05" value=@Model.FechaDeNacimiento disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="validationDefault06">CURP</label>
+                <input type="text" class="form-control" id="validationDefault06" value="@Model.Curp" disabled>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label for="validationDefault07">SEXO</label>
+                <input type="text" class="form-control" id="validationDefault07" value=@genero disabled>
+            </div>
+        </div>
+}

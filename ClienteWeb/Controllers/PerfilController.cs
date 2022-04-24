@@ -10,7 +10,7 @@ namespace ClienteWeb.Controllers
     public class PerfilController : Controller
     {
         private readonly IOptions<ConexionApi> _conexionApi;
-
+        private int _idExpediente = 0;
         public PerfilController(IOptions<ConexionApi> conexionApi)
         {
             _conexionApi = conexionApi;
@@ -31,6 +31,10 @@ namespace ClienteWeb.Controllers
         // Validar registrar cuenta
         public IActionResult Registrar()
         {
+            // Denegar Registrar cuenta si ya ha iniciado sesión
+            if (HttpContext.Session.GetString("Id") != null)
+                return RedirectToAction("Index", "Inicio");
+
             return View(); 
         }
 
@@ -40,6 +44,10 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> Acceder() 
         {
+            // Denegar Registrar cuenta si ya ha iniciado sesión
+            if (HttpContext.Session.GetString("Id") != null)
+                return RedirectToAction("Index", "Inicio");
+
             var json = "";
             using (var httpClient = new HttpClient())
             {
@@ -68,7 +76,8 @@ namespace ClienteWeb.Controllers
 
                     if (user.IdExpediente > 0) 
                     {
-                        ExpedienteDTO expediente = await SolicitarExpediente((int)user.IdExpediente);
+                        _idExpediente = (int)user.IdExpediente;
+                        ExpedienteDTO expediente = await SolicitarExpediente();
                         HttpContext.Session.SetString("Nombre", expediente.Nombre);
                     }
 
@@ -84,6 +93,10 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> RegistrarCuenta() 
         {
+            // Denegar Registrar cuenta si ya ha iniciado sesión
+            if (HttpContext.Session.GetString("Id") != null)
+                return RedirectToAction("Index", "Inicio");
+
             if (Request.Form["contrasena1"] != Request.Form["contrasena2"])
             {
                 TempData["Mensaje"] = "Las contraseñas no coinciden";
@@ -129,16 +142,19 @@ namespace ClienteWeb.Controllers
             return RedirectToAction("InicioSesion");
         }
 
-        public async Task<ExpedienteDTO> SolicitarExpediente(int idExpediente)
+        public async Task<ExpedienteDTO> SolicitarExpediente()
         {
+            if (_idExpediente == 0)
+                InicioSesion();
+                //throw new Exception("Error");
 
             var json = "";
             using (var httpClient = new HttpClient())
             {
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(idExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(idExpediente));
+                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente)).IsCompleted)
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente));
                 else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(idExpediente));
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(_idExpediente));
 
             }
 

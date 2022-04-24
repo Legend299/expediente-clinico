@@ -5,8 +5,10 @@
     <h1>Registrarse</h1>
     <hr class="red-line" />
 
-    <p class="text-danger text-center">@TempData["Mensaje"]</p> <!-- mensaje de controlador a javascript -->
-
+     @if (TempData["Mensaje"] != null)
+     {
+     <div class="alert alert-danger" role="alert">@TempData["Mensaje"]</div>
+     }
     <form action="RegistrarCuenta" method="POST">
         <!--Input de correo-->
         <div class="form-group">

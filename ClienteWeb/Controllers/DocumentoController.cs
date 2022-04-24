@@ -12,6 +12,8 @@ namespace ClienteWeb.Controllers
     {
         private readonly IOptions<ConexionApi> _conexionApi;
 
+        private int _idExpediente = 0;
+
         public DocumentoController(IOptions<ConexionApi> conexionApi)
         {
             _conexionApi = conexionApi;
@@ -19,7 +21,8 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> Ver()
         {
-            List<Documento> listaDocumentos = await SolicitarListaDocumentos((int)HttpContext.Session.GetInt32("Expediente"));
+            _idExpediente = (int)HttpContext.Session.GetInt32("Expediente");
+            List<Documento> listaDocumentos = await SolicitarListaDocumentos();
             return View(listaDocumentos);
         }
 
@@ -84,6 +87,9 @@ namespace ClienteWeb.Controllers
 
             //Console.WriteLine("CODIGO ARCHIVO: \n"+response);
 
+            //if (archivo == null)
+            //    Ver();
+
             try
             {
                 var cliente = new HttpClient();
@@ -146,9 +152,9 @@ namespace ClienteWeb.Controllers
         //    }
         //}
 
-        public async Task<List<Documento>> SolicitarListaDocumentos(int idExpediente)
+        public async Task<List<Documento>> SolicitarListaDocumentos()
         {
-
+            int idExpediente = _idExpediente;
             var json = "";
             using (var httpClient = new HttpClient())
             {

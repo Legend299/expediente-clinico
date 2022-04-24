@@ -2,6 +2,15 @@
 @{
     ViewData["Title"] = "Usuarios";
 }
+<h1>USUARIOS</h1>
+<hr class="red-line" />
+
+@if (TempData["Solicitud"] != null)
+{
+<div class="alert alert-success" role="alert">@TempData["Solicitud"]</div>
+}
+
+@*<button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>*@
 <div class="tablaProductos">
     <!--    table table-bordered table-striped-->
     <table id="dataProducto" class="table table-bordered table-hover">
@@ -9,7 +18,6 @@
             <tr>
                 <th>ID</th>
                 <th>CORREO</th>
-                <th>ROL</th>
                 <th>ID EXPEDIENTE</th>
                 <th>ACCION</th>
             </tr>
@@ -17,31 +25,17 @@
         <tbody id="datosTabla">
             @foreach (var usuario in Model)
             {
-                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
-                { 
+@*                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
+                { *@
                 <tr>
                     <td>@usuario.IdUsuario</td>
                     <td>@usuario.Correo</td>
-                        @{
-                            switch(@usuario.IdRol) 
-                            {
-                                case 1:
-                                <td>Admin</td>
-                                    break;
-                                case 2:
-                                <td>Médico</td>
-                                    break;
-                                case 3:
-                                <td>Usuario</td>
-                                    break;
-                            }
-                        }
                     <td>@usuario.IdExpediente</td>
                     <td>
-                        <button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>
+                    @Html.ActionLink("Solicitar", "SolicitarPermiso", new { IdExpediente = usuario.IdExpediente }, new { @class = "btn btn-gob" })
                     </td>
                 </tr>
-                }
+                @*}*@
             }
         </tbody>
     </table>

@@ -98,5 +98,57 @@ namespace webservice1.Repository
            
             return listaMunicipios;
         }
+
+        public async Task<ExpedientesPermiso> CrearPermisoMedico(ExpedientesPermiso permiso) 
+        {
+            _context.ExpedientesPermisos.Add(permiso);
+            _context.SaveChanges();
+
+            var permisoFinal = await _context.ExpedientesPermisos.OrderByDescending(ep => ep.IdPermiso)
+                .Where(ep => ep.IdUsuario == permiso.IdUsuario)
+                .FirstOrDefaultAsync();
+
+            return permisoFinal;
+        }
+
+        public async Task<ExpedientesPermiso> ObtenerPermisoMedicoExpediente(int idExpediente)
+        {
+            var permiso = await _context.ExpedientesPermisos.OrderByDescending(ep => ep.IdPermiso)
+                .Where(ide => ide.IdExpediente == idExpediente)
+                .FirstOrDefaultAsync();
+
+            return permiso;
+        }
+
+        public async Task<ExpedientesPermiso> ObtenerPermisoMedico(int idMedico) 
+        {
+            var permiso = await _context.ExpedientesPermisos.OrderByDescending(ep => ep.IdPermiso)
+                .Where(ide => ide.IdUsuario == idMedico)
+                .FirstOrDefaultAsync();
+
+            return permiso;
+        }
+
+        public async Task<List<ExpedientesPermiso>> ObtenerListaPacientes(int idMedico)
+        {
+            var permiso = await _context.ExpedientesPermisos.OrderByDescending(ep => ep.IdPermiso)
+                .Where(ide => ide.IdUsuario == idMedico && ide.Permiso == true)
+                .ToListAsync();
+
+            return permiso;
+        }
+
+        public async Task<ExpedientesPermiso> ModificarPermisoMedico(ExpedientesPermiso permiso) 
+        {
+            _context.ExpedientesPermisos.Update(permiso);
+            _context.SaveChanges();
+
+            var permisoFinal = await _context.ExpedientesPermisos.OrderByDescending(ep => ep.IdPermiso)
+                .Where(ide => ide.IdExpediente == permiso.IdExpediente)
+                .FirstOrDefaultAsync();
+
+            return permisoFinal;
+
+        }
     }
 }

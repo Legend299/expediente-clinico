@@ -1,11 +1,27 @@
 ﻿@model List<webservice1.Models.Documento>
 @{
-    ViewData["Title"] = "Documentos";
+    ViewData["Title"] = "Documentos paciente";
 }
-<h1>DOCUMENTOS</h1>
+
+<nav class="navbar navbar-light" style="background-color: #aca590;">
+    <p class="navbar-brand">Expediente paciente</p>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup1" aria-controls="navbarNavAltMarkup1" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup1">
+        <div class="navbar-nav">
+            @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = TempData["ExpedienteUsuario"]}, new { @class = "nav-item nav-link active"})
+            @Html.ActionLink("Documentos", "Documentos", new { IdExpediente = TempData["ExpedienteUsuario"] }, new { @class = "nav-item nav-link active"})
+            @Html.ActionLink("Consultas", "Consultas", new { IdExpediente = TempData["ExpedienteUsuario"] }, new { @class = "nav-item nav-link active"})
+            <a class="nav-item nav-link disabled" href="#">Consultas</a>
+        </div>
+    </div>
+</nav>
+<br />
+
+<h1>DOCUMENTOS PACIENTE</h1>
 <hr class="red-line" />
-@{
-    if(Context.Session.GetString("Rol").Equals("2") || Context.Session.GetString("Rol").Equals("1")){
+
 <form action="SubirDocumento" method="POST" enctype="multipart/form-data">
     <div class="mb-3">
                 @if (TempData["Mensaje"] != null)
@@ -21,11 +37,11 @@
                 <!-- <p class="text-warning text-center"></p> mensaje de controlador a javascript -->
         <label for="formFile" class="form-label">Selecciona un archivo</label>
         <input class="form-control" type="file" name="archivo" id="archivo" accept="image/png, image/jpeg, image/jpg, .pdf, .gif, .doc, .docx, .pptx, .txt, .xlsx" required>
+        <input hidden="hidden" name="IdExpedienteUsuario" value="@TempData["ExpedienteUsuario"]" />
     </div>
     <button class="btn btn-gob" type="submit">SUBIR ARCHIVO</button>
 </form>
-    }
-}
+
 <br />
 <div class="tablaDocumento">
     <!--    table table-bordered table-striped
@@ -66,8 +82,5 @@ $(document).ready(function () {
         var Id = $(this).val();
         window.open('http://192.168.1.69:8891/api/Documento/Archivo/'+Id,'_blank');
     });
-
 });
 </script>
-
-

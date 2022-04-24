@@ -1,0 +1,95 @@
+﻿@model List<webservice1.Models.Consulta>
+@{
+    ViewData["Title"] = "Consultas paciente";
+}
+
+<nav class="navbar navbar-light" style="background-color: #aca590;">
+    <p class="navbar-brand">Expediente paciente</p>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup1" aria-controls="navbarNavAltMarkup1" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup1">
+        <div class="navbar-nav">
+            @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = TempData["ExpedienteUsuario"]}, new { @class = "nav-item nav-link active"})
+            @Html.ActionLink("Documentos", "Documentos", new { IdExpediente = TempData["ExpedienteUsuario"] }, new { @class = "nav-item nav-link active"})
+            @Html.ActionLink("Consultas", "Consultas", new { IdExpediente = TempData["ExpedienteUsuario"] }, new { @class = "nav-item nav-link active"})
+            <a class="nav-item nav-link disabled" href="#">Consultas</a>
+        </div>
+    </div>
+</nav>
+<br />
+
+<h1>CONSULTAS PACIENTE</h1>
+<hr class="red-line" />
+
+<button class="btn btn-gob" asp-controller="Expediente" asp-action="Editar">Agregar Consulta</button>
+<br />
+@*<div class="container">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">FECHA</th>
+            <th scope="col">TIPO DE CONSULTA</th>
+            <th scope="col">DIAGNOSTICO</th>
+            <th scope="col">MEDICO</th>
+            <th scope="col">ACCION</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var consulta in Model)
+        {
+            <tr>
+                <td>@consulta.IdConsulta</td>
+                <td>@consulta.Fecha</td>
+                <td>Cita</td>
+                <td>@consulta.Diagnostico</td>
+                <td>@consulta.Medico</td>
+                <td>
+                    <button type="button" class="btn btn-warning" value="@consulta.IdConsulta"><i class="bi bi-pencil-square"></i> Modificar</button>
+                    <button type="button" class="btn btn-danger" value="@consulta.IdConsulta"><i class="bi bi-trash"></i> Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+<div class="tablaProductos">
+    <!--    table table-bordered table-striped-->
+    <table id="dataProducto" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>FECHA</th>
+                <th>TIPO DE CONSULTA</th>
+                <th>DIAGNOSTICO</th>
+                <th>MEDICO</th>
+                <th>ACCION</th>
+            </tr>
+        </thead>
+        <tbody id="datosTabla">
+            @foreach (var consulta in Model)
+            {
+                <tr>
+                    <td>@consulta.IdConsulta</td>
+                    <td>@consulta.Fecha</td>
+                    <td>Cita</td>
+                    <td>@consulta.Diagnostico</td>
+                    <td>@consulta.Medico</td>
+                    <td>
+                        <button type="button" class="btn btn-warning" value="@consulta.IdConsulta"><i class="bi bi-pencil-square"></i> Modificar</button>
+                        <button type="button" class="btn btn-danger" value="@consulta.IdConsulta"><i class="bi bi-trash"></i> Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+    $('#dataProducto').DataTable();
+} );
+</script>

@@ -25,9 +25,19 @@
             }
         }
 
-        public Task<Medico> ModificarMedico(Medico medico)
+        public async Task<List<Medico>> ListarCedula()
         {
-            throw new NotImplementedException();
+            var listaMedicos = await _context.Medicos.Where(x => x.IdUsuario == null).ToListAsync();
+            return listaMedicos;
+        }
+
+        public async Task<Medico> ModificarMedico(Medico medico)
+        {
+            _context.Medicos.Update(medico);
+            _context.SaveChanges();
+
+            var _medico = await _context.Medicos.Where(x => x.IdUsuario == medico.IdUsuario).FirstOrDefaultAsync();
+            return _medico;
         }
 
         public async Task<Medico?> ObtenerMedicoId(int id)
@@ -35,6 +45,11 @@
             return await _context.Medicos.Where(c =>
                  c.IdUsuario == id)
                      .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Especialidade>> ListaEspecialidades()
+        {
+            return await _context.Especialidades.ToListAsync();
         }
     }
 }
