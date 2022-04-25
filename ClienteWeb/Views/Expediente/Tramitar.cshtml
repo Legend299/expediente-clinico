@@ -83,7 +83,9 @@
         <button class="btn btn-primary" type="submit">Tramitar</button>
         <button class="btn btn-danger" asp-controller="Inicio" asp-action="Index">Cancelar</button>
         <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-        <script>
+        @if (Context.Session.GetString("Conexion") != null && Context.Session.GetString("Conexion").Equals("privada"))
+        {
+                    <script>
 //$(document).ready(function () {
 //    $("#estado").change(function (){
 //        alert($(this).val());
@@ -150,5 +152,76 @@ $(document).ready(function () {
 
 });
         </script>
+        } else
+        {
+                    <script>
+//$(document).ready(function () {
+//    $("#estado").change(function (){
+//        alert($(this).val());
+//    });
+//});
+$(document).ready(function () {
+
+    var IdEstado = 1;
+
+    $.ajax({
+        url: 'http://legend.zapto.org:8891/api/usuario/estados',
+        dataType: "json",
+        method: 'GET',
+        success: function (data) {
+            var listEstado = $('#estado');
+            listEstado.empty();
+
+            $(data).each(function (index, emp) {
+                if (emp.idEstado == 1) {
+                    listEstado.append('<option value=' + emp.idEstado + ' selected>' + emp.nombre + '</option>');
+                } else {
+                    listEstado.append('<option value=' + emp.idEstado + '>' + emp.nombre + '</option>');
+                }
+            });
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+
+    listarMunicipiosApi();
+
+    
+    $("#estado").change(function () {
+        IdEstado = $(this).val();
+        listarMunicipiosApi();
+    });
+
+
+
+    function listarMunicipiosApi() {
+        $.ajax({
+            url: 'http://legend.zapto.org:8891/api/usuario/municipios/' + IdEstado,
+            dataType: "json",
+            method: 'GET',
+            success: function (data) {
+                var listMunicipio = $('#municipio');
+                listMunicipio.empty();
+
+                $(data).each(function (index, emp) {
+                    if (emp.idMunicipio == 1) {
+                        listMunicipio.append('<option value=' + emp.idMunicipio + ' selected>' + emp.nombre + '</option>');
+                    }
+                    listMunicipio.append('<option value=' + emp.idMunicipio + '>' + emp.nombre + '</option>');
+
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+
+        });
+    }
+
+});
+        </script>
+        }
+
     </form>
 }

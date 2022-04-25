@@ -52,10 +52,14 @@ namespace ClienteWeb.Controllers
             using (var httpClient = new HttpClient())
             {
                 if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+                {
                     json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario");
-                else
+                    HttpContext.Session.SetString("Conexion", "publica");
+                } else {
                     json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario");
 
+                    HttpContext.Session.SetString("Conexion", "privada");
+                }
             }
 
             List<Usuario> usuarioList = JsonConvert.DeserializeObject<List<Usuario>>(json);

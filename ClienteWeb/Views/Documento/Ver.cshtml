@@ -60,14 +60,28 @@
     </table>
 </div>
 <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-<script>
-$(document).ready(function () {
-    $(".btnDescargar").click(function (){
+@if (Context.Session.GetString("Conexion") != null && Context.Session.GetString("Conexion").Equals("privada"))
+{
+    <script>
+        $(document).ready(function () {
+        $(".btnDescargar").click(function (){
         var Id = $(this).val();
         window.open('http://192.168.1.69:8891/api/Documento/Archivo/'+Id,'_blank');
-    });
+        });
 
-});
-</script>
+        });
+    </script>
+} else
+{
+        <script>
+        $(document).ready(function () {
+        $(".btnDescargar").click(function (){
+        var Id = $(this).val();
+        window.open('http://legend.zapto.org:8891/api/Documento/Archivo/'+Id,'_blank');
+        });
+
+        });
+    </script>
+}
 
 
