@@ -140,6 +140,9 @@ namespace webservice1.Repository
 
         public async Task<ExpedientesPermiso> ModificarPermisoMedico(ExpedientesPermiso permiso) 
         {
+            if (permiso.PermisoMedico == true && permiso.PermisoUsuario == true)
+                permiso.Permiso = true;
+
             _context.ExpedientesPermisos.Update(permiso);
             _context.SaveChanges();
 

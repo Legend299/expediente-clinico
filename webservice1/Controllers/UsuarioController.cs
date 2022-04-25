@@ -53,6 +53,7 @@ namespace webservice1.Controllers
             return Ok("Usuario Modificado");
         }
 
+        // GET Paciente
         [HttpGet("Permiso/{id}")]
         public async Task<ActionResult<ExpedientesPermiso>> GetPermisoExpediente(int id) 
         {
@@ -63,6 +64,8 @@ namespace webservice1.Controllers
             return Ok(_permiso);
         }
 
+
+        // GET Médico
         [HttpGet("Permiso/medico/{id}")]
         public async Task<ActionResult<ExpedientesPermiso>> GetPermisoMedico(int id)
         {
