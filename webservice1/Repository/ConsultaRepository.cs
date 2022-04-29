@@ -56,5 +56,21 @@ namespace webservice1.Repository
         {
             throw new NotImplementedException();
         }
+
+        public bool EliminarConsulta(Consulta consulta)
+        {
+            try
+            {
+                _context.Consultas.Remove(consulta);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e) 
+            {
+                Console.WriteLine("ERROR ELIMINAR CONSULTA: "+e.Message);
+                return false;  
+            }
+            
+        }
     }
 }

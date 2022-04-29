@@ -5,10 +5,14 @@ using webservice1.RabbitMQ.Productor;
 var builder = WebApplication.CreateBuilder(args);
 
 //
+/*
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(Convert.ToInt16(builder.Configuration.GetValue<string>("Puerto:Default")));
 });
+*/
+
+builder.WebHost.UseIISIntegration();
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

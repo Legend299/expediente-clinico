@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Headers;
 using webservice1.Models;
 using webservice1.Models.DTO;
+using webservice1.Tools;
 
 namespace ClienteWeb.Controllers
 {
@@ -51,14 +53,32 @@ namespace ClienteWeb.Controllers
             var json = "";
             using (var httpClient = new HttpClient())
             {
+
+                // Remueve SSL (?) buscar nueva alternativa
+
+                /*ServicePointManager
+                        .ServerCertificateValidationCallback +=
+                            (sender, cert, chain, sslPolicyErrors) => true;*/
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+                //https://app.franciscoantonio.tech:8891/api
+
                 if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+                //if (httpClient.GetStringAsync("https://app.franciscoantonio.tech:8891/api/Usuario").IsCompleted)
                 {
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario");
                     HttpContext.Session.SetString("Conexion", "publica");
+
+                    //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario");
+                    //json = await httpClient.GetStringAsync("https://app.franciscoantonio.tech:8891/api/Usuario");
+
                 } else {
+                    HttpContext.Session.SetString("Conexion", "privada");
+                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
                     json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario");
 
-                    HttpContext.Session.SetString("Conexion", "privada");
                 }
             }
 
@@ -67,14 +87,18 @@ namespace ClienteWeb.Controllers
             string correoForm = Request.Form["correo"];
             string contraForm = Request.Form["contrasena1"];
 
+            // Encriptado de contraseña
+
+            string sha256 = Encrypt.GetSHA256(contraForm);;
+
             foreach (Usuario user in usuarioList)
             {
-                if (user.Correo.Equals(correoForm) && user.Password.Equals(contraForm))
+                if (user.Correo.Equals(correoForm) && user.Password.Equals(sha256))
                 {
                     HttpContext.Session.SetString("Id", Convert.ToString(user.IdUsuario));
                     HttpContext.Session.SetString("Correo", user.Correo);
                     HttpContext.Session.SetInt32("Expediente", (int)user.IdExpediente);
-                    HttpContext.Session.SetString("Password", user.Password);
+                    HttpContext.Session.SetString("Password", sha256);
                     HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
                     Console.WriteLine("ID EXPE: "+user.IdExpediente);
 
@@ -115,6 +139,11 @@ namespace ClienteWeb.Controllers
             usuario.Password = Request.Form["contrasena1"];
             usuario.IdRol = 3;
             usuario.Activo = true;
+
+            // Encriptado de contraseña
+
+            string sha256 = Encrypt.GetSHA256(usuario.Password);
+            usuario.Password = sha256;
 
             var httpClient = new HttpClient();
             var json = JsonConvert.SerializeObject(usuario);
