@@ -33,10 +33,10 @@ namespace webservice1.Controllers
             return Ok(_repository.AgregarConsulta(consulta));
         }
 
-        [HttpDelete]
-        public ActionResult DeleteConsulta(Consulta consulta) {
+        [HttpDelete("{id}")]
+        public ActionResult DeleteConsulta(int id) {
 
-            var respuesta = _repository.EliminarConsulta(consulta);
+            var respuesta = _repository.EliminarConsulta(id);
             if (respuesta)
                 return Ok("Se ha eliminado la consulta");
 

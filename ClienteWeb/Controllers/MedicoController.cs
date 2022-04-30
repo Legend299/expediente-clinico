@@ -91,6 +91,9 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> Consultas(int IdExpediente) 
         {
+            if (TempData["ExpedienteUsuario"] != null)
+                IdExpediente = Convert.ToInt32(TempData["ExpedienteUsuario"]);
+
             //Validar
             if (HttpContext.Session.GetInt32("Expediente") == null || HttpContext.Session.GetString("Rol") != "2")
                 Usuarios();
@@ -281,20 +284,21 @@ namespace ClienteWeb.Controllers
             var httpClient = new HttpClient();
             var json = JsonConvert.SerializeObject(expedientesPermiso);
 
-            if (httpClient.GetStringAsync("http://legend.zapto.org:8891/api/Usuario").IsCompleted)
+            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
             {
                 httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/");
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri("http://192.168.1.69:8891/");
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
 
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/usuario/permiso", httpContent);
+            //HttpResponseMessage response = await httpClient.PostAsync(httpContent);
             Console.WriteLine("CODIGO: " + response);
 
             TempData["Solicitud"] = "Por favor verifica tu identidad en la aplicación móvil, para llevar a cabo la solicitud del expediente.";
@@ -455,5 +459,73 @@ namespace ClienteWeb.Controllers
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/", httpContent);
         }
+
+        // Eliminar consulta
+        // Falta Validar
+        public async Task<IActionResult> EliminarConsulta(int id, int idexpediente)
+        {
+            var json = "";
+
+            TempData["ExpedienteUsuario"] = idexpediente;
+
+            using (var httpClient = new HttpClient())
+            {
+                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+                    await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(id));
+                else
+                    await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(id));
+            }
+
+            return RedirectToAction("Consultas");
+        }
+
+        public async Task<IActionResult> AgregarConsulta()
+        {
+            if (HttpContext.Session.GetString("Id") == null || HttpContext.Session.GetString("Rol") != "2")
+                return RedirectToAction("Index", "Inicio");
+
+            int idExpediente = Convert.ToInt32(Request.Form["idexpediente"]);
+
+            Consulta consulta = new Consulta
+            {
+                Fecha = DateOnly.FromDateTime(Convert.ToDateTime(Request.Form["fecha"])),
+                Medico = HttpContext.Session.GetString("Nombre"),
+                IdTipoConsulta = Convert.ToInt32(Request.Form["tipoconsulta"]),
+                //IdTipoConsulta = 1,
+                IdExpediente = idExpediente,
+                Diagnostico = Request.Form["diagnostico"]
+
+            };
+
+            var json = JsonConvert.SerializeObject(consulta);
+
+            var httpClient = new HttpClient();
+
+            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
+            }
+            else
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
+            }
+            HttpContent httpContent = new StringContent(json);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync("api/Consulta/", httpContent);
+
+            TempData["ExpedienteUsuario"] = idExpediente;
+
+            if (response.IsSuccessStatusCode)
+                TempData["Mensaje"] = "Consulta agregada con éxito.";
+
+            else
+                TempData["ErrorMensaje"] = "No se ha podido agregar la consulta.";
+
+            return RedirectToAction("Consultas");
+
+        }
+
     }
 }

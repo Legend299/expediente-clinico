@@ -1,6 +1,6 @@
 ﻿@model webservice1.Models.DTO.ExpedienteDTO
 @{
-    ViewData["Title"] = "Editar Expediente";
+    ViewData["Title"] = "Editar expediente";
 }
 
 @{
@@ -19,7 +19,7 @@
 }
 
 <br />
-<h1>Editar Expediente</h1>
+<h1>EDITAR EXPEDIENTE</h1>
 <hr class="red-line" />
 @{
     <br />
@@ -98,75 +98,75 @@
         <button class="btn btn-primary" type="submit">Guardar</button>
         <button class="btn btn-danger" asp-controller="Expediente" asp-action="Ver">Cancelar</button>
         <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-                                <script>
-                //$(document).ready(function () {
-                //    $("#estado").change(function (){
-                //        alert($(this).val());
-                //    });
-                //});
-                $(document).ready(function () {
+        <script>
+            //$(document).ready(function () {
+            //    $("#estado").change(function (){
+            //        alert($(this).val());
+            //    });
+            //});
+            $(document).ready(function () {
 
-                    var primerCiclo = true;
-                    var IdEstado = $("#IdEstadoOld").val();
+                var primerCiclo = true;
+                var IdEstado = $("#IdEstadoOld").val();
 
+                $.ajax({
+                    url: 'https://app.franciscoantonio.tech:8891/api/usuario/estados',
+                    dataType: "json",
+                    method: 'GET',
+                    success: function (data) {
+                        var listEstado = $('#estado');
+                        listEstado.empty();
+
+                        $(data).each(function (index, emp) {
+                            if (emp.idEstado == $("#IdEstadoOld").val()) {
+                                listEstado.append('<option value=' + emp.idEstado + ' selected>' + emp.nombre + '</option>');
+                            } else {
+                                listEstado.append('<option value=' + emp.idEstado + '>' + emp.nombre + '</option>');
+                            }
+                        });
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+
+                listarMunicipiosApi();
+
+
+                $("#estado").change(function () {
+                    IdEstado = $(this).val();
+                    listarMunicipiosApi();
+                });
+
+
+
+                function listarMunicipiosApi() {
                     $.ajax({
-                        url: 'https://app.franciscoantonio.tech:8891/api/usuario/estados',
+                        url: 'https://app.franciscoantonio.tech:8891/api/usuario/municipios/' + IdEstado,
                         dataType: "json",
                         method: 'GET',
                         success: function (data) {
-                            var listEstado = $('#estado');
-                            listEstado.empty();
+                            var listMunicipio = $('#municipio');
+                            listMunicipio.empty();
 
                             $(data).each(function (index, emp) {
-                                if (emp.idEstado == $("#IdEstadoOld").val()) {
-                                    listEstado.append('<option value=' + emp.idEstado + ' selected>' + emp.nombre + '</option>');
-                                } else {
-                                    listEstado.append('<option value=' + emp.idEstado + '>' + emp.nombre + '</option>');
+                                if (emp.idMunicipio == $("#IdMunicipioOld").val() && primerCiclo == true) {
+                                    listMunicipio.append('<option value=' + emp.idMunicipio + ' selected>' + emp.nombre + '</option>');
+                                    primerCiclo = false;
                                 }
+                                listMunicipio.append('<option value=' + emp.idMunicipio + '>' + emp.nombre + '</option>');
+
                             });
                         },
                         error: function (err) {
                             console.log(err);
                         }
+
                     });
+                }
 
-                    listarMunicipiosApi();
-
-
-                    $("#estado").change(function () {
-                        IdEstado = $(this).val();
-                        listarMunicipiosApi();
-                    });
-
-
-
-                    function listarMunicipiosApi() {
-                        $.ajax({
-                            url: 'https://app.franciscoantonio.tech:8891/api/usuario/municipios/' + IdEstado,
-                            dataType: "json",
-                            method: 'GET',
-                            success: function (data) {
-                                var listMunicipio = $('#municipio');
-                                listMunicipio.empty();
-
-                                $(data).each(function (index, emp) {
-                                    if (emp.idMunicipio == $("#IdMunicipioOld").val() && primerCiclo == true) {
-                                        listMunicipio.append('<option value=' + emp.idMunicipio + ' selected>' + emp.nombre + '</option>');
-                                        primerCiclo = false;
-                                    }
-                                    listMunicipio.append('<option value=' + emp.idMunicipio + '>' + emp.nombre + '</option>');
-
-                                });
-                            },
-                            error: function (err) {
-                                console.log(err);
-                            }
-
-                        });
-                    }
-
-                });
-            </script>
+            });
+        </script>
 
     </form>
 }

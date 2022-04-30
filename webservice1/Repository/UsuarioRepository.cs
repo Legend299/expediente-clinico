@@ -93,9 +93,13 @@ namespace webservice1.Repository
             ide.IdEstado == idEstado).Select(m => new MunicipioDTO
             {
                 IdMunicipio = m.IdMunicipio,
-                Nombre = _context.Municipios.Where(idm => idm.IdMunicipio == m.IdMunicipio).Select(nombre => nombre.Nombre).FirstOrDefault()
-            }).ToListAsync();
+                Nombre = _context.Municipios.Where(idm => idm.IdMunicipio == m.IdMunicipio)
+                .Select(nombre => nombre.Nombre).FirstOrDefault()
+            }).OrderBy(x => x.Nombre).ToListAsync();
            
+
+
+
             return listaMunicipios;
         }
 

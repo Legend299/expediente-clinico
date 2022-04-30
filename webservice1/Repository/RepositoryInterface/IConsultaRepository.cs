@@ -9,7 +9,7 @@ namespace webservice1.Repository.RepositoryInterface
         public Consulta AgregarConsulta(Consulta consulta);
         public Task<ConsultaDTO> ModificarConsulta(ConsultaDTO consulta);
 
-        public bool EliminarConsulta(Consulta consulta);
+        public bool EliminarConsulta(int id);
 
         public Task<List<Consulta>?> ListarConsultas();
     }

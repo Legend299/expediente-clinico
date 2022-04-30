@@ -2,13 +2,13 @@
 @{
     ViewData["Title"] = "Mis pacientes";
 }
-<h1>Mis pacientes</h1>
+<h1>MIS PACIENTES</h1>
 <hr class="red-line" />
 
 @*<button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>*@
 <div class="tablaProductos">
     <!--    table table-bordered table-striped-->
-    <table id="dataProducto" class="table table-bordered table-hover">
+    <table id="dataProducto" class="table table-bordered table-hover" data-order='[[0, "desc"]]'>
         <thead>
             <tr>
                 <th>ID PERMISO</th>
@@ -19,8 +19,6 @@
         <tbody id="datosTabla">
             @foreach (var paciente in Model)
             {
-@*                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
-                { *@
                 <tr>
                     <td>@paciente.IdPermiso</td>
                     <td>@paciente.IdExpediente</td>
@@ -31,10 +29,10 @@
 
 @*                  @Html.ActionLink("Consultas", "Consultas", new { IdExpediente = paciente.IdExpediente }, new { @class = "bi bi-journal-medical btn btn-gob"})
                     @Html.ActionLink("Documentos", "Documentos", new { IdExpediente = paciente.IdExpediente }, new { @class = "bi bi-folder2 btn btn-gob"})*@
-                    @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = paciente.IdExpediente}, new { @class = "bi bi-clipboard2-pulse btn btn-gob"})
+                    @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = paciente.IdExpediente}, new { @class = "btn btn-gob"})
+                    @Html.ActionLink("Cerrar", "Expediente", new { IdExpediente = paciente.IdExpediente}, new { @class = "btn btn-danger"})
                     </td>
                 </tr>
-                @*}*@
             }
         </tbody>
     </table>

@@ -47,7 +47,7 @@
     <!--    table table-bordered table-striped
     Html.ActionLink("Descargar", "DescargarDocumento", new { IdDocumento = documento.IdDocumento, FileName = documento.Nombre }, new { class = "btn btn-gob" })
     -->
-    <table id="dataProducto" class="table table-bordered table-hover">
+    <table id="dataProducto" class="table table-bordered table-hover" data-order='[[0, "desc"]]'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -68,7 +68,7 @@
                     <td>@(documento.Peso/1024) KB</td>
                     <td>@documento.Medico</td>
                     <td>
-                    <button type="button" class="btnDescargar btn btn-gob" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-pencil-square"></i> Descargar</button>
+                    <button type="button" class="btnDescargar btn btn-gob" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-arrow-down-square"></i> Descargar</button>
                     </td>
                 </tr>
             }

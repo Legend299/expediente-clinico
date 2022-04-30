@@ -22,41 +22,26 @@
 <h1>CONSULTAS PACIENTE</h1>
 <hr class="red-line" />
 
-<button class="btn btn-gob" asp-controller="Expediente" asp-action="Editar">Agregar Consulta</button>
-<br />
-@*<div class="container">
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">FECHA</th>
-            <th scope="col">TIPO DE CONSULTA</th>
-            <th scope="col">DIAGNOSTICO</th>
-            <th scope="col">MEDICO</th>
-            <th scope="col">ACCION</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var consulta in Model)
-        {
-            <tr>
-                <td>@consulta.IdConsulta</td>
-                <td>@consulta.Fecha</td>
-                <td>Cita</td>
-                <td>@consulta.Diagnostico</td>
-                <td>@consulta.Medico</td>
-                <td>
-                    <button type="button" class="btn btn-warning" value="@consulta.IdConsulta"><i class="bi bi-pencil-square"></i> Modificar</button>
-                    <button type="button" class="btn btn-danger" value="@consulta.IdConsulta"><i class="bi bi-trash"></i> Eliminar</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>*@
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">@TempData["Mensaje"]</div>
+}
+
+else if (TempData["ErrorMensaje"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["ErrorMensaje"]</div>
+}
+@{
+    if (Context.Session.GetString("Rol").Equals("2"))
+    {
+        <button type="button" class="btn btn-gob" data-bs-toggle="modal" data-bs-target="#modalConsulta">Agregar Consulta</button>
+        <br />
+    }
+}
 
 <div class="tablaProductos">
     <!--    table table-bordered table-striped-->
-    <table id="dataProducto" class="table table-bordered table-hover">
+    <table id="dataProducto" class="table table-bordered table-hover" data-order='[[0, "desc"]]'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -77,8 +62,7 @@
                     <td>@consulta.Diagnostico</td>
                     <td>@consulta.Medico</td>
                     <td>
-                        <button type="button" class="btn btn-warning" value="@consulta.IdConsulta"><i class="bi bi-pencil-square"></i> Modificar</button>
-                        <button type="button" class="btn btn-danger" value="@consulta.IdConsulta"><i class="bi bi-trash"></i> Eliminar</button>
+                        @Html.ActionLink("Eliminar", "EliminarConsulta", new { id = consulta.IdConsulta, idexpediente = consulta.IdExpediente }, new { @class = "btn btn-gob" })
                     </td>
                 </tr>
             }
@@ -87,6 +71,47 @@
 </div>
 <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+
+<!-- MODAL -->
+@if (Context.Session.GetString("Rol").Equals("2"))
+{
+    <div class="modal fade" id="modalConsulta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="consultaModalLabel">AGREGAR CONSULTA</h5>
+                    <button type="button" class="btn-danger" data-bs-dimiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="AgregarConsulta" method="POST" id="frmConsulta">
+
+                        <label for="fechaConsulta">FECHA</label>
+                        <input type="date" name="fecha" id="fechaConsulta" class="form-control" required/>
+                        <br />
+
+                        <label for="tipoConsulta">TIPO DE CONSULTA</label>
+                        <select name="tipoconsulta" id="tipoConsulta" class="form-select" required>
+                            <option value=1 selected>Cita</option>
+                        </select>
+                        <br />
+
+                        <label for="diagnosticoConsulta">DIAGNOSTICO</label>
+                        <input type="text" name="diagnostico" id="diagnosticoConsulta" class="form-control" required/>
+                        <br />
+
+                        <input hidden="hidden" type="text" name="idexpediente" value=@TempData["ExpedienteUsuario"] />
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 <script>
      $(document).ready(function() {

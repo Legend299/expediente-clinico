@@ -57,10 +57,16 @@ namespace webservice1.Repository
             throw new NotImplementedException();
         }
 
-        public bool EliminarConsulta(Consulta consulta)
+        public bool EliminarConsulta(int id)
         {
             try
             {
+
+                Consulta consulta = new Consulta
+                {
+                    IdConsulta = id
+                };
+
                 _context.Consultas.Remove(consulta);
                 _context.SaveChanges();
                 return true;

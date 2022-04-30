@@ -25,8 +25,8 @@
         <tbody id="datosTabla">
             @foreach (var usuario in Model)
             {
-@*                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
-                { *@
+                if (usuario.IdUsuario != Convert.ToInt32(Context.Session.GetString("Id")) && usuario.IdExpediente != 0)
+                { 
                 <tr>
                     <td>@usuario.IdUsuario</td>
                     <td>@usuario.Correo</td>
@@ -35,7 +35,7 @@
                     @Html.ActionLink("Solicitar", "SolicitarPermiso", new { IdExpediente = usuario.IdExpediente }, new { @class = "btn btn-gob" })
                     </td>
                 </tr>
-                @*}*@
+                }
             }
         </tbody>
     </table>

@@ -150,15 +150,15 @@ namespace ClienteWeb.Controllers
 
             //httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/api/Usuario");
 
-            if (httpClient.GetStringAsync("http://legend.zapto.org:8891/api/Usuario").IsCompleted)
+            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
             {
                 httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/");
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri("http://192.168.1.69:8891/");
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
