@@ -1,9 +1,9 @@
 ﻿namespace webservice1.Repository
 {
-    public class MedicoRepository : IMedicoRepository
+    public class MedicoService : IMedicoService
     {
         private readonly expedienteContext _context;
-        public MedicoRepository(expedienteContext context)
+        public MedicoService(expedienteContext context)
         {
             _context = context;
         }

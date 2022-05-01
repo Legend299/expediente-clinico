@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webservice1.Models.DTO;
 using webservice1.RabbitMQ;
@@ -7,11 +8,12 @@ namespace webservice1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DocumentoController : ControllerBase
     {
-        private readonly IDocumentoRepository _repository;
+        private readonly IDocumentoService _repository;
         private readonly IProductor _publicarMensaje;
-        public DocumentoController(IDocumentoRepository repository, IProductor publicarMensaje)
+        public DocumentoController(IDocumentoService repository, IProductor publicarMensaje)
         {
             _repository = repository;
             _publicarMensaje = publicarMensaje;

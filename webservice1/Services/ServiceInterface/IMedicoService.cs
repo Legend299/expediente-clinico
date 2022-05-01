@@ -1,6 +1,6 @@
 ﻿namespace webservice1.Repository.RepositoryInterface
 {
-    public interface IMedicoRepository
+    public interface IMedicoService
     {
         public Task<Medico> AgregarMedico(Medico medico);
         public Task<Medico> ModificarMedico(Medico medico);

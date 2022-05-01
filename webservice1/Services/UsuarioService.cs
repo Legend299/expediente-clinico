@@ -1,16 +1,24 @@
-﻿using webservice1.Models.DTO;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using webservice1.Common;
+using webservice1.Models.DTO;
 
 namespace webservice1.Repository
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioService : IUsuarioService
     {
         private readonly expedienteContext _context;
-        public UsuarioRepository(expedienteContext context)
+        private readonly AppSettings _appSettings;
+        public UsuarioService(expedienteContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
-        public async Task<List<UsuarioDTO>?> ListarUsuarios() 
+        public async Task<List<UsuarioDTO>> ListarUsuarios() 
         {
             var listaUsuarios = await _context.Usuarios.Select(u => new UsuarioDTO 
             {
@@ -157,5 +165,77 @@ namespace webservice1.Repository
             return permisoFinal;
 
         }
+
+        public async Task<UsuarioToken> Login(Usuario usuario) 
+        {
+            UsuarioToken usuarioToken = new UsuarioToken();
+            bool existe = false;
+
+            var listaUsuarios = await _context.Usuarios.Select(u => new UsuarioDTO
+            {
+                IdUsuario = u.IdUsuario,
+                Correo = u.Correo,
+                Password = u.Password,
+                IdRol = u.IdRol,
+                IdExpediente = u.IdExpediente,
+                Activo = u.Activo
+            }).ToListAsync();
+
+            foreach (UsuarioDTO user in listaUsuarios) 
+            {
+                if (usuario.Correo.Equals(user.Correo) && usuario.Password.Equals(user.Password))
+                {
+                    existe = true;
+                    usuarioToken = new UsuarioToken
+                    {
+                        IdUsuario = user.IdUsuario,
+                        Correo = user.Correo,
+                        Password = user.Password,
+                        IdRol = user.IdRol,
+                        IdExpediente = user.IdExpediente,
+                        Activo = user.Activo
+                    };
+                    break;
+                }
+            }
+
+            if (existe)
+            {
+                if (!(usuarioToken.IdExpediente.HasValue))
+                    usuarioToken.IdExpediente = 0;
+
+                usuarioToken.Token = GetToken(usuarioToken);
+
+                return usuarioToken;
+            }
+            else {
+                return null;
+            }
+
+        }
+
+        private string GetToken(UsuarioToken usuario) 
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var llave = Encoding.ASCII.GetBytes(_appSettings.Secreto);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(
+                    new Claim[]
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
+                        new Claim(ClaimTypes.Email, usuario.Correo.ToString()),
+                        new Claim(ClaimTypes.Role, usuario.IdRol.ToString())
+                    }
+                    ),
+                Expires = DateTime.UtcNow.AddDays(14),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(llave), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
     }
 }

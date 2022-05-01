@@ -3,10 +3,10 @@ using webservice1.Models.DTO;
 
 namespace webservice1.Repository
 {
-    public class DocumentoRepository : IDocumentoRepository
+    public class DocumentoService : IDocumentoService
     {
         private readonly expedienteContext _context;
-        public DocumentoRepository(expedienteContext context)
+        public DocumentoService(expedienteContext context)
         {
             _context = context;
         }

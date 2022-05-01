@@ -2,7 +2,7 @@
 
 namespace webservice1.Repository.RepositoryInterface
 {
-    public interface IExpedienteRepository
+    public interface IExpedienteService
     {
         public Task<ExpedienteDTO?> ListarExpedienteUsuario(int id);
         public Task<List<Expediente>?> ListarExpediente(int id);

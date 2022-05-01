@@ -2,7 +2,7 @@
 
 namespace webservice1.Repository.RepositoryInterface
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioService
     {
         public Task<List<UsuarioDTO>?> ListarUsuarios();
         public Task<Usuario?> ListarUsuario(int id);
@@ -15,5 +15,6 @@ namespace webservice1.Repository.RepositoryInterface
         public Task<ExpedientesPermiso> ObtenerPermisoMedicoExpediente(int idExpediente);
         public Task<List<ExpedientesPermiso>> ObtenerListaPacientes(int idMedico);
         public Task<ExpedientesPermiso> ModificarPermisoMedico(ExpedientesPermiso permiso);
+        public Task<UsuarioToken> Login(Usuario usuario);
     }
 }

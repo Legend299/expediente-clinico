@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webservice1.Models.DTO;
 
@@ -6,10 +7,11 @@ namespace webservice1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExpedienteController : ControllerBase
     {
-        private readonly IExpedienteRepository _repository;
-        public ExpedienteController(IExpedienteRepository repository)
+        private readonly IExpedienteService _repository;
+        public ExpedienteController(IExpedienteService repository)
         {
             _repository = repository;
         }

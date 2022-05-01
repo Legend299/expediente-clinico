@@ -93,7 +93,7 @@ namespace ClienteWeb.Controllers
             try
             {
                 var cliente = new HttpClient();
-
+                cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 using (var multipartFormContent = new MultipartFormDataContent())
                 {
                     multipartFormContent.Add(new StringContent(archivo.FileName), name: "Nombre");
@@ -158,6 +158,7 @@ namespace ClienteWeb.Controllers
             var json = "";
             using (var httpClient = new HttpClient())
             {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Documento/" + Convert.ToString(idExpediente)).IsCompleted)
                     json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Documento/" + Convert.ToString(idExpediente));
                 else

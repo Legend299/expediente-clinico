@@ -17,6 +17,7 @@
     <Compile Include="..\webservice1\Models\DTO\ExpedienteDTO.cs" Link="Models\DTO\ExpedienteDTO.cs" />
     <Compile Include="..\webservice1\Models\DTO\MunicipioDTO.cs" Link="Models\DTO\MunicipioDTO.cs" />
     <Compile Include="..\webservice1\Models\DTO\UsuarioDTO.cs" Link="Models\DTO\UsuarioDTO.cs" />
+    <Compile Include="..\webservice1\Models\DTO\UsuarioToken.cs" Link="Models\DTO\UsuarioToken.cs" />
     <Compile Include="..\webservice1\Models\Especialidade.cs" Link="Models\Especialidade.cs" />
     <Compile Include="..\webservice1\Models\Estado.cs" Link="Models\Estado.cs" />
     <Compile Include="..\webservice1\Models\Expediente.cs" Link="Models\Expediente.cs" />

@@ -50,39 +50,52 @@ namespace ClienteWeb.Controllers
             if (HttpContext.Session.GetString("Id") != null)
                 return RedirectToAction("Index", "Inicio");
 
-            var json = "";
-            using (var httpClient = new HttpClient())
-            {
+            //var json = "";
+            //using (var httpClient = new HttpClient())
+            //{
+            //    if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+            //    {
+            //        HttpContext.Session.SetString("Conexion", "publica");
+            //        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario");
 
-                // Remueve SSL (?) buscar nueva alternativa
+            //    } else {
+            //        HttpContext.Session.SetString("Conexion", "privada");
+            //        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario");
 
-                /*ServicePointManager
-                        .ServerCertificateValidationCallback +=
-                            (sender, cert, chain, sslPolicyErrors) => true;*/
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            //    }
+            //}
 
-                //https://app.franciscoantonio.tech:8891/api
+            //List<Usuario> usuarioList = JsonConvert.DeserializeObject<List<Usuario>>(json);
 
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-                //if (httpClient.GetStringAsync("https://app.franciscoantonio.tech:8891/api/Usuario").IsCompleted)
-                {
-                    HttpContext.Session.SetString("Conexion", "publica");
+            //string correoForm = Request.Form["correo"];
+            //string contraForm = Request.Form["contrasena1"];
 
-                    //ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            //// Encriptado de contraseña
 
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario");
-                    //json = await httpClient.GetStringAsync("https://app.franciscoantonio.tech:8891/api/Usuario");
+            //string sha256 = Encrypt.GetSHA256(contraForm);;
 
-                } else {
-                    HttpContext.Session.SetString("Conexion", "privada");
-                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            //foreach (Usuario user in usuarioList)
+            //{
+            //    if (user.Correo.Equals(correoForm) && user.Password.Equals(sha256))
+            //    {
+            //        HttpContext.Session.SetString("Id", Convert.ToString(user.IdUsuario));
+            //        HttpContext.Session.SetString("Correo", user.Correo);
+            //        HttpContext.Session.SetInt32("Expediente", (int)user.IdExpediente);
+            //        HttpContext.Session.SetString("Password", sha256);
+            //        HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
+            //        Console.WriteLine("ID EXPE: "+user.IdExpediente);
 
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario");
+            //        if (user.IdExpediente > 0) 
+            //        {
+            //            _idExpediente = (int)user.IdExpediente;
+            //            ExpedienteDTO expediente = await SolicitarExpediente();
+            //            HttpContext.Session.SetString("Nombre", expediente.Nombre);
+            //        }
 
-                }
-            }
+            //        return RedirectToAction("Index", "Inicio");
+            //    }
+            //}
 
-            List<Usuario> usuarioList = JsonConvert.DeserializeObject<List<Usuario>>(json);
 
             string correoForm = Request.Form["correo"];
             string contraForm = Request.Form["contrasena1"];
@@ -91,27 +104,53 @@ namespace ClienteWeb.Controllers
 
             string sha256 = Encrypt.GetSHA256(contraForm);;
 
-            foreach (Usuario user in usuarioList)
+            Usuario usuario = new Usuario
             {
-                if (user.Correo.Equals(correoForm) && user.Password.Equals(sha256))
-                {
-                    HttpContext.Session.SetString("Id", Convert.ToString(user.IdUsuario));
-                    HttpContext.Session.SetString("Correo", user.Correo);
-                    HttpContext.Session.SetInt32("Expediente", (int)user.IdExpediente);
-                    HttpContext.Session.SetString("Password", sha256);
-                    HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
-                    Console.WriteLine("ID EXPE: "+user.IdExpediente);
+                Correo = correoForm,
+                Password = sha256
+            };
 
-                    if (user.IdExpediente > 0) 
-                    {
-                        _idExpediente = (int)user.IdExpediente;
-                        ExpedienteDTO expediente = await SolicitarExpediente();
-                        HttpContext.Session.SetString("Nombre", expediente.Nombre);
-                    }
+            var httpClient = new HttpClient();
+            var json = JsonConvert.SerializeObject(usuario);
 
-                    return RedirectToAction("Index", "Inicio");
-                }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
+            else
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
+            }
+            HttpContent httpContent = new StringContent(json);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync("api/Usuario/Login", httpContent);
+
+            if (response.IsSuccessStatusCode) 
+            {
+                var respuesta = response.Content.ReadAsStringAsync().Result;
+                UsuarioToken user = JsonConvert.DeserializeObject<UsuarioToken>(respuesta);
+
+                HttpContext.Session.SetString("Id", Convert.ToString(user.IdUsuario));
+                HttpContext.Session.SetString("Correo", user.Correo);
+                HttpContext.Session.SetInt32("Expediente", (int)user.IdExpediente);
+                HttpContext.Session.SetString("Password", sha256);
+                HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
+                HttpContext.Session.SetString("Token", user.Token);
+                Console.WriteLine("ID EXPE: " + user.IdExpediente);
+
+                if (user.IdExpediente > 0)
+                {
+                    _idExpediente = (int)user.IdExpediente;
+                    ExpedienteDTO expediente = await SolicitarExpediente();
+                    HttpContext.Session.SetString("Nombre", expediente.Nombre);
+                }
+
+                return RedirectToAction("Index", "Inicio");
+            }
+
 
             TempData["Message"] = "Verifica que el correo y la contraseña estén escritos correctamente.";
             TempData["Correo"] = correoForm;
@@ -184,6 +223,8 @@ namespace ClienteWeb.Controllers
             var json = "";
             using (var httpClient = new HttpClient())
             {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
                 if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente)).IsCompleted)
                     json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente));
                 else

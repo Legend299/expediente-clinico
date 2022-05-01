@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webservice1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MedicoController : ControllerBase
     {
-        private readonly IMedicoRepository _repository;
-        public MedicoController(IMedicoRepository repository)
+        private readonly IMedicoService _repository;
+        public MedicoController(IMedicoService repository)
         {
             _repository = repository;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webservice1.Models.DTO;
 
@@ -6,10 +7,11 @@ namespace webservice1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ConsultaController : ControllerBase
     {
-        private readonly IConsultaRepository _repository;
-        public ConsultaController(IConsultaRepository repository)
+        private readonly IConsultaService _repository;
+        public ConsultaController(IConsultaService repository)
         {
             _repository = repository;
         }

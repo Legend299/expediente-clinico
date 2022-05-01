@@ -2,7 +2,7 @@
 
 namespace webservice1.Repository.RepositoryInterface
 {
-    public interface IConsultaRepository
+    public interface IConsultaService
     {
         public Task<ConsultaDTO?> ListarConsultaUsuario(int idConsulta);
         public Task<List<ConsultaDTO>?> ListarConsultasUsuario(int idExpediente);

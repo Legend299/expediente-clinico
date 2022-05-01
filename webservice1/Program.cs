@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using webservice1.Common;
 using webservice1.RabbitMQ;
 using webservice1.RabbitMQ.Productor;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//
+// Servidor visualStudio kestrel
 /*
 builder.WebHost.UseKestrel(options =>
 {
@@ -29,12 +33,41 @@ builder.Services
     .AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
     .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
 
-//
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
-builder.Services.AddScoped<IConsultaRepository, ConsultaRepository>();
-builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
-builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
+// JWT
+
+var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettingsSection);
+
+// token
+
+var appSettings = appSettingsSection.Get<AppSettings>();
+var llave = Encoding.ASCII.GetBytes(appSettings.Secreto);
+
+builder.Services.AddAuthentication(d =>
+{
+    d.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    d.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(d =>
+{
+    d.RequireHttpsMetadata = false;
+    d.SaveToken = true;
+    d.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(llave),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+
+// Services
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IExpedienteService, ExpedienteService>();
+builder.Services.AddScoped<IConsultaService, ConsultaService>();
+builder.Services.AddScoped<IDocumentoService, DocumentoService>();
+builder.Services.AddScoped<IMedicoService, MedicoService>();
 
 // Rabbitmq
 builder.Services.AddScoped<IProductor, Productor>();
@@ -75,6 +108,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

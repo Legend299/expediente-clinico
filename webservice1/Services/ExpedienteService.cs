@@ -2,10 +2,10 @@
 
 namespace webservice1.Repository
 {
-    public class ExpedienteRepository : IExpedienteRepository
+    public class ExpedienteService : IExpedienteService
     {
         private readonly expedienteContext _context;
-        public ExpedienteRepository(expedienteContext context)
+        public ExpedienteService(expedienteContext context)
         {
             _context = context;
         }

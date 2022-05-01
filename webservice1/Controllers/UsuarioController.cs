@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webservice1.Models.DTO;
 
@@ -8,19 +9,21 @@ namespace webservice1.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioRepository _repository;
-        public UsuarioController(IUsuarioRepository repository) 
+        private readonly IUsuarioService _repository;
+        public UsuarioController(IUsuarioService repository) 
         {
             _repository = repository;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Usuario>>> GetListaUsuarios() 
         {
             return Ok(await _repository.ListarUsuarios());
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Usuario>> GetUsuario(int id) 
         {
             var usuario = await _repository.ListarUsuario(id);
@@ -47,6 +50,7 @@ namespace webservice1.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public ActionResult PutUsuario(Usuario usuario) 
         {
             _repository.ModificarUsuario(usuario);
@@ -55,6 +59,7 @@ namespace webservice1.Controllers
 
         // GET Paciente
         [HttpGet("Permiso/{id}")]
+        [Authorize]
         public async Task<ActionResult<ExpedientesPermiso>> GetPermisoExpediente(int id) 
         {
             var _permiso = await _repository.ObtenerPermisoMedicoExpediente(id);
@@ -67,6 +72,7 @@ namespace webservice1.Controllers
 
         // GET Médico
         [HttpGet("Permiso/medico/{id}")]
+        [Authorize]
         public async Task<ActionResult<ExpedientesPermiso>> GetPermisoMedico(int id)
         {
             var _permiso = await _repository.ObtenerPermisoMedico(id);
@@ -77,6 +83,7 @@ namespace webservice1.Controllers
         }
 
         [HttpGet("Permiso/medico/pacientes/{id}")]
+        [Authorize]
         public async Task<ActionResult<List<ExpedientesPermiso>>> GetListaPacientes(int id) 
         {
             var _listaPermiso = await _repository.ObtenerListaPacientes(id);
@@ -87,6 +94,7 @@ namespace webservice1.Controllers
         }
 
         [HttpPut("Permiso")]
+        [Authorize]
         public async Task<ActionResult<ExpedientesPermiso>> PutPermiso(ExpedientesPermiso permiso) 
         {
             var _permiso = await _repository.ModificarPermisoMedico(permiso);
@@ -97,6 +105,7 @@ namespace webservice1.Controllers
         }
 
         [HttpPost("Permiso")]
+        [Authorize]
         public async Task<ActionResult<ExpedientesPermiso>> PostPermiso(ExpedientesPermiso permiso) 
         {
             var _permiso = await _repository.CrearPermisoMedico(permiso);
@@ -104,6 +113,16 @@ namespace webservice1.Controllers
                 return BadRequest();
 
             return Ok(_permiso);
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<UsuarioToken>> Login(Usuario usuario) 
+        {
+            var _cuenta = await _repository.Login(usuario);
+            if (_cuenta == null)
+                return BadRequest("No existe esa cuenta");
+
+            return Ok(_cuenta);
         }
 
     }
