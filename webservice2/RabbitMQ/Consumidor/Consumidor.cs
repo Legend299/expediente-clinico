@@ -1,5 +1,8 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
+using System.Text.Json;
+using webservice2.Models;
 
 namespace webservice2.RabbitMQ.Consumidor
 {
@@ -28,14 +31,16 @@ namespace webservice2.RabbitMQ.Consumidor
 
                     consumer.Received += (sender, args) =>
                     {
-                        var body = args.Body.ToArray();
+                        var body = Encoding.UTF8.GetString(args.Body.ToArray());
 
+                        DocumentoInfo documentoInfo = JsonSerializer.Deserialize<DocumentoInfo>(body);
+                        Console.WriteLine("[API 2] DATA COMPLETA");
+                        Console.WriteLine("NOMBRE DOCUMENTO: " + documentoInfo.Nombre);
+                        Console.WriteLine("EXTENSION: " + documentoInfo.Extension);
                         //using var stream = File.Create("C:/Users/acer/Desktop/Archivos_Expediente");
                         //stream.Write(body, 0, body.Length);
 
-                        File.WriteAllBytes("C:/Users/acer/Desktop/Archivos_Expediente/Imagen_TEST.pdf", body);
-
-                        Console.WriteLine("[API 2] DATA COMPLETA");
+                        //File.WriteAllBytes("C:/Users/acer/Desktop/Archivos_Expediente/Imagen_TEST.pdf", body);
                     };
 
                     channel.BasicConsume(queue: "TRANSFERENCIA_ARCHIVO", autoAck: true, consumer: consumer);
@@ -47,18 +52,18 @@ namespace webservice2.RabbitMQ.Consumidor
             }
         }
 
-        private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event) 
-        {
-            var body = @event.Body.ToArray();
+        //private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event) 
+        //{
+        //    var body = @event.Body.ToArray();
             
-            //using var stream = File.Create("C:/Users/acer/Desktop/Archivos_Expediente");
-            //stream.Write(body, 0, body.Length);
+        //    //using var stream = File.Create("C:/Users/acer/Desktop/Archivos_Expediente");
+        //    //stream.Write(body, 0, body.Length);
 
-            File.WriteAllBytes("C:/Users/acer/Desktop/Archivos_Expediente/Imagen_TEST.PNG", body);
+        //    File.WriteAllBytes("C:/Users/acer/Desktop/Archivos_Expediente/Imagen_TEST.PNG", body);
 
-            Console.WriteLine("[API 2] DATA COMPLETA");
+        //    Console.WriteLine("[API 2] DATA COMPLETA");
 
-            await Task.Delay(250);
-        }
+        //    await Task.Delay(250);
+        //}
     }
 }

@@ -290,15 +290,16 @@ namespace ClienteWeb.Controllers
             var httpClient = new HttpClient();
             var json = JsonConvert.SerializeObject(expedientesPermiso);
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
             if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
 
@@ -413,13 +414,14 @@ namespace ClienteWeb.Controllers
 
             if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))).IsCompleted)
             {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
             HttpContent httpContent = new StringContent(json);
@@ -454,15 +456,16 @@ namespace ClienteWeb.Controllers
 
             var _json = JsonConvert.SerializeObject(usuario);
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
             if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))).IsCompleted)
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
             HttpContent httpContent = new StringContent(_json);
@@ -512,15 +515,16 @@ namespace ClienteWeb.Controllers
 
             var httpClient = new HttpClient();
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
             if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
             HttpContent httpContent = new StringContent(json);

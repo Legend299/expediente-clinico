@@ -3,13 +3,18 @@ using webservice2.RabbitMQ.Consumidor;
 var builder = WebApplication.CreateBuilder(args);
 
 //
+/*
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(Convert.ToInt16(builder.Configuration.GetValue<string>("Puerto:Default")));
 });
+*/
+
+builder.WebHost.UseIISIntegration();
 
 // Rabbitmq
 builder.Services.AddScoped<IConsumidor, Consumidor>();
+//builder.Services.AddScoped<IProductor, Productor>();
 
 // Add services to the container.
 

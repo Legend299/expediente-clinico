@@ -99,15 +99,17 @@ namespace ClienteWeb.Controllers
             var json = JsonConvert.SerializeObject(consulta);
 
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            
             if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
             }
             else
             {
                 httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
             }
             HttpContent httpContent = new StringContent(json);

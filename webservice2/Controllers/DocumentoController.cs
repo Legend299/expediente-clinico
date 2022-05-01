@@ -15,11 +15,37 @@ namespace webservice2.Controllers
 
         }
 
-        [HttpGet("recibir")]
-        public async Task<ActionResult> GetArchivo()
+        [HttpPost]
+        public async Task<ActionResult> PostArchivo(IFormFile archivo)
         {
+            Console.WriteLine("PostArchivo: "+archivo.FileName);
+
             _recibirMensaje.RecibirMensaje();
-            Console.WriteLine("API 2 CONTROLLER DOCUMENTO");
+
+            string idUsuario = Convert.ToString(888);
+            string archivos = "C:/Users/acer/Desktop/Test_Archivos/" + idUsuario;
+
+            if (!Directory.Exists(archivos))
+            {
+                Directory.CreateDirectory(archivos);
+            }
+
+            string rutaArchivo = Path.Combine(archivos, archivo.FileName);
+
+            try
+            {
+
+                using (FileStream newFile = System.IO.File.Create(rutaArchivo))
+                {
+                    archivo.CopyTo(newFile);
+                    newFile.Flush();
+                }
+            }
+            catch (Exception e) 
+            {
+                throw new Exception(e.Message);
+            }
+
             return Ok();
         }
     }
