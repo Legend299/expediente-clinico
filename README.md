@@ -41,6 +41,15 @@ Install-Package Microsoft.EntityFrameworkCore.Tools -Version 6.0.4
 Install-Package Pomelo.EntityFrameworkCore.MySql -Version 6.0.1
 Install-Package RabbitMQ.Client -Version 6.2.4
 ```
+
+####Seguridad
+
+Json-Web-Token
+```
+Install-Package Microsoft.AspNetCore.Authentication.JwtBearer -Version 6.0.4
+Install-Package System.IdentityModel.Tokens.Jwt -Version 6.17.0
+```
+
 Para instalar depedencias:
 
 ![image](https://user-images.githubusercontent.com/64448236/164333777-ebfe2168-9cfb-4b99-9c1e-15baca9be9a0.png)
