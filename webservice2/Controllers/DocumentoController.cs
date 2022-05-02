@@ -18,38 +18,79 @@ namespace webservice2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostArchivo(IFormFile archivo)
+        public async Task<ActionResult> PostArchivo()
         {
-            Console.WriteLine("PostArchivo: "+archivo.FileName);
 
-            //_recibirMensaje.RecibirMensaje();
+            /*
+             * Private
+             */
 
-            string idUsuario = Convert.ToString(111);
-            string archivos = "C:/Users/acer/Desktop/Test_Archivos/"+idUsuario;
-
-            if (!Directory.Exists(archivos))
+            if (Request.HasFormContentType)
             {
-                Directory.CreateDirectory(archivos);
-            }
-
-            string rutaArchivo = Path.Combine(archivos, archivo.FileName);
-
-            try
-            {
-
-                using (FileStream newFile = System.IO.File.Create(rutaArchivo))
+                var form = Request.Form;
+                foreach (var formFile in form.Files)
                 {
-                    archivo.CopyTo(newFile);
-                    newFile.Flush();
+                    string idUsuario = Convert.ToString(111);
+                    string archivos = "C:/Users/acer/Desktop/Test_Archivos/135/" + idUsuario;
+
+                    if (!Directory.Exists(archivos))
+                    {
+                        Directory.CreateDirectory(archivos);
+                    }
+
+                    string rutaArchivo = Path.Combine(archivos, formFile.FileName);
+
+                    try
+                    {
+
+                        using (FileStream newFile = System.IO.File.Create(rutaArchivo))
+                        {
+                            formFile.CopyTo(newFile);
+                            newFile.Flush();
+                        }
+
+                        _recibirMensaje.RecibirMensaje(rutaArchivo);
+
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception(e.Message);
+                    }
                 }
-
-                _recibirMensaje.RecibirMensaje(rutaArchivo);
-
             }
-            catch (Exception e) 
-            {
-                throw new Exception(e.Message);
-            }
+
+            /*
+             * Private
+             */
+
+            ////_recibirMensaje.RecibirMensaje();
+
+            //string idUsuario = Convert.ToString(111);
+            //string archivos = "C:/Users/acer/Desktop/Test_Archivos/"+idUsuario;
+
+            //if (!Directory.Exists(archivos))
+            //{
+            //    Directory.CreateDirectory(archivos);
+            //}
+
+            //string rutaArchivo = Path.Combine(archivos, archivo.FileName);
+
+            //try
+            //{
+
+            //    using (FileStream newFile = System.IO.File.Create(rutaArchivo))
+            //    {
+            //        archivo.CopyTo(newFile);
+            //        newFile.Flush();
+            //    }
+
+            //    _recibirMensaje.RecibirMensaje(rutaArchivo);
+
+            //}
+            //catch (Exception e) 
+            //{
+            //    throw new Exception(e.Message);
+            //}
 
             return Ok();
         }

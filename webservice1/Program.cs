@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,12 @@ builder.WebHost.UseKestrel(options =>
 */
 
 builder.WebHost.UseIISIntegration();
+
+// Azure blob
+builder.Services.AddScoped(options =>
+{
+    return new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=expdocumentos;AccountKey=mHEcVdqPuBCNVqVtRIDWCVYN4brSd4JMW0yRILr368M+CtaS+Ig1VdRieshZD1TaDWT9QBu19UU9rnpVmD4iHg==;EndpointSuffix=core.windows.net");
+});
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

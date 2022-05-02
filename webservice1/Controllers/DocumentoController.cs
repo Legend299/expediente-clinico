@@ -75,7 +75,9 @@ namespace webservice1.Controllers
             ////    return BadRequest();
             ////}
             ///
-            bool resultado = _repository.Subir(documento);
+
+            //bool resultado = _repository.Subir(documento);
+            bool resultado = await _repository.SubirAzure(documento);
 
             DocumentoInfo documentoInfo = new DocumentoInfo
             {
@@ -86,27 +88,80 @@ namespace webservice1.Controllers
                 IdExpediente = documento.IdExpediente
             };
 
-            using (var httpclient = new HttpClient())
-            {
-                httpclient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", documento.Token);
-                using (var multipartFormContent = new MultipartFormDataContent())
-                {
-                    var filestreamContent = new StreamContent(documento.Archivo.OpenReadStream());
-                    filestreamContent.Headers.ContentType = new MediaTypeHeaderValue(documento.Archivo.ContentType);
+            //using (var httpclient = new HttpClient())
+            //{
+            //    httpclient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", documento.Token);
+            //    //using (var multipartFormContent = new MultipartFormDataContent())
+            //    //{
+            //    //    var filestreamContent = new StreamContent(documento.Archivo.OpenReadStream());
+            //    //    filestreamContent.Headers.ContentType = new MediaTypeHeaderValue(documento.Archivo.ContentType);
 
-                    multipartFormContent.Add(filestreamContent, name: "archivo", fileName: documento.Archivo.FileName);
+            //    //    multipartFormContent.Add(filestreamContent, name: "archivo", fileName: documento.Archivo.FileName);
 
-                    var response = await httpclient.PostAsync("https://app.franciscoantonio.tech:8892/api" + "/Documento", multipartFormContent);
-                    //var test = await response.Content.ReadAsStringAsync();
-                    // Código
-                    //Console.WriteLine(test);
-                }
-            }
+            //        var response = await httpclient.PostAsync("https://app.franciscoantonio.tech:8892/api" + "/Documento", documento.Archivo);
+            //        ////var test = await response.Content.ReadAsStringAsync();
+            //        //// Código
+            //        ////Console.WriteLine(test);
+            //    //}
+            //}
+
+            /*
+             *  Prueba private
+             */
+
+
+            //try
+            //{
+            //    if (documento.Archivo != null && documento.Archivo.Length > 0)
+            //    {
+            //        using (var client = new HttpClient())
+            //        {
+            //            try
+            //            {
+            //                client.BaseAddress = new Uri("https://app.franciscoantonio.tech:8892/");
+            //                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", documento.Token);
+            //                byte[] data;
+            //                using (var br = new BinaryReader(documento.Archivo.OpenReadStream()))
+            //                    data = br.ReadBytes((int)documento.Archivo.OpenReadStream().Length);
+
+            //                ByteArrayContent bytes = new ByteArrayContent(data);
+
+
+            //                MultipartFormDataContent multiContent = new MultipartFormDataContent();
+
+            //                multiContent.Add(bytes, "file", documento.Archivo.FileName);
+
+            //                var result = client.PostAsync("api/Documento", multiContent).Result;
+
+
+            //                return StatusCode((int)result.StatusCode); //201 Created the request has been fulfilled, resulting in the creation of a new resource.
+
+            //            }
+            //            catch (Exception)
+            //            {
+            //                return StatusCode(500); // 500 is generic server error
+            //            }
+            //        }
+            //    }
+
+            //    return StatusCode(400); // 400 is bad request
+
+            //}
+            //catch (Exception)
+            //{
+            //    return StatusCode(500); // 500 is generic server error
+            //}
+
+
+            /*
+             * Prueba private
+             */
+
 
             bool res = await _publicarMensaje.MandarMensaje(documentoInfo);
 
             return Ok("Archivo subido");
-            
+
             //return BadRequest("No se pudo subir el archivo");
         }
 
@@ -118,11 +173,18 @@ namespace webservice1.Controllers
         }
 
         [HttpGet("Archivo/{id}")]
-        public async Task<FileContentResult> ObtenerArchivoPorId(int id) 
+        public async Task<FileContentResult> ObtenerArchivoPorId(int id)
         {
             var documento = await _repository.ObtenerArchivo(id);
 
             return File(System.IO.File.ReadAllBytes(documento.Ruta), "application/octet-stream", documento.Nombre);
+        }
+
+        [HttpGet("ArchivoAzure/{id}")]
+        public async Task<FileContentResult> ObtenerArchivoAzurePorId(int id) 
+        {
+            var doc = await _repository.ObtenerArchivoAzure(id);
+            return File(doc.Contenido, "application/octet-stream", doc.Nombre);
         }
 
 

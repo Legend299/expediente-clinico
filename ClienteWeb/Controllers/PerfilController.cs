@@ -12,6 +12,8 @@ namespace ClienteWeb.Controllers
     public class PerfilController : Controller
     {
         private readonly IOptions<ConexionApi> _conexionApi;
+        //private readonly IHttpClientFactory _httpClientFactory;
+
         private int _idExpediente = 0;
         public PerfilController(IOptions<ConexionApi> conexionApi)
         {
@@ -100,6 +102,7 @@ namespace ClienteWeb.Controllers
             string correoForm = Request.Form["correo"];
             string contraForm = Request.Form["contrasena1"];
 
+
             // Encriptado de contraseña
 
             string sha256 = Encrypt.GetSHA256(contraForm);;
@@ -111,6 +114,9 @@ namespace ClienteWeb.Controllers
             };
 
             var httpClient = new HttpClient();
+            //var httpClient = _httpClientFactory.CreateClient("publico");
+            httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
+
             var json = JsonConvert.SerializeObject(usuario);
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
@@ -187,7 +193,7 @@ namespace ClienteWeb.Controllers
             var httpClient = new HttpClient();
             var json = JsonConvert.SerializeObject(usuario);
 
-            //httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/api/Usuario");
+            httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/api/Usuario");
 
             if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
             {

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Storage.Blobs;
+using ClienteWeb.Models.DTO;
+using Microsoft.AspNetCore.Mvc;
 using webservice1.Models.DTO;
 
 namespace webservice1.Repository
@@ -6,9 +8,11 @@ namespace webservice1.Repository
     public class DocumentoService : IDocumentoService
     {
         private readonly expedienteContext _context;
-        public DocumentoService(expedienteContext context)
+        private readonly BlobServiceClient _blobServiceClient;
+        public DocumentoService(expedienteContext context, BlobServiceClient blobServiceClient)
         {
             _context = context;
+            _blobServiceClient = blobServiceClient;
         }
         public bool Subir(DocumentoDTO documento)
         {
@@ -44,13 +48,54 @@ namespace webservice1.Repository
                 _context.Documentos.Add(doc);
                 _context.SaveChanges();
 
+
+
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error --> "+e.Message);
+                Console.WriteLine("Error --> " + e.Message);
                 return false;
             }
+        }
+
+        public async Task<bool> SubirAzure(DocumentoDTO documento) 
+        {
+            /*
+            * Azure blob Guardar Archivo
+            */
+            try
+            {
+                var blobContainer = _blobServiceClient.GetBlobContainerClient("docusuarios");
+
+                var blobClient = blobContainer.GetBlobClient(documento.IdExpediente + "/" + documento.Archivo.FileName);
+
+                await blobClient.UploadAsync(documento.Archivo.OpenReadStream());
+
+                string rutaArchivo = documento.IdExpediente + "/" + documento.Archivo.FileName;
+
+                Documento doc = new Documento
+                {
+                    Nombre = documento.Nombre,
+                    Extension = documento.Extension,
+                    Ruta = rutaArchivo,
+                    Medico = documento.Medico,
+                    Peso = documento.Peso,
+                    IdExpediente = documento.IdExpediente
+                };
+
+                _context.Documentos.Add(doc);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception e) 
+            {
+                throw new Exception(e.Message);
+            }
+            /*
+             * Azure blob Guardar Archivo
+             */
         }
 
         public async Task<List<Documento>> ObtenerListadocumentosUsuario(int idExpediente)
@@ -64,5 +109,30 @@ namespace webservice1.Repository
             var documento = await _context.Documentos.Where(d => d.IdDocumento == id).FirstOrDefaultAsync();
             return documento;
         }
+
+        public async Task<DocumentoAzure> ObtenerArchivoAzure(int id) 
+        {
+            DocumentoAzure documentoAzure = new DocumentoAzure();
+
+            var documento = await _context.Documentos.Where(d => d.IdDocumento == id).FirstOrDefaultAsync();
+
+            // Azure Blob
+            var blobContainer = _blobServiceClient.GetBlobContainerClient("docusuarios");
+
+            var blobClient = blobContainer.GetBlobClient(documento.Ruta);
+
+            var downloadContent = await blobClient.DownloadAsync();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                await downloadContent.Value.Content.CopyToAsync(ms);
+
+                documentoAzure.Nombre = documento.Nombre;
+                documentoAzure.Contenido = ms.ToArray();
+
+                //return ms.ToArray();
+                return documentoAzure;
+            }
+        }
+
     }
 }

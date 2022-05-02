@@ -9,7 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
     //options.ListenAnyIP(80);
 });*/
 
+
 builder.WebHost.UseIISIntegration();
+
+// Add HttpClient
+builder.Services.AddHttpClient("publico", HttpClient =>
+{
+    HttpClient.BaseAddress = new Uri("https://app.franciscoantonio.tech:8891/api");
+});
 
 // Add services to the container.
 // DateOnly converter
