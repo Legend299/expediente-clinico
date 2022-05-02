@@ -88,6 +88,7 @@ namespace webservice1.Controllers
 
             using (var httpclient = new HttpClient())
             {
+                httpclient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", documento.Token);
                 using (var multipartFormContent = new MultipartFormDataContent())
                 {
                     var filestreamContent = new StreamContent(documento.Archivo.OpenReadStream());
@@ -95,17 +96,15 @@ namespace webservice1.Controllers
 
                     multipartFormContent.Add(filestreamContent, name: "archivo", fileName: documento.Archivo.FileName);
 
-                    var response = await httpclient.PostAsync("https://192.168.1.69:8892/api" + "/Documento", multipartFormContent);
+                    var response = await httpclient.PostAsync("https://app.franciscoantonio.tech:8892/api" + "/Documento", multipartFormContent);
                     //var test = await response.Content.ReadAsStringAsync();
                     // Código
                     //Console.WriteLine(test);
                 }
             }
 
-            _publicarMensaje.MandarMensaje(documentoInfo);
+            bool res = await _publicarMensaje.MandarMensaje(documentoInfo);
 
-            //if (resultado)
-            
             return Ok("Archivo subido");
             
             //return BadRequest("No se pudo subir el archivo");

@@ -7,16 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\webservice1\Common\AppSettings.cs" Link="Common\AppSettings.cs" />
     <Compile Include="..\webservice1\Models\DTO\DocumentoInfo.cs" Link="Models\DocumentoInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Common\" />
     <Folder Include="RabbitMQ\Productor\" />
   </ItemGroup>
 

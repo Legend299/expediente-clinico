@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webservice2.RabbitMQ.Consumidor;
 
@@ -6,6 +7,7 @@ namespace webservice2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DocumentoController : ControllerBase
     {
         private readonly IConsumidor _recibirMensaje;
@@ -20,10 +22,10 @@ namespace webservice2.Controllers
         {
             Console.WriteLine("PostArchivo: "+archivo.FileName);
 
-            _recibirMensaje.RecibirMensaje();
+            //_recibirMensaje.RecibirMensaje();
 
-            string idUsuario = Convert.ToString(888);
-            string archivos = "C:/Users/acer/Desktop/Test_Archivos/" + idUsuario;
+            string idUsuario = Convert.ToString(111);
+            string archivos = "C:/Users/acer/Desktop/Test_Archivos/"+idUsuario;
 
             if (!Directory.Exists(archivos))
             {
@@ -40,6 +42,9 @@ namespace webservice2.Controllers
                     archivo.CopyTo(newFile);
                     newFile.Flush();
                 }
+
+                _recibirMensaje.RecibirMensaje(rutaArchivo);
+
             }
             catch (Exception e) 
             {
@@ -47,6 +52,12 @@ namespace webservice2.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet]
+        public ActionResult GetNotification() 
+        {
+            return Ok("Api Corriendo");
         }
     }
 }

@@ -10,5 +10,6 @@
         public int Peso { get; set; }
         public int IdExpediente { get; set; }
         public IFormFile Archivo { get; set; }
+        public string Token { get; set; }
     }
 }

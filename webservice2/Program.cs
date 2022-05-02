@@ -1,8 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using webservice1.Common;
 using webservice2.RabbitMQ.Consumidor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //
+
 /*
 builder.WebHost.UseKestrel(options =>
 {
@@ -10,7 +15,36 @@ builder.WebHost.UseKestrel(options =>
 });
 */
 
+
 builder.WebHost.UseIISIntegration();
+
+// JWT
+
+var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettingsSection);
+
+// token
+
+var appSettings = appSettingsSection.Get<AppSettings>();
+var llave = Encoding.ASCII.GetBytes(appSettings.Secreto);
+
+builder.Services.AddAuthentication(d =>
+{
+    d.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    d.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(d =>
+{
+    d.RequireHttpsMetadata = false;
+    d.SaveToken = true;
+    d.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(llave),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 // Rabbitmq
 builder.Services.AddScoped<IConsumidor, Consumidor>();
@@ -53,6 +87,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

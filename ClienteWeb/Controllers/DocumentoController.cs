@@ -101,6 +101,7 @@ namespace ClienteWeb.Controllers
                     multipartFormContent.Add(new StringContent(HttpContext.Session.GetString("Nombre")), name: "Medico");
                     multipartFormContent.Add(new StringContent(Convert.ToString(archivo.Length)), name: "Peso");
                     multipartFormContent.Add(new StringContent(Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))), name: "IdExpediente");
+                    multipartFormContent.Add(new StringContent(Convert.ToString(HttpContext.Session.GetString("Token"))), name: "Token");
 
                     var filestreamContent = new StreamContent(archivo.OpenReadStream());
                     filestreamContent.Headers.ContentType = new MediaTypeHeaderValue(archivo.ContentType);
@@ -108,11 +109,15 @@ namespace ClienteWeb.Controllers
                     multipartFormContent.Add(filestreamContent, name: "Archivo", fileName: archivo.FileName);
 
                     var response = await cliente.PostAsync(_conexionApi.Value.conexionPrivada + "/Documento", multipartFormContent);
+
+                    //var response = await cliente.PostAsync("http://localhost:7777/api" + "/Documento", multipartFormContent);
+
+
                     //var test = await response.Content.ReadAsStringAsync();
                     // Código
                     //Console.WriteLine(test);
                 }
-            TempData["Mensaje"] = "Se ha subido: "+archivo.FileName;
+                TempData["Mensaje"] = "Se ha subido: "+archivo.FileName;
             return RedirectToAction("Ver");
             }
             catch (Exception e) 
