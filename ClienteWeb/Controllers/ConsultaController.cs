@@ -9,12 +9,13 @@ namespace ClienteWeb.Controllers
 {
     public class ConsultaController : Controller
     {
-        private readonly IOptions<ConexionApi> _conexionApi;
+        private readonly IHttpClientFactory _httpClientFactory;
+
         private int _idExpediente = 0;
 
-        public ConsultaController(IOptions<ConexionApi> conexionApi)
+        public ConsultaController(IHttpClientFactory httpClientFactory)
         {
-            _conexionApi = conexionApi;
+            _httpClientFactory = httpClientFactory;
         }
 
         /*
@@ -45,37 +46,30 @@ namespace ClienteWeb.Controllers
 
             int idExpediente = _idExpediente;
 
-                var json = "";
-                using (var httpClient = new HttpClient())
-                {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(idExpediente)).IsCompleted)
-                        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(idExpediente));
-                    else
-                        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(idExpediente));
+            var json = "";
 
-                }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Consulta/" + Convert.ToString(idExpediente));
 
-                List<Consulta> listaConsulta = JsonConvert.DeserializeObject<List<Consulta>>(json);
+            List<Consulta> listaConsulta = JsonConvert.DeserializeObject<List<Consulta>>(json);
 
-                return listaConsulta;
+            return listaConsulta;
         }
-
 
         // Eliminar consulta
         // Falta Validar
         public async Task<IActionResult> EliminarConsulta(int id) 
         {
-            var json = "";
 
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-                    await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(id));
-                else
-                    await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(id));
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Consulta/" + Convert.ToString(id));
+
+            if (response.IsSuccessStatusCode)
+                TempData["Mensaje"] = "Consulta eliminada con éxito.";
+            else
+                TempData["ErrorMensaje"] = "No se ha podido eliminar la consulta.";
 
             return RedirectToAction("Ver");
         }
@@ -98,20 +92,9 @@ namespace ClienteWeb.Controllers
 
             var json = JsonConvert.SerializeObject(consulta);
 
-            var httpClient = new HttpClient();
-            
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Consulta/", httpContent);

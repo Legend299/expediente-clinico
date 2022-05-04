@@ -9,14 +9,14 @@ namespace ClienteWeb.Controllers
 {
     public class ExpedienteController : Controller
     {
-        private readonly IOptions<ConexionApi> _conexionApi;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private int _idExpediente = 0;
         private int _idUsuario = 0;
 
-        public ExpedienteController(IOptions<ConexionApi> conexionApi)
+        public ExpedienteController(IHttpClientFactory httpClientFactory)
         {
-            _conexionApi = conexionApi;
+            _httpClientFactory = httpClientFactory;
         }
 
         /*
@@ -65,15 +65,10 @@ namespace ClienteWeb.Controllers
                 Tramitar();
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/"+Convert.ToString(_idExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(_idExpediente));
 
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Expediente/"+Convert.ToString(_idExpediente));
 
             ExpedienteDTO expedienteUsuario = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
             HttpContext.Session.SetString("Nombre", expedienteUsuario.Nombre);
@@ -86,7 +81,6 @@ namespace ClienteWeb.Controllers
 
             Expediente expediente = new Expediente();
             
-            
             expediente.Imagen = "https://beporsam.ir/wp-content/uploads/2017/03/user.png";
             expediente.IdExpediente = (int)HttpContext.Session.GetInt32("Expediente");
             expediente.Nombre = Request.Form["nombre"];
@@ -96,43 +90,23 @@ namespace ClienteWeb.Controllers
             DateOnly dateOnly = DateOnly.FromDateTime(Convert.ToDateTime(Request.Form["fechadenacimiento"]));
             expediente.FechaDeNacimiento = dateOnly;
 
-            //expediente.Estado.IdEstado = Convert.ToInt32(Request.Form["estado"]);
-            //expediente.Municipio.IdMunicipio = Convert.ToInt32(Request.Form["municipio"]);
-            /*expediente.Estado = new EstadoDTO{
-                IdEstado = Convert.ToInt32(Request.Form["estado"])
-            };*/
-
-            /*expediente.Municipio = new MunicipioDTO{
-                IdMunicipio = Convert.ToInt32(Request.Form["municipio"])
-            };*/
             expediente.IdEstado = Convert.ToInt32(Request.Form["estado"]);
             expediente.IdMunicipio = Convert.ToInt32(Request.Form["municipio"]);
 
             expediente.Sexo = Convert.ToBoolean(Request.Form["sexo"]);
             expediente.Curp = Request.Form["curp"];
 
-            var httpClient = new HttpClient();
+            //var httpClient = new HttpClient();
+            var httpClient = _httpClientFactory.CreateClient("api"); 
             var json = JsonConvert.SerializeObject(expediente);
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))).IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Expediente/", httpContent);
-            Console.WriteLine("CODIGO: " + response);
-            //httpClient.Dispose();
+
             HttpContext.Session.SetString("Nombre", expediente.Nombre);
-            //await Task.Delay(3000);
 
             return RedirectToAction("Ver");
         }
@@ -145,7 +119,6 @@ namespace ClienteWeb.Controllers
 
             Expediente expediente = new Expediente();
 
-
             expediente.Imagen = "https://beporsam.ir/wp-content/uploads/2017/03/user.png";
             expediente.Nombre = Request.Form["nombre"];
             expediente.Apellido = Request.Form["apellido"];
@@ -160,36 +133,23 @@ namespace ClienteWeb.Controllers
             expediente.Sexo = Convert.ToBoolean(Request.Form["sexo"]);
             expediente.Curp = Request.Form["curp"];
 
-            var httpClient = new HttpClient();
+            //var httpClient = new HttpClient();
+            var httpClient = _httpClientFactory.CreateClient("api");
+
             var json = JsonConvert.SerializeObject(expediente);
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(1)).IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Expediente/", httpContent);
-            Console.WriteLine("Mensaje: " + response.Content);
 
             Expediente expedienteUsuario = JsonConvert.DeserializeObject<Expediente>(await response.Content.ReadAsStringAsync());
 
-            //await Task.Delay(1000);
             _idExpediente = expedienteUsuario.IdExpediente;
             AgregarExpedienteUsuario();
             HttpContext.Session.SetInt32("Expediente", expedienteUsuario.IdExpediente);
             HttpContext.Session.SetString("Nombre", expedienteUsuario.Nombre);
-            //httpClient.Dispose();
-
-            //await Task.Delay(3000);
 
             return RedirectToAction("Ver");
         }
@@ -208,22 +168,11 @@ namespace ClienteWeb.Controllers
             usuario.IdExpediente = _idExpediente;
             usuario.Activo = true;
 
-
-            var httpClient = new HttpClient();
+            var httpClient = _httpClientFactory.CreateClient("api");
             var json = JsonConvert.SerializeObject(usuario);
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/", httpContent);

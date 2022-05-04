@@ -11,13 +11,12 @@ namespace ClienteWeb.Controllers
 {
     public class PerfilController : Controller
     {
-        private readonly IOptions<ConexionApi> _conexionApi;
-        //private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private int _idExpediente = 0;
-        public PerfilController(IOptions<ConexionApi> conexionApi)
+        public PerfilController(IHttpClientFactory httpClientFactory)
         {
-            _conexionApi = conexionApi;
+            _httpClientFactory = httpClientFactory;
         }
 
         /*
@@ -52,59 +51,10 @@ namespace ClienteWeb.Controllers
             if (HttpContext.Session.GetString("Id") != null)
                 return RedirectToAction("Index", "Inicio");
 
-            //var json = "";
-            //using (var httpClient = new HttpClient())
-            //{
-            //    if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            //    {
-            //        HttpContext.Session.SetString("Conexion", "publica");
-            //        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario");
-
-            //    } else {
-            //        HttpContext.Session.SetString("Conexion", "privada");
-            //        json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario");
-
-            //    }
-            //}
-
-            //List<Usuario> usuarioList = JsonConvert.DeserializeObject<List<Usuario>>(json);
-
-            //string correoForm = Request.Form["correo"];
-            //string contraForm = Request.Form["contrasena1"];
-
-            //// Encriptado de contraseña
-
-            //string sha256 = Encrypt.GetSHA256(contraForm);;
-
-            //foreach (Usuario user in usuarioList)
-            //{
-            //    if (user.Correo.Equals(correoForm) && user.Password.Equals(sha256))
-            //    {
-            //        HttpContext.Session.SetString("Id", Convert.ToString(user.IdUsuario));
-            //        HttpContext.Session.SetString("Correo", user.Correo);
-            //        HttpContext.Session.SetInt32("Expediente", (int)user.IdExpediente);
-            //        HttpContext.Session.SetString("Password", sha256);
-            //        HttpContext.Session.SetString("Rol", Convert.ToString(user.IdRol));
-            //        Console.WriteLine("ID EXPE: "+user.IdExpediente);
-
-            //        if (user.IdExpediente > 0) 
-            //        {
-            //            _idExpediente = (int)user.IdExpediente;
-            //            ExpedienteDTO expediente = await SolicitarExpediente();
-            //            HttpContext.Session.SetString("Nombre", expediente.Nombre);
-            //        }
-
-            //        return RedirectToAction("Index", "Inicio");
-            //    }
-            //}
-
-
             string correoForm = Request.Form["correo"];
             string contraForm = Request.Form["contrasena1"];
 
-
             // Encriptado de contraseña
-
             string sha256 = Encrypt.GetSHA256(contraForm);;
 
             Usuario usuario = new Usuario
@@ -113,23 +63,11 @@ namespace ClienteWeb.Controllers
                 Password = sha256
             };
 
-            var httpClient = new HttpClient();
-            //var httpClient = _httpClientFactory.CreateClient("publico");
-            httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-
+            var httpClient = _httpClientFactory.CreateClient("api");
+  
             var json = JsonConvert.SerializeObject(usuario);
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Usuario/Login", httpContent);
@@ -190,21 +128,10 @@ namespace ClienteWeb.Controllers
             string sha256 = Encrypt.GetSHA256(usuario.Password);
             usuario.Password = sha256;
 
-            var httpClient = new HttpClient();
+            var httpClient = _httpClientFactory.CreateClient("api");
+
             var json = JsonConvert.SerializeObject(usuario);
 
-            httpClient.BaseAddress = new Uri("http://legend.zapto.org:8891/api/Usuario");
-
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Usuario", httpContent);
@@ -227,16 +154,10 @@ namespace ClienteWeb.Controllers
                 //throw new Exception("Error");
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
 
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(_idExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(_idExpediente));
-
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Expediente/" + Convert.ToString(_idExpediente));
 
             ExpedienteDTO expedienteUsuario = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
 

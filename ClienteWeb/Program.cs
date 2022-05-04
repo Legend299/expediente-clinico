@@ -13,9 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseIISIntegration();
 
 // Add HttpClient
-builder.Services.AddHttpClient("publico", HttpClient =>
+builder.Services.AddHttpClient("api", HttpClient =>
 {
-    HttpClient.BaseAddress = new Uri("https://app.franciscoantonio.tech:8891/api");
+    HttpClient.BaseAddress = new Uri("http://192.168.1.69:8893/api");
 });
 
 // Add services to the container.

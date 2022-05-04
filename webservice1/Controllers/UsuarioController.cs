@@ -116,6 +116,17 @@ namespace webservice1.Controllers
             return Ok(_permiso);
         }
 
+        [HttpDelete("Permiso/{id}")]
+        [Authorize]
+        public ActionResult DeletePermiso(int id) 
+        {
+            var _permiso = _repository.EliminarPermiso(id);
+            if (_permiso == null)
+                return BadRequest("No se ha podido eliminar el permiso");
+
+            return Ok("Permiso Eliminado");
+        }
+
         [HttpPost("Login")]
         public async Task<ActionResult<UsuarioToken>> Login(Usuario usuario) 
         {

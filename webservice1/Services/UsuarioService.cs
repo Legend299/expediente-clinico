@@ -171,6 +171,23 @@ namespace webservice1.Repository
 
         }
 
+        public ExpedientesPermiso EliminarPermiso(int id) 
+        {
+            ExpedientesPermiso expedientesPermiso = new ExpedientesPermiso
+            {
+                IdPermiso = id,
+                IdUsuario = 1,
+                IdExpediente = 1,
+                PermisoMedico = true,
+                PermisoUsuario = true,
+                Permiso = true
+            };
+
+            _context.ExpedientesPermisos.Remove(expedientesPermiso);
+            _context.SaveChanges();
+
+            return expedientesPermiso;
+        }
         public async Task<UsuarioToken> Login(Usuario usuario) 
         {
             UsuarioToken usuarioToken = new UsuarioToken();

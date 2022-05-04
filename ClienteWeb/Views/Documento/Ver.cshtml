@@ -53,7 +53,7 @@
                     <td>@(documento.Peso/1024) KB</td>
                     <td>@documento.Medico</td>
                     <td>
-                    <button type="button" class="btnDescargar btn btn-primary" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-arrow-down-square"></i> Descargar</button>
+                    @Html.ActionLink(" Descargar", "DescargarDocumento", new { IdDocumento = documento.IdDocumento, Nombre = documento.Nombre }, new { @class = "bi bi-arrow-down-square btn btn-primary" })
                     @{
                         List<string> extensiones=new List<string>(new string[]{".png",".jpg",".jpeg", ".jfif", ".pjpeg", ".pjp"});
                     }
@@ -101,18 +101,6 @@
         });
     });
     </script>
-
-    <script>
-    $(document).ready(function () {
-    $(".btnDescargar").click(function (e){
-        var Id = $(this).val();
-        e.preventDefault();
-            //window.open('https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/'+Id,'_blank');
-            window.location.href = 'https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/'+Id;
-        });
-    });
-    </script>
-
 
     <script>
      $(document).ready(function() {

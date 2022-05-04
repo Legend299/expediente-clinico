@@ -9,12 +9,12 @@ namespace ClienteWeb.Controllers
 {
     public class MedicoController : Controller
     {
-        private readonly IOptions<ConexionApi> _conexionApi;
+        private readonly IHttpClientFactory _httpClientFactory;
         private int _IdMedico = 0;
 
-        public MedicoController(IOptions<ConexionApi> conexionApi)
+        public MedicoController(IHttpClientFactory httpClientFactory)
         {
-            _conexionApi = conexionApi;
+            _httpClientFactory = httpClientFactory;
         }
 
         /*
@@ -73,15 +73,10 @@ namespace ClienteWeb.Controllers
             TempData["ExpedienteUsuario"] = IdExpediente;
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(IdExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString(IdExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Expediente/" + Convert.ToString(IdExpediente));
 
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Expediente/" + Convert.ToString(IdExpediente));
 
             ExpedienteDTO expedienteUsuario = JsonConvert.DeserializeObject<ExpedienteDTO>(json);
 
@@ -122,15 +117,10 @@ namespace ClienteWeb.Controllers
             TempData["ExpedienteUsuario"] = IdExpediente;
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(IdExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(IdExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(IdExpediente));
 
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Consulta/" + Convert.ToString(IdExpediente));
 
             List<Consulta> listaConsulta = JsonConvert.DeserializeObject<List<Consulta>>(json);
 
@@ -170,15 +160,10 @@ namespace ClienteWeb.Controllers
             TempData["ExpedienteUsuario"] = IdExpediente;
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Documento/" + Convert.ToString(IdExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Documento/" + Convert.ToString(IdExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Documento/" + Convert.ToString(IdExpediente));
 
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Documento/" + Convert.ToString(IdExpediente));
 
             List<Documento> listaDocumento = JsonConvert.DeserializeObject<List<Documento>>(json);
 
@@ -216,16 +201,11 @@ namespace ClienteWeb.Controllers
                 Usuarios();
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/").IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/");
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario/");
 
-            }
-
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Usuario/");
+            
             List<Usuario> listaUsuario = JsonConvert.DeserializeObject<List<Usuario>>(json);
 
             return listaUsuario;
@@ -237,15 +217,10 @@ namespace ClienteWeb.Controllers
                 Usuarios();
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/").IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/Permiso/medico/pacientes/"+ _IdMedico);
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Usuario/Permiso/medico/pacientes/"+ _IdMedico);
 
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Usuario/Permiso/medico/pacientes/"+ _IdMedico);
 
             List<ExpedientesPermiso> listaUsuario = JsonConvert.DeserializeObject<List<ExpedientesPermiso>>(json);
 
@@ -256,14 +231,10 @@ namespace ClienteWeb.Controllers
         public async Task<List<Especialidade>> ListarEspecialidades() 
         {
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/").IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Medico/Especialidades");
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Medico/Especialidades");
-            }
+
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Medico/Especialidades");
 
             List<Especialidade> listaEspecialidades = JsonConvert.DeserializeObject<List<Especialidade>>(json);
 
@@ -286,33 +257,19 @@ namespace ClienteWeb.Controllers
                 PermisoUsuario = false
             };
 
-
-            var httpClient = new HttpClient();
             var json = JsonConvert.SerializeObject(expedientesPermiso);
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
-
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/usuario/permiso", httpContent);
             //HttpResponseMessage response = await httpClient.PostAsync(httpContent);
-            Console.WriteLine("CODIGO: " + response);
 
             TempData["Solicitud"] = "Por favor verifica tu identidad en la aplicación móvil, para llevar a cabo la solicitud del expediente.";
 
             return RedirectToAction("Usuarios");
-
 
         }
 
@@ -325,8 +282,8 @@ namespace ClienteWeb.Controllers
 
             try
             {
-                var cliente = new HttpClient();
-                cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+                var httpClient = _httpClientFactory.CreateClient("api");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 using (var multipartFormContent = new MultipartFormDataContent())
                 {
                     multipartFormContent.Add(new StringContent(archivo.FileName), name: "Nombre");
@@ -340,10 +297,8 @@ namespace ClienteWeb.Controllers
 
                     multipartFormContent.Add(filestreamContent, name: "Archivo", fileName: archivo.FileName);
 
-                    var response = await cliente.PostAsync(_conexionApi.Value.conexionPrivada + "/Documento", multipartFormContent);
-                    //var test = await response.Content.ReadAsStringAsync();
-                    // Código
-                    //Console.WriteLine(test);
+                    var response = await httpClient.PostAsync("api/Documento", multipartFormContent);
+
                 }
                 TempData["Mensaje"] = "Se ha subido: " + archivo.FileName;
                 TempData["ExpedienteUsuario"] = idExpediente;
@@ -365,14 +320,10 @@ namespace ClienteWeb.Controllers
             string especialidad = Request.Form["especialidad"];
 
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario/").IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Medico/");
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Medico/");
-            }
+
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Medico/");
 
             List<Medico> listaMedico = JsonConvert.DeserializeObject<List<Medico>>(json);
             
@@ -408,30 +359,17 @@ namespace ClienteWeb.Controllers
 
         public async Task<HttpResponseMessage> ModificarMedico(Medico medico) 
         {
-            
-            var httpClient = new HttpClient();
-            var json = JsonConvert.SerializeObject(medico);
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))).IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+
+            var json = JsonConvert.SerializeObject(medico);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Medico/", httpContent);
 
             return response;
-
-            //if (response.IsSuccessStatusCode) 
-            //    ModificarUsuario((int)medico.IdUsuario);
 
         }
 
@@ -450,24 +388,13 @@ namespace ClienteWeb.Controllers
 
             //
 
-            var httpClient = new HttpClient();
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
 
             usuario.IdRol = 2;
 
             var _json = JsonConvert.SerializeObject(usuario);
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Expediente/" + Convert.ToString((int)HttpContext.Session.GetInt32("Expediente"))).IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
             HttpContent httpContent = new StringContent(_json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/", httpContent);
@@ -483,15 +410,10 @@ namespace ClienteWeb.Controllers
 
             HttpResponseMessage response;
 
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(id));
-                else
-                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(id));
-            }
-
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            response = await httpClient.DeleteAsync("api/Consulta/" + Convert.ToString(id));
+             
             int codigo = (int)response.StatusCode;
 
             if (codigo >= 300)
@@ -499,7 +421,6 @@ namespace ClienteWeb.Controllers
                 TempData["ErrorMensaje"] = "No se ha podido eliminar la consulta";
                 return RedirectToAction("Consultas");
             }
-
 
             TempData["Mensaje"] = "Consulta eliminada con éxito.";
 
@@ -526,20 +447,9 @@ namespace ClienteWeb.Controllers
 
             var json = JsonConvert.SerializeObject(consulta);
 
-            var httpClient = new HttpClient();
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
 
-            if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-            }
-            else
-            {
-                httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPrivada);
-            }
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Consulta/", httpContent);
@@ -556,10 +466,23 @@ namespace ClienteWeb.Controllers
 
         }
 
+        public async Task<FileResult> DescargarDocumento(int IdDocumento, string Nombre, int IdExpediente)
+        {
+            TempData["ExpedienteUsuario"] = IdExpediente;
+
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
+            HttpResponseMessage file = new HttpResponseMessage();
+            Task<HttpResponseMessage> response = httpClient.GetAsync("api/Documento/ArchivoAzure/" + IdDocumento);
+
+            file = response.Result;
+
+            return File(file.Content.ReadAsByteArrayAsync().Result, "application/octet-stream", Nombre);
+        }
+
         public async Task<IActionResult> EliminarDocumento(int IdDocumento, string NombreArchivo, int IdExpediente)
         {
-            //try
-            //{
 
             TempData["ExpedienteUsuario"] = IdExpediente;
 
@@ -567,14 +490,9 @@ namespace ClienteWeb.Controllers
 
             HttpResponseMessage response;
 
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
-                else
-                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            response = await httpClient.DeleteAsync("api/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
 
             int codigo = (int)response.StatusCode;
 
@@ -586,80 +504,34 @@ namespace ClienteWeb.Controllers
 
             TempData["Mensaje"] = "Se ha eliminado: " + NombreArchivo;
             return RedirectToAction("Documentos");
-            //}
-            //catch (Exception e)
-            //{
-            //    TempData["ErrorMensaje"] = "No se ha podido eliminar "+NombreArchivo;
-            //    return RedirectToAction("Ver");
-            //}
-
         }
 
         public async Task<IActionResult> CerrarExpediente(int IdPermiso, int IdUsuario, int IdExpediente) 
         {
-
-
-            //ExpedientesPermiso expedientesPermiso = new ExpedientesPermiso
-            //{
-            //    IdPermiso = IdPermiso,
-            //    IdUsuario = IdUsuario,
-            //    IdExpediente = IdExpediente,
-            //    PermisoMedico = false,
-            //    PermisoUsuario = true,
-            //    Permiso = false
-            //};
-
-            //var httpClient = new HttpClient();
-
-            //var json = JsonConvert.SerializeObject(expedientesPermiso);
-
-            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-
-            ////httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-
-            //HttpContent httpContent = new StringContent(json);
-            //httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            //var response = await httpClient.PutAsync("https://app.franciscoantonio.tech:8891/api/Usuario/Permiso/", httpContent);
-
-            //int code = (int)response.StatusCode;
-
-            //if (code >= 300 || code <= 199)
-            //{
-            //    TempData["ErrorMensaje"] = "No se ha podido cerrar el expediente #" + code;
-            //    return RedirectToAction("MisPacientes");
-            //}
-
-            //TempData["Mensaje"] = "El paciente ha sido liberado";
-            //return RedirectToAction("MisPacientes");
 
             ExpedientesPermiso expedientesPermiso = new ExpedientesPermiso
             {
                 IdPermiso = IdPermiso,
                 IdUsuario = IdUsuario,
                 IdExpediente = IdExpediente,
-                PermisoMedico = false,
+                PermisoMedico = true,
                 PermisoUsuario = true,
-                Permiso = false
+                Permiso = true
             };
 
-            var httpClient = new HttpClient();
-            var json = JsonConvert.SerializeObject(expedientesPermiso);
+            var json = "";
 
-            httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            var httpClient = _httpClientFactory.CreateClient("api");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-            httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
-
-            HttpContent httpContent = new StringContent(json);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/Permiso", httpContent);
+            response = await httpClient.DeleteAsync("api/Usuario/Permiso/" + Convert.ToString(expedientesPermiso.IdPermiso));
 
             if (!response.IsSuccessStatusCode)
             {
-                TempData["ErrorMensaje"] = "No se ha podido cerrar el expediente #" + response.StatusCode;
+                TempData["ErrorMensaje"] = "No se ha podido cerrar el expediente";
                 return RedirectToAction("MisPacientes");
             }
-
 
             TempData["Mensaje"] = "El paciente ha sido liberado";
             return RedirectToAction("MisPacientes");

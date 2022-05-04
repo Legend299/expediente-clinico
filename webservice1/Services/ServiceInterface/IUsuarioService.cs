@@ -15,6 +15,7 @@ namespace webservice1.Repository.RepositoryInterface
         public Task<ExpedientesPermiso> ObtenerPermisoMedicoExpediente(int idExpediente);
         public Task<List<ExpedientesPermiso>> ObtenerListaPacientes(int idMedico);
         public Task<ExpedientesPermiso> ModificarPermisoMedico(ExpedientesPermiso permiso);
+        public ExpedientesPermiso EliminarPermiso(int id);
         public Task<UsuarioToken> Login(Usuario usuario);
     }
 }

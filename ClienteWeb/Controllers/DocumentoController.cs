@@ -10,13 +10,13 @@ namespace ClienteWeb.Controllers
 {
     public class DocumentoController : Controller
     {
-        private readonly IOptions<ConexionApi> _conexionApi;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private int _idExpediente = 0;
 
-        public DocumentoController(IOptions<ConexionApi> conexionApi)
+        public DocumentoController(IHttpClientFactory httpClientFactory)
         {
-            _conexionApi = conexionApi;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Ver()
@@ -36,64 +36,11 @@ namespace ClienteWeb.Controllers
          */
         public async Task<IActionResult> SubirDocumento(IFormFile archivo) 
         {
-            //DocumentoDTO documento = new DocumentoDTO();
-            //documento.Nombre = archivo.FileName;
-            //documento.Extension = System.IO.Path.GetExtension(archivo.FileName);
-            //documento.Medico = "nombre medico";
-            //documento.Peso = Convert.ToInt32(archivo.Length/1024);
-            //documento.IdExpediente = (int)HttpContext.Session.GetInt32("Expediente");
-
-            //documento.archivo = archivo;
-
-
-            /*
-             * No headers
-             */
-            //var client = new HttpClient
-            //{
-            //    BaseAddress = new(_conexionApi.Value.conexionPrivada)
-            //};
-
-            //await using var stream = archivo.OpenReadStream();
-
-            //using var request = new HttpRequestMessage(HttpMethod.Post, "api/Documento");
-
-            //var payload = new
-            //{
-            //    Nombre = archivo.FileName,
-            //    Extension = System.IO.Path.GetExtension(archivo.FileName),
-            //    Medico = "nombre medico",
-            //    Peso = Convert.ToInt32(archivo.Length / 1024),
-            //    IdExpediente = (int)HttpContext.Session.GetInt32("Expediente")
-            //};
-
-            //using var content = new MultipartFormDataContent
-            //{
-
-            //    // payload
-            //    { new StringContent(payload.Nombre), "DocumentoDTO.Nombre" },
-            //    { new StringContent(payload.Extension), "DocumentoDTO.Extension" },
-            //    { new StringContent(payload.Medico), "DocumentoDTO.Medico" },
-            //    { new StringContent(Convert.ToString(payload.Peso)), "DocumentoDTO.Peso" },
-            //    { new StringContent(Convert.ToString(payload.IdExpediente)), "DocumentoDTO.IdExpediente" },
-
-            //    // file
-            //    { new StreamContent(stream), "archivo", archivo.FileName }
-            //};
-
-            //request.Content = content;
-
-            //HttpResponseMessage response = await client.SendAsync(request);
-
-            //Console.WriteLine("CODIGO ARCHIVO: \n"+response);
-
-            //if (archivo == null)
-            //    Ver();
 
             try
             {
-                var cliente = new HttpClient();
-                cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+                var httpClient = _httpClientFactory.CreateClient("api");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 using (var multipartFormContent = new MultipartFormDataContent())
                 {
                     multipartFormContent.Add(new StringContent(archivo.FileName), name: "Nombre");
@@ -108,7 +55,7 @@ namespace ClienteWeb.Controllers
 
                     multipartFormContent.Add(filestreamContent, name: "Archivo", fileName: archivo.FileName);
 
-                    var response = await cliente.PostAsync(_conexionApi.Value.conexionPrivada + "/Documento", multipartFormContent);
+                    var response = await httpClient.PostAsync("api/Documento", multipartFormContent);
 
                     //var response = await cliente.PostAsync("http://localhost:7777/api" + "/Documento", multipartFormContent);
 
@@ -149,38 +96,27 @@ namespace ClienteWeb.Controllers
         //    return File(json, "application/octet-stream", FileName);
         //}
 
-        public async Task<HttpResponseMessage> DescargarDocumento(int IdDocumento, string Nombre)
+        public async Task<FileResult> DescargarDocumento(int IdDocumento, string Nombre)
         {
-            //String url = "https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/";
-            //HttpResponseMessage file = new HttpResponseMessage();
-            //using (var httpClient = new HttpClient())
-            //{
-            //    Task<HttpResponseMessage> response = httpClient.GetAsync(url+IdDocumento);
-            //    file = response.Result;
-            //}
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
 
-            //return File(file.Content.ReadAsByteArrayAsync().Result, "application/octet-stream", Nombre);
+            HttpResponseMessage file = new HttpResponseMessage();
+            Task<HttpResponseMessage> response = httpClient.GetAsync("api/Documento/ArchivoAzure/" + IdDocumento);
 
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                return await httpClient.GetAsync(_conexionApi.Value.conexionPublica + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
-            }
+            file = response.Result;
+
+            return File(file.Content.ReadAsByteArrayAsync().Result, "application/octet-stream", Nombre);
         }
 
         public async Task<List<Documento>> SolicitarListaDocumentos()
         {
             int idExpediente = _idExpediente;
             var json = "";
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Documento/" + Convert.ToString(idExpediente)).IsCompleted)
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Documento/" + Convert.ToString(idExpediente));
-                else
-                    json = await httpClient.GetStringAsync(_conexionApi.Value.conexionPrivada + "/Documento/" + Convert.ToString(idExpediente));
 
-            }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            json = await httpClient.GetStringAsync("api/Documento/" + Convert.ToString(idExpediente));
 
             List<Documento> listaDocumento = JsonConvert.DeserializeObject<List<Documento>>(json);
 
@@ -189,21 +125,12 @@ namespace ClienteWeb.Controllers
 
         public async Task<IActionResult> EliminarDocumento(int IdDocumento, string NombreArchivo) 
         {
-            //try
-            //{
 
-                var json = "";
+            var json = "";
 
-                HttpResponseMessage response;
-
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
-                    if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-                        response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
-                    else
-                        response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
-                }
+            var httpClient = _httpClientFactory.CreateClient("api");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            HttpResponseMessage response = await httpClient.DeleteAsync("api/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
 
             int codigo = (int)response.StatusCode;
 
@@ -213,14 +140,8 @@ namespace ClienteWeb.Controllers
                 return RedirectToAction("Ver");
             }
 
-                TempData["Mensaje"] = "Se ha eliminado: " + NombreArchivo;
-                return RedirectToAction("Ver");
-            //}
-            //catch (Exception e)
-            //{
-            //    TempData["ErrorMensaje"] = "No se ha podido eliminar "+NombreArchivo;
-            //    return RedirectToAction("Ver");
-            //}
+            TempData["Mensaje"] = "Se ha eliminado: " + NombreArchivo;
+            return RedirectToAction("Ver");
 
         }
 
