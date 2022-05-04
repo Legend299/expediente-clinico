@@ -138,6 +138,11 @@ namespace webservice1.Repository
                 .Where(ide => ide.IdUsuario == idMedico)
                 .FirstOrDefaultAsync();
 
+            if (permiso.PermisoUsuario)
+            {
+                return null;
+            }
+
             return permiso;
         }
 
@@ -214,6 +219,7 @@ namespace webservice1.Repository
 
         }
 
+        // Obtener token del webservice
         private string GetToken(UsuarioToken usuario) 
         {
             var tokenHandler = new JwtSecurityTokenHandler();

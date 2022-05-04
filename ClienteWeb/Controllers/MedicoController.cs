@@ -481,14 +481,27 @@ namespace ClienteWeb.Controllers
 
             TempData["ExpedienteUsuario"] = idexpediente;
 
+            HttpResponseMessage response;
+
             using (var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
                 if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
-                    await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(id));
+                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Consulta/" + Convert.ToString(id));
                 else
-                    await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(id));
+                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Consulta/" + Convert.ToString(id));
             }
+
+            int codigo = (int)response.StatusCode;
+
+            if (codigo >= 300)
+            {
+                TempData["ErrorMensaje"] = "No se ha podido eliminar la consulta";
+                return RedirectToAction("Consultas");
+            }
+
+
+            TempData["Mensaje"] = "Consulta eliminada con éxito.";
 
             return RedirectToAction("Consultas");
         }
@@ -540,6 +553,116 @@ namespace ClienteWeb.Controllers
                 TempData["ErrorMensaje"] = "No se ha podido agregar la consulta.";
 
             return RedirectToAction("Consultas");
+
+        }
+
+        public async Task<IActionResult> EliminarDocumento(int IdDocumento, string NombreArchivo, int IdExpediente)
+        {
+            //try
+            //{
+
+            TempData["ExpedienteUsuario"] = IdExpediente;
+
+            var json = "";
+
+            HttpResponseMessage response;
+
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+                if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
+                else
+                    response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
+            }
+
+            int codigo = (int)response.StatusCode;
+
+            if (codigo >= 300)
+            {
+                TempData["ErrorMensaje"] = "No se ha podido eliminar " + NombreArchivo;
+                return RedirectToAction("Documentos");
+            }
+
+            TempData["Mensaje"] = "Se ha eliminado: " + NombreArchivo;
+            return RedirectToAction("Documentos");
+            //}
+            //catch (Exception e)
+            //{
+            //    TempData["ErrorMensaje"] = "No se ha podido eliminar "+NombreArchivo;
+            //    return RedirectToAction("Ver");
+            //}
+
+        }
+
+        public async Task<IActionResult> CerrarExpediente(int IdPermiso, int IdUsuario, int IdExpediente) 
+        {
+
+
+            //ExpedientesPermiso expedientesPermiso = new ExpedientesPermiso
+            //{
+            //    IdPermiso = IdPermiso,
+            //    IdUsuario = IdUsuario,
+            //    IdExpediente = IdExpediente,
+            //    PermisoMedico = false,
+            //    PermisoUsuario = true,
+            //    Permiso = false
+            //};
+
+            //var httpClient = new HttpClient();
+
+            //var json = JsonConvert.SerializeObject(expedientesPermiso);
+
+            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+
+            ////httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
+
+            //HttpContent httpContent = new StringContent(json);
+            //httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            //var response = await httpClient.PutAsync("https://app.franciscoantonio.tech:8891/api/Usuario/Permiso/", httpContent);
+
+            //int code = (int)response.StatusCode;
+
+            //if (code >= 300 || code <= 199)
+            //{
+            //    TempData["ErrorMensaje"] = "No se ha podido cerrar el expediente #" + code;
+            //    return RedirectToAction("MisPacientes");
+            //}
+
+            //TempData["Mensaje"] = "El paciente ha sido liberado";
+            //return RedirectToAction("MisPacientes");
+
+            ExpedientesPermiso expedientesPermiso = new ExpedientesPermiso
+            {
+                IdPermiso = IdPermiso,
+                IdUsuario = IdUsuario,
+                IdExpediente = IdExpediente,
+                PermisoMedico = false,
+                PermisoUsuario = true,
+                Permiso = false
+            };
+
+            var httpClient = new HttpClient();
+            var json = JsonConvert.SerializeObject(expedientesPermiso);
+
+            httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+            httpClient.BaseAddress = new Uri(_conexionApi.Value.conexionPublica);
+
+            HttpContent httpContent = new StringContent(json);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PutAsync("api/Usuario/Permiso", httpContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ErrorMensaje"] = "No se ha podido cerrar el expediente #" + response.StatusCode;
+                return RedirectToAction("MisPacientes");
+            }
+
+
+            TempData["Mensaje"] = "El paciente ha sido liberado";
+            return RedirectToAction("MisPacientes");
 
         }
 

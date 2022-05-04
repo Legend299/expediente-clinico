@@ -15,5 +15,7 @@ namespace webservice1.Repository.RepositoryInterface
         public Task<Documento> ObtenerArchivo(int id);
 
         public Task<DocumentoAzure> ObtenerArchivoAzure(int id);
+
+        public bool EliminarArchivoAzure(int id);
     }
 }

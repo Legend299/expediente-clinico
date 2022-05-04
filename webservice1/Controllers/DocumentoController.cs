@@ -79,14 +79,14 @@ namespace webservice1.Controllers
             //bool resultado = _repository.Subir(documento);
             bool resultado = await _repository.SubirAzure(documento);
 
-            DocumentoInfo documentoInfo = new DocumentoInfo
-            {
-                Nombre = documento.Nombre,
-                Extension = documento.Extension,
-                Medico = documento.Medico,
-                Peso = documento.Peso,
-                IdExpediente = documento.IdExpediente
-            };
+            //DocumentoInfo documentoInfo = new DocumentoInfo
+            //{
+            //    Nombre = documento.Nombre,
+            //    Extension = documento.Extension,
+            //    Medico = documento.Medico,
+            //    Peso = documento.Peso,
+            //    IdExpediente = documento.IdExpediente
+            //};
 
             //using (var httpclient = new HttpClient())
             //{
@@ -158,7 +158,7 @@ namespace webservice1.Controllers
              */
 
 
-            bool res = await _publicarMensaje.MandarMensaje(documentoInfo);
+            //bool res = await _publicarMensaje.MandarMensaje(documentoInfo);
 
             return Ok("Archivo subido");
 
@@ -181,11 +181,26 @@ namespace webservice1.Controllers
         }
 
         [HttpGet("ArchivoAzure/{id}")]
-        public async Task<FileContentResult> ObtenerArchivoAzurePorId(int id) 
+        public async Task<FileContentResult> ObtenerArchivoAzurePorId(int id)
         {
             var doc = await _repository.ObtenerArchivoAzure(id);
             return File(doc.Contenido, "application/octet-stream", doc.Nombre);
         }
+
+        [HttpDelete("ArchivoAzure/{id}")]
+        [Authorize]
+        public ActionResult EliminarArchivoAzure(int id) 
+        {
+            var res = _repository.EliminarArchivoAzure(id);
+            return Ok();
+        }
+
+        //[HttpGet("ArchivoAzure/{id}")]
+        //public async Task<byte[]> ObtenerArchivoAzurePorId(int id)
+        //{
+        //    var doc = await _repository.ObtenerArchivoAzure(id);
+        //    return doc.Contenido;
+        //}
 
 
     }

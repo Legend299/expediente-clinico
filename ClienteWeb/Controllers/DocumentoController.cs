@@ -128,7 +128,7 @@ namespace ClienteWeb.Controllers
   
         }
 
-        //public async Task<FileResult> DescargarDocumento(int IdDocumento, string FileName) 
+        //public async Task<FileResult> DescargarDocumento(int IdDocumento) 
         //{
         //    byte[] json;
         //    using (var httpClient = new HttpClient())
@@ -149,13 +149,24 @@ namespace ClienteWeb.Controllers
         //    return File(json, "application/octet-stream", FileName);
         //}
 
-        //public async void DescargarDocumento(int IdDocumento, string FileName) 
-        //{
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        await httpClient.GetAsync(_conexionApi.Value.conexionPrivada + "/Documento/Archivo/" + Convert.ToString(IdDocumento));
-        //    }
-        //}
+        public async Task<HttpResponseMessage> DescargarDocumento(int IdDocumento, string Nombre)
+        {
+            //String url = "https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/";
+            //HttpResponseMessage file = new HttpResponseMessage();
+            //using (var httpClient = new HttpClient())
+            //{
+            //    Task<HttpResponseMessage> response = httpClient.GetAsync(url+IdDocumento);
+            //    file = response.Result;
+            //}
+
+            //return File(file.Content.ReadAsByteArrayAsync().Result, "application/octet-stream", Nombre);
+
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+                return await httpClient.GetAsync(_conexionApi.Value.conexionPublica + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
+            }
+        }
 
         public async Task<List<Documento>> SolicitarListaDocumentos()
         {
@@ -174,6 +185,43 @@ namespace ClienteWeb.Controllers
             List<Documento> listaDocumento = JsonConvert.DeserializeObject<List<Documento>>(json);
 
             return listaDocumento;
+        }
+
+        public async Task<IActionResult> EliminarDocumento(int IdDocumento, string NombreArchivo) 
+        {
+            //try
+            //{
+
+                var json = "";
+
+                HttpResponseMessage response;
+
+                using (var httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
+                    if (httpClient.GetStringAsync(_conexionApi.Value.conexionPublica + "/Usuario").IsCompleted)
+                        response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPublica + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
+                    else
+                        response = await httpClient.DeleteAsync(_conexionApi.Value.conexionPrivada + "/Documento/ArchivoAzure/" + Convert.ToString(IdDocumento));
+                }
+
+            int codigo = (int)response.StatusCode;
+
+            if (codigo >= 300)
+            {
+                TempData["ErrorMensaje"] = "No se ha podido eliminar " + NombreArchivo;
+                return RedirectToAction("Ver");
+            }
+
+                TempData["Mensaje"] = "Se ha eliminado: " + NombreArchivo;
+                return RedirectToAction("Ver");
+            //}
+            //catch (Exception e)
+            //{
+            //    TempData["ErrorMensaje"] = "No se ha podido eliminar "+NombreArchivo;
+            //    return RedirectToAction("Ver");
+            //}
+
         }
 
     }

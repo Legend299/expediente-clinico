@@ -98,10 +98,11 @@ namespace webservice1.Controllers
         public async Task<ActionResult<ExpedientesPermiso>> PutPermiso(ExpedientesPermiso permiso) 
         {
             var _permiso = await _repository.ModificarPermisoMedico(permiso);
-            if (_permiso == null)
-                return BadRequest();
+            
+            //if (_permiso == null)
+            //    return BadRequest();
 
-            return Ok(_permiso);
+            return Ok("Modificado");
         }
 
         [HttpPost("Permiso")]

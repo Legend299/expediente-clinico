@@ -9,7 +9,6 @@ using webservice1.RabbitMQ.Productor;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Servidor visualStudio kestrel
 /*
 builder.WebHost.UseKestrel(options =>
 {

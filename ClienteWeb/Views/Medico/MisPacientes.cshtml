@@ -5,6 +5,16 @@
 <h1>MIS PACIENTES</h1>
 <hr class="red-line" />
 
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success" role="alert">@TempData["Mensaje"]</div>
+}
+
+else if (TempData["ErrorMensaje"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["ErrorMensaje"]</div>
+}
+
 @*<button type="button" class="btn btn-warning" value="@usuario.IdUsuario"><i class="bi bi-send-fill"></i> Solicitar</button>*@
 <div class="tablaProductos">
     <!--    table table-bordered table-striped-->
@@ -30,7 +40,7 @@
 @*                  @Html.ActionLink("Consultas", "Consultas", new { IdExpediente = paciente.IdExpediente }, new { @class = "bi bi-journal-medical btn btn-gob"})
                     @Html.ActionLink("Documentos", "Documentos", new { IdExpediente = paciente.IdExpediente }, new { @class = "bi bi-folder2 btn btn-gob"})*@
                     @Html.ActionLink("Expediente", "Expediente", new { IdExpediente = paciente.IdExpediente}, new { @class = "btn btn-gob"})
-                    @Html.ActionLink("Cerrar", "Expediente", new { IdExpediente = paciente.IdExpediente}, new { @class = "btn btn-danger"})
+                    @Html.ActionLink("", "CerrarExpediente", new { IdPermiso = paciente.IdPermiso, IdUsuario = paciente.IdUsuario, IdExpediente = paciente.IdExpediente}, new { @class = "bi bi-x-square-fill btn btn-danger"})
                     </td>
                 </tr>
             }

@@ -70,9 +70,13 @@ namespace webservice1.Repository
 
                 var blobClient = blobContainer.GetBlobClient(documento.IdExpediente + "/" + documento.Archivo.FileName);
 
+                blobClient.DeleteIfExists();
+
                 await blobClient.UploadAsync(documento.Archivo.OpenReadStream());
 
-                string rutaArchivo = documento.IdExpediente + "/" + documento.Archivo.FileName;
+                string rutaArchivo = blobClient.Uri.AbsoluteUri;
+
+                //string rutaArchivo = documento.IdExpediente + "/" + documento.Archivo.FileName;
 
                 Documento doc = new Documento
                 {
@@ -119,7 +123,12 @@ namespace webservice1.Repository
             // Azure Blob
             var blobContainer = _blobServiceClient.GetBlobContainerClient("docusuarios");
 
-            var blobClient = blobContainer.GetBlobClient(documento.Ruta);
+            // Ruta default
+            //var blobClient = blobContainer.GetBlobClient(documento.Ruta);
+
+            // Ruta V2
+            string ruta = documento.IdExpediente + "/" + documento.Nombre;
+            var blobClient = blobContainer.GetBlobClient(ruta);
 
             var downloadContent = await blobClient.DownloadAsync();
             using (MemoryStream ms = new MemoryStream())
@@ -134,5 +143,43 @@ namespace webservice1.Repository
             }
         }
 
+        public bool EliminarArchivoAzure(int id) 
+        {
+            try
+            {
+
+                var documento = _context.Documentos.AsNoTracking().Where(x => x.IdDocumento == id).FirstOrDefault();
+
+                if (documento != null)
+                {
+                    //string rutaDocumento = documento.Ruta;
+                    string rutaDocumento = documento.IdExpediente + "/" + documento.Nombre;
+
+                    // Azure Blob
+                    var blobContainer = _blobServiceClient.GetBlobContainerClient("docusuarios");
+                    var blobClient = blobContainer.GetBlobClient(rutaDocumento);
+                    var response = blobClient.Delete();
+
+                    Documento doc = new Documento
+                    {
+                        IdDocumento = documento.IdDocumento
+                    };
+
+                    _context.Documentos.Remove(doc);
+                    _context.SaveChanges();
+
+                    return true;
+                }
+
+                return false;
+
+            }
+            catch (Exception e) 
+            {
+                throw new Exception(e.Message);
+            }
+
+
+        }
     }
 }

@@ -22,7 +22,7 @@
         <label for="formFile" class="form-label">Selecciona un archivo</label>
         <input class="form-control" type="file" name="archivo" id="archivo" accept="image/png, image/jpeg, image/jpg, .pdf, .gif, .doc, .docx, .pptx, .txt, .xlsx" required>
     </div>
-    <button class="btn btn-gob" type="submit">SUBIR ARCHIVO</button>
+    <button class="btnSubir btn btn-gob" type="submit">SUBIR ARCHIVO</button>
 </form>
     }
 }
@@ -39,7 +39,8 @@
                 <th>EXTENSION</th>
                 <th>PESO</th>
                 <th>SUBIDO POR</th>
-                <th>ACCION</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="datosTabla">
@@ -52,22 +53,69 @@
                     <td>@(documento.Peso/1024) KB</td>
                     <td>@documento.Medico</td>
                     <td>
-                    <button type="button" class="btnDescargar btn btn-gob" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-arrow-down-square"></i> Descargar</button>
+                    <button type="button" class="btnDescargar btn btn-primary" name="btnDescargar" id="btnDescargar" value=@documento.IdDocumento><i class="bi bi-arrow-down-square"></i> Descargar</button>
+                    @{
+                        List<string> extensiones=new List<string>(new string[]{".png",".jpg",".jpeg", ".jfif", ".pjpeg", ".pjp"});
+                    }
+                    @if(extensiones.Any(x => documento.Extension.ToLower().Contains(x)))
+                    {
+                       <button type="button" class="btnMostrar btn btn-success" data-bs-toggle="modal" data-bs-target="#modalConsulta" value="@documento.Ruta"><i class="bi bi-eye"></i> Ver</button>
+                    } else 
+                    {
+                        <button type="button" class="btnMostrar btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalConsulta" value="@documento.Ruta" disabled><i class="bi bi-eye-slash"></i> Ver</button>
+                    }
+                    </td>
+                    <td>
+                    
+                    @if(Context.Session.GetString("Rol").Equals("2"))
+                    {
+                        @Html.ActionLink(" Eliminar", "EliminarDocumento", new { IdDocumento = documento.IdDocumento, NombreArchivo = documento.Nombre }, new { @class = "bi bi-x-square btn btn-danger" })
+                    }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
-<script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-    <script>
-        $(document).ready(function () {
-        $(".btnDescargar").click(function (){
-        var Id = $(this).val();
-        window.open('https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/'+Id,'_blank');
-        });
 
+  <div class="modal fade" id="modalConsulta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <object id="mostrador" style="display:block;" data="" width="465" height="350">
+            archivo
+          </object>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+
+    <script>
+    $(document).ready(function () {
+    $(".btnMostrar").click(function (e){
+        var Ruta = $(this).val();
+        e.preventDefault();
+            $('#mostrador').attr('data', Ruta);
         });
+    });
+    </script>
+
+    <script>
+    $(document).ready(function () {
+    $(".btnDescargar").click(function (e){
+        var Id = $(this).val();
+        e.preventDefault();
+            //window.open('https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/'+Id,'_blank');
+            window.location.href = 'https://app.franciscoantonio.tech:8891/api/Documento/ArchivoAzure/'+Id;
+        });
+    });
     </script>
 
 
+    <script>
+     $(document).ready(function() {
+    $('#dataProducto').DataTable();
+} );
+</script>
