@@ -30,15 +30,18 @@ namespace webservice2.Controllers
                 var form = Request.Form;
                 foreach (var formFile in form.Files)
                 {
-                    string idUsuario = Convert.ToString(111);
-                    string archivos = "C:/Users/acer/Desktop/Test_Archivos/135/" + idUsuario;
+                    string idUsuario = Convert.ToString(7);
+                    string archivos = "C:/Users/acer/Desktop/Test_Archivos/9999/" + idUsuario;
 
+                    
                     if (!Directory.Exists(archivos))
                     {
                         Directory.CreateDirectory(archivos);
                     }
 
                     string rutaArchivo = Path.Combine(archivos, formFile.FileName);
+
+                    await _recibirMensaje.RecibirMensaje(rutaArchivo);
 
                     try
                     {
@@ -48,49 +51,18 @@ namespace webservice2.Controllers
                             formFile.CopyTo(newFile);
                             newFile.Flush();
                         }
-
-                        _recibirMensaje.RecibirMensaje(rutaArchivo);
-
                     }
                     catch (Exception e)
                     {
                         throw new Exception(e.Message);
                     }
+
                 }
             }
 
             /*
              * Private
              */
-
-            ////_recibirMensaje.RecibirMensaje();
-
-            //string idUsuario = Convert.ToString(111);
-            //string archivos = "C:/Users/acer/Desktop/Test_Archivos/"+idUsuario;
-
-            //if (!Directory.Exists(archivos))
-            //{
-            //    Directory.CreateDirectory(archivos);
-            //}
-
-            //string rutaArchivo = Path.Combine(archivos, archivo.FileName);
-
-            //try
-            //{
-
-            //    using (FileStream newFile = System.IO.File.Create(rutaArchivo))
-            //    {
-            //        archivo.CopyTo(newFile);
-            //        newFile.Flush();
-            //    }
-
-            //    _recibirMensaje.RecibirMensaje(rutaArchivo);
-
-            //}
-            //catch (Exception e) 
-            //{
-            //    throw new Exception(e.Message);
-            //}
 
             return Ok();
         }

@@ -2,6 +2,6 @@
 {
     public interface IConsumidor
     {
-        public void RecibirMensaje(string ruta);
+        public Task<bool> RecibirMensaje(string ruta);
     }
 }

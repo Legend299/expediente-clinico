@@ -8,7 +8,7 @@ namespace webservice2.RabbitMQ.Consumidor
 {
     public class Consumidor : IConsumidor
     {
-        public void RecibirMensaje(string ruta)
+        public async Task<bool> RecibirMensaje(string ruta)
         {
             try
             {
@@ -34,22 +34,24 @@ namespace webservice2.RabbitMQ.Consumidor
                         var body = Encoding.UTF8.GetString(args.Body.ToArray());
 
                         DocumentoInfo documentoInfo = JsonSerializer.Deserialize<DocumentoInfo>(body);
-                        Console.WriteLine("[API 2] DATA COMPLETA");
-                        Console.WriteLine("NOMBRE DOCUMENTO: " + documentoInfo.Nombre);
-                        Console.WriteLine("EXTENSION: " + documentoInfo.Extension);
 
                         documentoInfo.Ruta = ruta;
 
                         string json = JsonSerializer.Serialize<DocumentoInfo>(documentoInfo);
-                        System.IO.File.WriteAllText("C:/Users/acer/Desktop/Test_Archivos/"+documentoInfo.Nombre+".txt", json);
+                        File.WriteAllText("C:/Users/acer/Desktop/Test_Archivos/"+documentoInfo.Nombre+".txt", json);
+
                     };
 
                     channel.BasicConsume(queue: "TRANSFERENCIA_ARCHIVO", autoAck: true, consumer: consumer);
                 }
+
+                return true;
+
             }
             catch (Exception e) 
             {
                 Console.WriteLine("ERROR ---> "+e.Message);
+                return false;
             }
         }
 

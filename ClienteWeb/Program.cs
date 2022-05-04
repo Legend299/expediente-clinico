@@ -1,4 +1,5 @@
 using ClienteWeb;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ builder.WebHost.UseIISIntegration();
 // Add HttpClient
 builder.Services.AddHttpClient("api", HttpClient =>
 {
-    HttpClient.BaseAddress = new Uri("http://192.168.1.69:8893/api");
+    HttpClient.BaseAddress = new Uri(builder.Configuration["ConexionApi:conexionPrivada"]);
 });
 
 // Add services to the container.

@@ -35,7 +35,6 @@ namespace webservice1.RabbitMQ.Productor
                     //peso += body.Length;
                     channel.BasicPublish(exchange: "", routingKey: "TRANSFERENCIA_ARCHIVO", basicProperties: null, body: body);
                     //if(peso >= Mensaje.Length) {
-                    Console.WriteLine("MENSAJE ENVIADO:");
                     return true;
                     //}
                     //return false;
@@ -43,8 +42,6 @@ namespace webservice1.RabbitMQ.Productor
             }
             catch (Exception e) 
             {
-                Console.WriteLine("ERROR --> "+e.Message);
-                Console.WriteLine("TRACE: "+e.StackTrace);
                 return false;
             }
         }
