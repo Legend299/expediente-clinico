@@ -9,14 +9,14 @@ using webservice1.RabbitMQ.Productor;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
+
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(Convert.ToInt16(builder.Configuration.GetValue<string>("Puerto:Default")));
 });
-*/
 
-builder.WebHost.UseIISIntegration();
+
+//builder.WebHost.UseIISIntegration();
 
 // Azure blob
 builder.Services.AddScoped(options =>

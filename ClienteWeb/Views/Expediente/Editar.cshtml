@@ -110,7 +110,8 @@
                 var IdEstado = $("#IdEstadoOld").val();
 
                 $.ajax({
-                    url: 'https://app.franciscoantonio.tech:8891/api/usuario/estados',
+                    //url: 'https://app.franciscoantonio.tech:8891/api/usuario/estados',
+                    url: 'http://localhost:8891/api/usuario/estados',
                     dataType: "json",
                     method: 'GET',
                     success: function (data) {
@@ -120,6 +121,7 @@
                         $(data).each(function (index, emp) {
                             if (emp.idEstado == $("#IdEstadoOld").val()) {
                                 listEstado.append('<option value=' + emp.idEstado + ' selected>' + emp.nombre + '</option>');
+                                listarMunicipiosApi();
                             } else {
                                 listEstado.append('<option value=' + emp.idEstado + '>' + emp.nombre + '</option>');
                             }
@@ -130,7 +132,7 @@
                     }
                 });
 
-                listarMunicipiosApi();
+                //listarMunicipiosApi();
 
 
                 $("#estado").change(function () {
@@ -142,7 +144,8 @@
 
                 function listarMunicipiosApi() {
                     $.ajax({
-                        url: 'https://app.franciscoantonio.tech:8891/api/usuario/municipios/' + IdEstado,
+                        //url: 'https://app.franciscoantonio.tech:8891/api/usuario/municipios/' + IdEstado,
+                        url: 'http://localhost:8891/api/usuario/municipios/' + IdEstado,
                         dataType: "json",
                         method: 'GET',
                         success: function (data) {

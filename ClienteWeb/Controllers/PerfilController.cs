@@ -54,6 +54,24 @@ namespace ClienteWeb.Controllers
             string correoForm = Request.Form["correo"];
             string contraForm = Request.Form["contrasena1"];
 
+            if (correoForm.Trim().Length <= 0 && contraForm.Trim().Length <= 0) {
+                TempData["Message"] = "Rellena todos los campos";
+                return RedirectToAction("InicioSesion");
+            }
+
+            if (correoForm.Trim().Length <= 0) {
+                TempData["Message"] = "Ingresa un correo";
+                return RedirectToAction("InicioSesion");
+            }
+
+            if (contraForm.Trim().Length <= 0) {
+                TempData["Message"] = "Ingresa una contraseña";
+                TempData["Correo"] = correoForm;
+                return RedirectToAction("InicioSesion");
+            }
+                
+            
+
             // Encriptado de contraseña
             string sha256 = Encrypt.GetSHA256(contraForm);;
 
@@ -108,11 +126,33 @@ namespace ClienteWeb.Controllers
             if (HttpContext.Session.GetString("Id") != null)
                 return RedirectToAction("Index", "Inicio");
 
+            string correo = Request.Form["Correo"];
+
+            if (Request.Form["Correo"].Equals(""))
+            {
+                TempData["Mensaje"] = "Ingresa un correo";
+                return RedirectToAction("Registrar");
+            }
+
+            if (Request.Form["contrasena2"].Equals(""))
+            {
+                TempData["Mensaje"] = "Llena todos los campos";
+                TempData["Correo"] = correo;
+                return RedirectToAction("Registrar");
+            }
+
+            if (Request.Form["contrasena1"].Equals(""))
+            {
+                TempData["Mensaje"] = "Ingresa una contraseña";
+                TempData["Correo"] = correo;
+                return RedirectToAction("Registrar");
+            }
+
             if (Request.Form["contrasena1"] != Request.Form["contrasena2"])
             {
                 TempData["Mensaje"] = "Las contraseñas no coinciden";
 
-                string correo = Request.Form["correo"];
+                //string correo = Request.Form["correo"];
                 TempData["Correo"] = correo;
                 return RedirectToAction("Registrar");
             }
@@ -120,7 +160,7 @@ namespace ClienteWeb.Controllers
             Usuario usuario = new Usuario();
             usuario.Correo = Request.Form["correo"];
             usuario.Password = Request.Form["contrasena1"];
-            usuario.IdRol = 3;
+            usuario.IdRol = 3; //Usuario normal 2 Medico 1 Admin
             usuario.Activo = true;
 
             // Encriptado de contraseña
@@ -136,7 +176,7 @@ namespace ClienteWeb.Controllers
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Usuario", httpContent);
             Console.WriteLine("CODIGO: " + response);
-
+            Console.WriteLine("Objeto enviado [EXpediente]: "+usuario.IdExpediente);
             return RedirectToAction("InicioSesion");
         }
 

@@ -110,14 +110,15 @@ hr.red-line {
 }
 
 .btn-gob {
-    border: 1px solid #9D2449;
-    color: #9D2449;
-    background-color: white;
+    border: 1px solid transparent;
+    background-color: #9D2449;
+    color: white;
 }
 
     .btn-gob:hover {
-        background-color: #9D2449;
-        color: white;
+        border: 1px solid #9D2449;
+        color: #9D2449;
+        background-color: white;
     }
 
 .container-footer {

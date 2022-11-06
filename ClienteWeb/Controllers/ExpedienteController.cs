@@ -143,9 +143,9 @@ namespace ClienteWeb.Controllers
             HttpContent httpContent = new StringContent(json);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = await httpClient.PostAsync("api/Expediente/", httpContent);
-
+            Console.WriteLine("EXPEDIENTE CODE: "+response.StatusCode);
             Expediente expedienteUsuario = JsonConvert.DeserializeObject<Expediente>(await response.Content.ReadAsStringAsync());
-
+            Console.WriteLine("NOMBRE: "+expedienteUsuario.Nombre);
             _idExpediente = expedienteUsuario.IdExpediente;
             AgregarExpedienteUsuario();
             HttpContext.Session.SetInt32("Expediente", expedienteUsuario.IdExpediente);

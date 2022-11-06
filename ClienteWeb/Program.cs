@@ -4,14 +4,14 @@ using System.Net.Http.Headers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Ipv4 Default, PORT:8889
-/*builder.WebHost.UseKestrel(options =>
+builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(8899);
     //options.ListenAnyIP(80);
-});*/
+});
 
 
-builder.WebHost.UseIISIntegration();
+//builder.WebHost.UseIISIntegration();
 
 // Add HttpClient
 builder.Services.AddHttpClient("api", HttpClient =>
