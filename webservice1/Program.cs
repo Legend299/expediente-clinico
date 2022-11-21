@@ -21,7 +21,8 @@ builder.WebHost.UseKestrel(options =>
 // Azure blob
 builder.Services.AddScoped(options =>
 {
-    return new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=expdocumentos;AccountKey=mHEcVdqPuBCNVqVtRIDWCVYN4brSd4JMW0yRILr368M+CtaS+Ig1VdRieshZD1TaDWT9QBu19UU9rnpVmD4iHg==;EndpointSuffix=core.windows.net");
+  //return new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=expdocumentos;AccountKey=mHEcVdqPuBCNVqVtRIDWCVYN4brSd4JMW0yRILr368M+CtaS+Ig1VdRieshZD1TaDWT9QBu19UU9rnpVmD4iHg==;EndpointSuffix=core.windows.net");
+    return new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=expdocumentos;AccountKey=SLEmY4zec3IVPEKgFaUJhFKiZ/t2bHvLCqJG+6V7tKq3pG0UE5ZHiTFPzcWIZe25x8SVbfmfeWGb+AStFIurrg==;EndpointSuffix=core.windows.net");
 });
 
 // Add services to the container.

@@ -160,7 +160,6 @@ namespace ClienteWeb.Controllers
             TempData["ExpedienteUsuario"] = IdExpediente;
 
             var json = "";
-
             var httpClient = _httpClientFactory.CreateClient("api");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", HttpContext.Session.GetString("Token"));
             json = await httpClient.GetStringAsync("api/Documento/" + Convert.ToString(IdExpediente));

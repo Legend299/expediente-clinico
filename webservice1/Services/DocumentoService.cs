@@ -59,8 +59,11 @@ namespace webservice1.Repository
             }
         }
 
-        public async Task<bool> SubirAzure(DocumentoDTO documento) 
+        public async Task<bool> SubirAzure(DocumentoDTO documento)
         {
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Azure blob Guardar Archivo");
+            Console.WriteLine("-----------------------------");
             /*
             * Azure blob Guardar Archivo
             */

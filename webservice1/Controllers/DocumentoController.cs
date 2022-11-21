@@ -24,7 +24,8 @@ namespace webservice1.Controllers
         [Authorize]
         public async Task<ActionResult> SubirDocumento([FromForm] DocumentoDTO documento)
         {
-
+            Console.WriteLine("Esto llegó: ");
+            Console.WriteLine(documento);
             bool resultado = await _repository.SubirAzure(documento);
 
             DocumentoInfo documentoInfo = new DocumentoInfo
@@ -50,7 +51,7 @@ namespace webservice1.Controllers
                         {
                             try
                             {
-                                client.BaseAddress = new Uri("http://192.168.1.69:8894/api");
+                                client.BaseAddress = new Uri("http://192.168.1.69:8891/api");
                                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", documento.Token);
                                 byte[] data;
                                 using (var br = new BinaryReader(documento.Archivo.OpenReadStream()))

@@ -10,6 +10,7 @@ namespace webservice1.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _repository;
+
         public UsuarioController(IUsuarioService repository) 
         {
             _repository = repository;
